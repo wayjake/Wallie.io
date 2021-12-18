@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import GUN from 'gun/gun'
-const gun = GUN(['https://relay.peer.ooo/gun'])
+import gun from '../gun'
+import { Helmet } from 'react-helmet'
 
 const redName = '#696969'
 const blueName = '#808080'
@@ -76,7 +76,6 @@ function App() {
 
     useEffect(() => {
         redVotesRef.on((data) => {
-            console.log(data)
             loaded.current.red = true
             setRedVotes(data)
         })
@@ -84,7 +83,6 @@ function App() {
 
     useEffect(() => {
         blueVotesRef.on((data) => {
-            console.log(data)
             loaded.current.blue = true
             setBlueVotes(data)
         })
@@ -106,6 +104,9 @@ function App() {
 
     return (
         <AppWrapper>
+            <Helmet>
+                <title>Gun Voting</title>
+            </Helmet>
             <TopBar>
                 <Item>
                     {redName}-Votes: {redVotes || 'NA'}
