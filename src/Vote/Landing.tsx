@@ -62,7 +62,7 @@ const VoteWrapper = styled.div`
     align-items: center;
 `
 
-const AppWrapper = styled.div`
+export const AppWrapper = styled.div`
     height: 100%;
 `
 
