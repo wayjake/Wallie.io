@@ -68,7 +68,7 @@ const NewNode = () => {
         }
         nodeRef.put(data, () => {
             setLoading(false) // unecessary clean up lol
-            navigate(`/nodes/${data.key}`)
+            navigate(`/node/${data.key}`)
         })
     }
 

@@ -16,9 +16,9 @@ export default function Router() {
             <Routes>
                 <Route path="/" element={<Wrapper />}>
                     <Route index element={<NodesLanding />} />
-                    <Route path="nodes" element={<NodesLanding />} />
-                    <Route path="nodes/:id" element={<ViewNode />} />
-                    <Route path="nodes/new" element={<NewNode />} />
+                    <Route path="node" element={<NodesLanding />} />
+                    <Route path="node/:id" element={<ViewNode />} />
+                    <Route path="node/new" element={<NewNode />} />
                     <Route path="vote" element={<VoteLandingPage />} />
                 </Route>
             </Routes>
