@@ -60,15 +60,12 @@ const NewNode = () => {
             return
         }
         setLoading(true)
-        if (!data.key) {
-            //get key
-            //i have some vision for this to be extensible
-            //but for now I'm just going to generate it
-            data.key = makeId()
-        }
-        nodeRef.put(data, () => {
+        const key = data.key || makeId()
+        delete data.key
+
+        nodeRef.get(key).put({ ...data, user: makeId() }, () => {
             setLoading(false) // unecessary clean up lol
-            navigate(`/node/${data.key}`)
+            navigate(`/node/${key}`)
         })
     }
 
