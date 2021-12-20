@@ -27,7 +27,7 @@ export default function Router() {
                     />
                     <Route path="node/:key" element={<ViewNode />} />
                     <Route
-                        path="/"
+                        path="*"
                         element={<Navigate replace to="/node/new" />}
                     />
                 </Route>
