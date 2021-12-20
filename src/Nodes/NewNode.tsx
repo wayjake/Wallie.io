@@ -89,10 +89,20 @@ const NewNode = (props: NewSubNodeProps) => {
         const key = data.key
         delete data.key
 
-        nodeRef.get(key).put({ ...data, date: Date.now() }, (data) => {
+        if (data.head) {
+            const messagePreview =
+                data.message.length > 42
+                    ? `${data.message.substring(0, 39)}...`
+                    : data.message
+            nodeRef
+                .get(data.head)
+                .get('directions')
+                .put({ [key]: messagePreview })
+        }
+        nodeRef.get(key).put({ ...data, date: Date.now() }, (res) => {
             setLoading(false) // unecessary clean up lol
-            navigate(`/node/${key}`)
-            props.nodeAdded(data)
+            if (!data.head) navigate(`/node/${key}`)
+            props.nodeAdded(res)
         })
     }
 
