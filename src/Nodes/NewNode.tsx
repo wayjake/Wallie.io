@@ -3,7 +3,7 @@ import { DungeonNode } from '.'
 import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { IdTypes, makeId } from './utilities'
+import { getRandomUsername, IdTypes, makeId } from '../utils'
 import gun, { namespace } from '../gun'
 import { useNavigate } from 'react-router-dom'
 import { NewSubNodeProps } from './NewSubNode'
@@ -25,6 +25,7 @@ const Input = styled.input`
         opacity: 0.4;
     }
 `
+
 const Textarea = styled.textarea`
     height: 4rem;
     margin: 0 0 0 1rem;
@@ -66,7 +67,6 @@ const NewNode = (props: NewSubNodeProps) => {
         handleSubmit,
         formState: { errors },
         setValue,
-        reset,
     } = useForm()
     const navigate = useNavigate()
 
@@ -78,7 +78,7 @@ const NewNode = (props: NewSubNodeProps) => {
 
     useEffect(() => {
         setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
-        setValue('user', makeId(5, [IdTypes.upper]))
+        setValue('user', getRandomUsername())
     }, [])
 
     const createNode = (data: DungeonNode | any) => {
