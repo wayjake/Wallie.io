@@ -3,30 +3,37 @@ import gun, { namespace } from '../gun'
 import styled from 'styled-components'
 import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { DungeonNode } from '.'
+import { DungeonNode, NewSubNode } from '.'
+
+const ITEM_BORDER = `dashed blue thin`
 
 const MessageWrapper = styled.div`
-    padding: 2rem;
+    padding: 1rem 2rem;
+    border: ${ITEM_BORDER};
 `
 const Username = styled.div`
+    padding: 1rem 1rem;
     font-weight: 600;
+    border: ${ITEM_BORDER};
 `
 
-const Message = styled.div``
+const Message = styled.div`
+    padding: 1rem 1rem;
+    border: ${ITEM_BORDER};
+    margin-top: 1rem;
+`
 
 const LinkWrapper = styled.div`
-    padding: 2rem;
+    padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
+    border: ${ITEM_BORDER};
+    margin-top: 1rem;
 `
 
 const NodeLink = styled(Link)`
-    padding: 1rem 0rem;
-`
-
-const Button = styled.button`
-    font-weight: 600;
-    width: auto;
+    padding: 1rem 1rem;
+    border: ${ITEM_BORDER};
 `
 
 const ViewNode = () => {
@@ -40,19 +47,22 @@ const ViewNode = () => {
         })
     }, [key])
 
-    const titleText = key.substring(0, 50)
+    const nodeAdded = () => {
+        console.log(`i'm in view node`)
+    }
+
     return (
         <>
             <Helmet>
-                <title>View Node '{titleText}'</title>
+                <title>View Node '{key.substring(0, 50)}'</title>
             </Helmet>
             <MessageWrapper>
-                {node?.user && <Username>{node?.user}:</Username>}
+                {node?.user && <Username>@{node?.user}</Username>}
                 <Message>{node?.message}</Message>
             </MessageWrapper>
             <LinkWrapper>
                 <NodeLink to={`/node/${'key'}`}>{'key'}</NodeLink>
-                <Button>New</Button>
+                <NewSubNode head={key} nodeAdded={nodeAdded} />
             </LinkWrapper>
         </>
     )

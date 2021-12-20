@@ -1,4 +1,10 @@
-import { BrowserRouter, Outlet, Routes, Route } from 'react-router-dom'
+import {
+    BrowserRouter,
+    Outlet,
+    Routes,
+    Route,
+    Navigate,
+} from 'react-router-dom'
 import VoteLandingPage, { AppWrapper } from './Vote/Landing'
 import { ViewNode, NewNode, NodesLanding } from './Nodes'
 
@@ -15,11 +21,15 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Wrapper />}>
-                    <Route index element={<NodesLanding />} />
-                    <Route path="node" element={<NodesLanding />} />
+                    <Route
+                        path="node/new"
+                        element={<NewNode nodeAdded={() => {}} />}
+                    />
                     <Route path="node/:key" element={<ViewNode />} />
-                    <Route path="node/new" element={<NewNode />} />
-                    <Route path="vote" element={<VoteLandingPage />} />
+                    <Route
+                        path="/"
+                        element={<Navigate replace to="/node/new" />}
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>
