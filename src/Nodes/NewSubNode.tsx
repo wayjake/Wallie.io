@@ -11,8 +11,16 @@ const Wrapper = styled.div`
 `
 
 const Button = styled.button`
-    height: 2rem;
     width: 100%;
+    font-weight: 800;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+    user-select: none;
+    padding: 0.5rem 0.5rem;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: none;
 `
 
 const itemBorder = `dashed red thin`
