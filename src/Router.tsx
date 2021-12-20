@@ -5,8 +5,8 @@ import {
     Route,
     Navigate,
 } from 'react-router-dom'
-import VoteLandingPage, { AppWrapper } from './Vote/Landing'
-import { ViewNode, NewNode, NodesLanding } from './Nodes'
+import { AppWrapper } from './Vote/Landing'
+import { ViewNode, NewNode } from './Nodes'
 
 function Wrapper() {
     return (
@@ -20,7 +20,7 @@ export default function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Wrapper />}>
+                <Route path="*" element={<Wrapper />}>
                     <Route
                         path="node/new"
                         element={<NewNode nodeAdded={() => {}} />}
