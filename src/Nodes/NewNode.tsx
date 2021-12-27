@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet'
 import { DungeonNode } from '.'
-import styled from 'styled-components'
-import { useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components/macro'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getRandomUsername, IdTypes, makeId } from '../utils'
 import gun, { namespace } from '../gun'
 import { useNavigate } from 'react-router-dom'
 import { NewSubNodeProps } from './NewSubNode'
+import { getRandomFromArray } from '../utils'
 //@todo https://www.notion.so/dubsado/My-app-has-guts-what-is-a-component-basic-metaTraining-8559470f6bf040129b70430bba782f41
 
 const Wrapper = styled.div`
@@ -106,20 +107,6 @@ const NewNode = (props: NewSubNodeProps) => {
         })
     }
 
-    const idLabelOptions = ['Node Id', 'Node Ref', 'Gun Id', 'Id', 'Key']
-    const idLabel = useMemo(
-        () => idLabelOptions[Math.floor(Math.random() * idLabelOptions.length)],
-        idLabelOptions
-    )
-    const headLabelOptions = ['Head', 'Top', 'Parent', 'Up', 'Previous']
-    const headLabel = useMemo(
-        () =>
-            headLabelOptions[
-                Math.floor(Math.random() * headLabelOptions.length)
-            ],
-        headLabelOptions
-    )
-
     return (
         <Wrapper>
             <Helmet>
@@ -128,7 +115,14 @@ const NewNode = (props: NewSubNodeProps) => {
 
             <FormItem className={errors['key'] ? 'error' : ''}>
                 <Label>
-                    {idLabel}:
+                    {getRandomFromArray([
+                        'Node Id',
+                        'Node Ref',
+                        'Gun Id',
+                        'Id',
+                        'Key',
+                    ])}
+                    :
                     <Input {...register('key', { required: true })} />
                 </Label>
             </FormItem>
@@ -148,7 +142,14 @@ const NewNode = (props: NewSubNodeProps) => {
             {props?.head && (
                 <FormItem>
                     <Label>
-                        {headLabel}:
+                        {getRandomFromArray([
+                            'Head',
+                            'Top',
+                            'Parent',
+                            'Up',
+                            'Previous',
+                        ])}
+                        :
                         <Input readOnly {...register('head')} />
                     </Label>
                 </FormItem>
