@@ -118,6 +118,7 @@ function App() {
                     <a
                         href="https://github.com/wayjake/gunVote"
                         target="_blank"
+                        rel="noreferrer"
                     >
                         Contribute
                     </a>
