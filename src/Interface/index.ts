@@ -10,6 +10,7 @@ export type SimpleIconProps = {
     content: string
     hoverContent: string
     style: Styles
+    className: string
 }
 
 export const stylesColors = {
