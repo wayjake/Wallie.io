@@ -1,75 +1,22 @@
 import { Helmet } from 'react-helmet'
 import gun, { namespace } from '../gun'
-import styled from 'styled-components'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
-import { Directions, DungeonNode, NewSubNode } from '.'
-
-const ITEM_BORDER = `dashed blue thin`
-
-const BackSectionWrapper = styled.div`
-    padding: 1rem 2rem;
-    border: ${ITEM_BORDER};
-    display: flex;
-    justify-content: space-between;
-`
-
-const BackButton = styled.div`
-    font-weight: 800;
-    cursor: pointer;
-    color: white;
-    background-color: blue;
-    user-select: none;
-    padding: 0.3rem 0.5rem;
-    border-radius: 1rem;
-`
-const NewNode = styled(Link)`
-    color: white;
-    background-color: blue;
-    padding: 0.3rem;
-    border-radius: 1rem;
-`
-
-const MessageWrapper = styled.div`
-    padding: 1rem 2rem;
-    border: ${ITEM_BORDER};
-    margin: 1rem 0 0 0;
-`
-const MessageTop = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`
-
-const Username = styled.div`
-    padding: 1rem 1rem;
-    font-weight: 600;
-    border: ${ITEM_BORDER};
-`
-const MessageDate = styled.div`
-    padding: 1rem 1rem;
-    border: ${ITEM_BORDER};
-`
-
-const Message = styled.div`
-    padding: 1rem 1rem;
-    border: ${ITEM_BORDER};
-    margin-top: 1rem;
-`
-
-const LinkWrapper = styled.div`
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: column;
-    border: ${ITEM_BORDER};
-    margin-top: 1rem;
-`
-
-const NodeLink = styled(Link)`
-    padding: 1rem 1rem;
-    border: ${ITEM_BORDER};
-    margin-top: 0.5rem;
-`
+import { DungeonNode, NewSubNode } from '.'
+import { SimpleIcon, Styles } from '../Interface'
+import {
+    BackSectionWrapper,
+    BackButton,
+    NewNodeWrapper,
+    NewNode,
+    NodeLink,
+    LinkWrapper,
+    Message,
+    MessageDate,
+    MessageTop,
+    MessageWrapper,
+    Username,
+} from './ViewNode.styled'
 
 const ViewNode = () => {
     const [node, setNode] = useState<DungeonNode | undefined>()
@@ -77,14 +24,26 @@ const ViewNode = () => {
     const { key = '' } = useParams()
     const navigate = useNavigate()
 
+    /**
+     *    for when i make a new hook
+     *    or when i write a new book
+     *    REACT, THE PARTS THAT MATTER
+     */
     useEffect(() => {
+        setNode(undefined)
         gun.get(namespace + 'node')
             .get(key)
             .once((node: DungeonNode | any = {}) => {
+                console.log(node)
                 setNode(node)
             })
     }, [key])
 
+    /**
+     *    WHY ARE THE DIRECTIONS HERE NOT
+     *    LIVING DIRECTLY ON THE NODE ITSELF?
+     *    well sir, that is because ________.
+     */
     useEffect(() => {
         setDirections({})
         gun.get(namespace + 'node')
@@ -119,7 +78,7 @@ const ViewNode = () => {
                 <title>View Node '{key.substring(0, 50)}'</title>
             </Helmet>
 
-            <BackSectionWrapper>
+            <BackSectionWrapper className="blockSection">
                 {node?.head && <BackButton onClick={goback}>{'< '}</BackButton>}
                 {!node?.head && <div>&nbsp;</div>}
                 <NewNode to="/nodes/new">New Parent</NewNode>
@@ -132,16 +91,30 @@ const ViewNode = () => {
                 </MessageTop>
                 <Message>{node?.message}</Message>
             </MessageWrapper>
-            <LinkWrapper>
-                {Object.keys(directions).map((key: string) => {
-                    return (
-                        <NodeLink to={`/node/${key}`} key={key}>
+
+            {Object.keys(directions).map((key: string) => {
+                return (
+                    <LinkWrapper className="linkWrapper">
+                        <NodeLink
+                            to={`/node/${key}`}
+                            key={key}
+                            className="nodeLink"
+                        >
                             {directions[key]}
                         </NodeLink>
-                    )
-                })}
+                        <SimpleIcon
+                            content="[ d ]"
+                            hoverContent="[ prune ]"
+                            style={Styles.warning}
+                            className="simpleIcon"
+                        />
+                    </LinkWrapper>
+                )
+            })}
+
+            <NewNodeWrapper>
                 <NewSubNode head={key} nodeAdded={nodeAdded} />
-            </LinkWrapper>
+            </NewNodeWrapper>
         </>
     )
 }
