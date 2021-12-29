@@ -28,14 +28,6 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
-    "babel": {
-        "plugins": [
-            [
-                "babel-plugin-styled-components",
-                {}
-            ]
-        ]
-    },
     "eslintConfig": {
         "extends": [
             "react-app",
