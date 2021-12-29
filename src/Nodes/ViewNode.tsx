@@ -2,15 +2,12 @@ import { Helmet } from 'react-helmet'
 import gun, { namespace } from '../gun'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
-import { DungeonNode, NewSubNode } from '.'
-import { SimpleIcon, Styles } from '../Interface'
+import { DungeonNode, NewSubNode, NodeRow } from '.'
 import {
     BackSectionWrapper,
     BackButton,
     NewNodeWrapper,
     NewNode,
-    NodeLink,
-    LinkWrapper,
     Message,
     MessageDate,
     MessageTop,
@@ -84,33 +81,19 @@ const ViewNode = () => {
                 <NewNode to="/nodes/new">New Parent</NewNode>
             </BackSectionWrapper>
 
-            <MessageWrapper>
-                <MessageTop>
+            <MessageWrapper className="messageWrapper">
+                <MessageTop className="messageTop">
                     {node?.user && <Username>@{node?.user}</Username>}
-                    <MessageDate>{dateFormatted}</MessageDate>
+                    <MessageDate className="messageDate">
+                        {dateFormatted}
+                    </MessageDate>
                 </MessageTop>
-                <Message>{node?.message}</Message>
+                <Message className="message">{node?.message}</Message>
             </MessageWrapper>
 
-            {Object.keys(directions).map((key: string) => {
-                return (
-                    <LinkWrapper className="linkWrapper">
-                        <NodeLink
-                            to={`/node/${key}`}
-                            key={key}
-                            className="nodeLink"
-                        >
-                            {directions[key]}
-                        </NodeLink>
-                        <SimpleIcon
-                            content="[ d ]"
-                            hoverContent="[ prune ]"
-                            style={Styles.warning}
-                            className="simpleIcon"
-                        />
-                    </LinkWrapper>
-                )
-            })}
+            {Object.keys(directions).map((key: string) => (
+                <NodeRow key={key} directionKey={key} directions={directions} />
+            ))}
 
             <NewNodeWrapper>
                 <NewSubNode head={key} nodeAdded={nodeAdded} />

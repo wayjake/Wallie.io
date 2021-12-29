@@ -51,19 +51,6 @@ export const Message = styled.div`
     margin-top: 1rem;
 `
 
-export const LinkWrapper = styled.div`
-    padding: 0.5rem 2rem;
-    display: flex;
-    flex-direction: row;
-`
-
-export const NodeLink = styled(Link)`
-    padding: 1rem 1rem;
-    margin: 0 1rem 0 0;
-    border: ${ITEM_BORDER};
-    flex-grow: 2;
-`
-
 export const NewNodeWrapper = styled.div`
     padding: 1rem;
 `
