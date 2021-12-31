@@ -1,75 +1,32 @@
 import { Helmet } from 'react-helmet'
 import gun, { namespace } from '../gun'
-import styled from 'styled-components'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
-import { Directions, DungeonNode, NewSubNode } from '.'
+import { DungeonNode, GunId, NewSubNode, NodeRow } from '.'
+import {
+    BackSectionWrapper,
+    BackButton,
+    NewNodeWrapper,
+    NewNode,
+    Message,
+    MessageDate,
+    MessageTop,
+    MessageWrapper,
+    Username,
+} from './ViewNode.styled'
+import LoadingWheel from '../Interface/LoadingWheel'
 
-const ITEM_BORDER = `dashed blue thin`
-
-const BackSectionWrapper = styled.div`
-    padding: 1rem 2rem;
-    border: ${ITEM_BORDER};
-    display: flex;
-    justify-content: space-between;
-`
-
-const BackButton = styled.div`
-    font-weight: 800;
-    cursor: pointer;
-    color: white;
-    background-color: blue;
-    user-select: none;
-    padding: 0.3rem 0.5rem;
-    border-radius: 1rem;
-`
-const NewNode = styled(Link)`
-    color: white;
-    background-color: blue;
-    padding: 0.3rem;
-    border-radius: 1rem;
-`
-
-const MessageWrapper = styled.div`
-    padding: 1rem 2rem;
-    border: ${ITEM_BORDER};
-    margin: 1rem 0 0 0;
-`
-const MessageTop = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`
-
-const Username = styled.div`
-    padding: 1rem 1rem;
-    font-weight: 600;
-    border: ${ITEM_BORDER};
-`
-const MessageDate = styled.div`
-    padding: 1rem 1rem;
-    border: ${ITEM_BORDER};
-`
-
-const Message = styled.div`
-    padding: 1rem 1rem;
-    border: ${ITEM_BORDER};
-    margin-top: 1rem;
-`
-
-const LinkWrapper = styled.div`
-    padding: 1rem 2rem;
-    display: flex;
-    flex-direction: column;
-    border: ${ITEM_BORDER};
-    margin-top: 1rem;
-`
-
-const NodeLink = styled(Link)`
-    padding: 1rem 1rem;
-    border: ${ITEM_BORDER};
-    margin-top: 0.5rem;
-`
+/**
+ *
+ *          Why does the node have directions?
+ *          this arose from thinking about being inside a dark forest / jungle
+ *          without knowing where to go, what would you do? Like Hansel and
+ *          Gretel we may leave little white pebbles through the forest
+ *          to mark where we are. Each direction can be a new pebble
+ *          which might remind you or the User about what you're doing here
+ *          or why you're here.
+ *
+ */
 
 const ViewNode = () => {
     const [node, setNode] = useState<DungeonNode | undefined>()
@@ -77,7 +34,13 @@ const ViewNode = () => {
     const { key = '' } = useParams()
     const navigate = useNavigate()
 
+    /**
+     *    for when i make a new hook
+     *    or when i write a new book
+     *    REACT, THE PARTS THAT MATTER
+     */
     useEffect(() => {
+        setNode(undefined)
         gun.get(namespace + 'node')
             .get(key)
             .once((node: DungeonNode | any = {}) => {
@@ -85,6 +48,11 @@ const ViewNode = () => {
             })
     }, [key])
 
+    /**
+     *    WHY ARE THE "DIRECTIONS" HERE NOT
+     *    LIVING DIRECTLY ON THE NODE ITSELF?
+     *    well sir, that is because ________.
+     */
     useEffect(() => {
         setDirections({})
         gun.get(namespace + 'node')
@@ -92,11 +60,43 @@ const ViewNode = () => {
             .get('directions')
             .map()
             .once((message: any, key: any) => {
+                if (message === null) {
+                    return
+                }
                 setDirections((prev: any) => {
                     return { ...prev, ...{ [key]: message } }
                 })
             })
     }, [key])
+
+    /**
+     *      THERE ARE A LOT OF THINGS HAPPENING IN THIS
+     *      COMPONENT. I AM SLOWLY GOING INSANE. I WISH
+     *      I KNEW MORE ABOUT REDUX AND I COULD HAVE STARTED
+     *      WITH IT. c'est la vie
+     */
+    const pruneRight = (id: GunId) => {
+        const newDirections = { ...directions }
+        delete newDirections[id]
+        setDirections(newDirections)
+
+        const nodeRef = gun
+            .get(namespace + 'node')
+            .get(key) // we're accessing the current top node and removing the direction by key
+            .get(`directions`)
+            .get(id)
+            .put(null as any, (awk: any) => {
+                console.log(`done deleting directions`)
+                console.log(awk)
+
+                /*
+            nodeRef.put(newDirections, (awk: any) => {
+                console.log(`done setting new directions`)
+                console.log(awk)
+            })
+            */
+            })
+    }
 
     const nodeAdded = () => {
         console.log(`i'm in view node`)
@@ -119,29 +119,41 @@ const ViewNode = () => {
                 <title>View Node '{key.substring(0, 50)}'</title>
             </Helmet>
 
-            <BackSectionWrapper>
+            <BackSectionWrapper className="blockSection">
                 {node?.head && <BackButton onClick={goback}>{'< '}</BackButton>}
                 {!node?.head && <div>&nbsp;</div>}
                 <NewNode to="/nodes/new">New Parent</NewNode>
             </BackSectionWrapper>
 
-            <MessageWrapper>
-                <MessageTop>
+            <MessageWrapper className="messageWrapper">
+                <MessageTop className="messageTop">
                     {node?.user && <Username>@{node?.user}</Username>}
-                    <MessageDate>{dateFormatted}</MessageDate>
+                    {!node?.user && <LoadingWheel />}
+                    {dateFormatted && (
+                        <MessageDate className="messageDate">
+                            {dateFormatted}
+                        </MessageDate>
+                    )}
+                    {!dateFormatted && <LoadingWheel />}
                 </MessageTop>
-                <Message>{node?.message}</Message>
+                {node?.message && (
+                    <Message className="message">{node?.message}</Message>
+                )}
+                {!node?.message && <LoadingWheel />}
             </MessageWrapper>
-            <LinkWrapper>
-                {Object.keys(directions).map((key: string) => {
-                    return (
-                        <NodeLink to={`/node/${key}`} key={key}>
-                            {directions[key]}
-                        </NodeLink>
-                    )
-                })}
+
+            {Object.keys(directions).map((key: string) => (
+                <NodeRow
+                    key={key}
+                    directionKey={key}
+                    directions={directions}
+                    pruneRight={pruneRight}
+                />
+            ))}
+
+            <NewNodeWrapper>
                 <NewSubNode head={key} nodeAdded={nodeAdded} />
-            </LinkWrapper>
+            </NewNodeWrapper>
         </>
     )
 }

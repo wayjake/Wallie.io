@@ -1,61 +1,20 @@
 import { Helmet } from 'react-helmet'
 import { DungeonNode } from '.'
-import styled from 'styled-components'
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getRandomUsername, IdTypes, makeId } from '../utils'
 import gun, { namespace } from '../gun'
 import { useNavigate } from 'react-router-dom'
-import { NewSubNodeProps } from './NewSubNode'
-//@todo https://www.notion.so/dubsado/My-app-has-guts-what-is-a-component-basic-metaTraining-8559470f6bf040129b70430bba782f41
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    padding: 2rem 2rem 2rem 2rem;
-    align-items: stretch;
-`
-
-const Input = styled.input`
-    height: 2rem;
-    margin: 0 0 0 1rem;
-    flex: auto;
-    & [readonly] {
-        opacity: 0.4;
-    }
-`
-
-const Textarea = styled.textarea`
-    height: 4rem;
-    margin: 0 0 0 1rem;
-    flex: auto;
-`
-
-const Label = styled.label`
-    display: flex;
-    flex: auto;
-`
-
-const Button = styled.button`
-    height: 2rem;
-    width: 100%;
-`
-
-const itemBorder = `dashed red thin`
-
-const FormItem = styled.div`
-    display: flex;
-    padding: 1rem 1rem 1rem 1rem;
-    border: ${itemBorder};
-    border-bottom: none;
-    &:last-child {
-        border-bottom: ${itemBorder};
-    }
-    &.error label {
-        color: red;
-    }
-`
+import { NewSubNodeProps } from './NewSubNode.styled'
+import { getRandomFromArray } from '../utils'
+import {
+    Wrapper,
+    FormItem,
+    Label,
+    Textarea,
+    Input,
+    Button,
+} from './NewNode.styled'
 
 const NewNode = (props: NewSubNodeProps) => {
     const [loading, setLoading] = useState(false)
@@ -89,6 +48,8 @@ const NewNode = (props: NewSubNodeProps) => {
         const key = data.key
         delete data.key
 
+        /* this is business logic that I'd like to make dissappear */
+
         if (data.head) {
             const messagePreview =
                 data.message.length > 42
@@ -97,28 +58,27 @@ const NewNode = (props: NewSubNodeProps) => {
             nodeRef
                 .get(data.head)
                 .get('directions')
-                .put({ [key]: messagePreview })
+                .get(key)
+                .put(messagePreview, (ack) => {
+                    console.log(`added message preview`)
+                })
         }
-        nodeRef.get(key).put({ ...data, date: Date.now() }, (res) => {
+        const newNode = { ...data, date: Date.now() }
+        nodeRef.get(key).put(newNode, (ack) => {
             setLoading(false) // unecessary clean up lol
-            if (!data.head) navigate(`/node/${key}`)
-            props.nodeAdded(res)
+            console.log(`done adding new node`)
+            console.log(ack)
         })
+        if (!data.head) navigate(`/node/${key}`)
+        props.nodeAdded(newNode)
     }
 
-    const idLabelOptions = ['Node Id', 'Node Ref', 'Gun Id', 'Id', 'Key']
-    const idLabel = useMemo(
-        () => idLabelOptions[Math.floor(Math.random() * idLabelOptions.length)],
-        idLabelOptions
-    )
-    const headLabelOptions = ['Head', 'Top', 'Parent', 'Up', 'Previous']
-    const headLabel = useMemo(
-        () =>
-            headLabelOptions[
-                Math.floor(Math.random() * headLabelOptions.length)
-            ],
-        headLabelOptions
-    )
+    const handleUserKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSubmit(createNode)()
+            e.preventDefault()
+        }
+    }
 
     return (
         <Wrapper>
@@ -126,18 +86,31 @@ const NewNode = (props: NewSubNodeProps) => {
                 <title>New Node</title>
             </Helmet>
 
-            <FormItem className={errors['key'] ? 'error' : ''}>
-                <Label>
-                    {idLabel}:
-                    <Input {...register('key', { required: true })} />
-                </Label>
-            </FormItem>
             <FormItem className={errors['message'] ? 'error' : ''}>
                 <Label>
                     Message:
-                    <Textarea {...register('message', { required: true })} />
+                    <Textarea
+                        autoFocus
+                        onKeyPress={handleUserKeyPress}
+                        {...register('message', { required: true })}
+                    />
                 </Label>
             </FormItem>
+
+            <FormItem className={errors['key'] ? 'error' : ''}>
+                <Label>
+                    {getRandomFromArray([
+                        'Node Id',
+                        'Node Ref',
+                        'Gun Id',
+                        'Id',
+                        'Key',
+                    ])}
+                    :
+                    <Input {...register('key', { required: true })} />
+                </Label>
+            </FormItem>
+
             <FormItem className={errors['user'] ? 'error' : ''}>
                 <Label>
                     User:
@@ -148,17 +121,25 @@ const NewNode = (props: NewSubNodeProps) => {
             {props?.head && (
                 <FormItem>
                     <Label>
-                        {headLabel}:
-                        <Input readOnly {...register('head')} />
+                        {getRandomFromArray([
+                            'Head',
+                            'Top',
+                            'Parent',
+                            'Up',
+                            'Previous',
+                        ])}
+                        :
+                        <Input {...register('head')} />
                     </Label>
                 </FormItem>
             )}
+
             <FormItem>
                 <Button
                     disabled={loading || errors.length}
                     onClick={handleSubmit(createNode)}
                 >
-                    Create
+                    {getRandomFromArray(['Send', 'Create', 'Push', 'Generate'])}
                 </Button>
             </FormItem>
         </Wrapper>

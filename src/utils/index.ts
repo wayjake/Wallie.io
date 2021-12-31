@@ -16,7 +16,7 @@ export const makeId = (length: number = 6, types: IdTypes[] = [0, 1, 2]) => {
     }
     var characters = ''
     types.map((type) => {
-        characters += typesObject[type]
+        return (characters += typesObject[type])
     })
 
     const charactersLength = characters.length
@@ -28,6 +28,10 @@ export const makeId = (length: number = 6, types: IdTypes[] = [0, 1, 2]) => {
     return result
 }
 
+export const getRandomFromArray = (items: any[]) => {
+    return items[Math.floor(Math.random() * items.length)]
+}
+
 export const getRandomUsername = () => {
-    return fakeUsers[Math.floor(Math.random() * fakeUsers.length)].username
+    return getRandomFromArray(fakeUsers).username
 }
