@@ -64,6 +64,7 @@ const VoteWrapper = styled.div`
 
 export const AppWrapper = styled.div`
     height: 100%;
+    padding: 2rem;
 `
 
 function App() {

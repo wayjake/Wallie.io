@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet'
 import { DungeonNode } from '.'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getRandomUsername, IdTypes, makeId } from '../utils'
 import gun, { namespace } from '../gun'
@@ -49,6 +49,7 @@ const NewNode = (props: NewSubNodeProps) => {
         delete data.key
 
         /* this is business logic that I'd like to make dissappear */
+
         if (data.head) {
             const messagePreview =
                 data.message.length > 42
@@ -57,13 +58,26 @@ const NewNode = (props: NewSubNodeProps) => {
             nodeRef
                 .get(data.head)
                 .get('directions')
-                .put({ [key]: messagePreview })
+                .get(key)
+                .put(messagePreview, (ack) => {
+                    console.log(`added message preview`)
+                })
         }
-        nodeRef.get(key).put({ ...data, date: Date.now() }, (res) => {
+        const newNode = { ...data, date: Date.now() }
+        nodeRef.get(key).put(newNode, (ack) => {
             setLoading(false) // unecessary clean up lol
-            if (!data.head) navigate(`/node/${key}`)
-            props.nodeAdded(res)
+            console.log(`done adding new node`)
+            console.log(ack)
         })
+        if (!data.head) navigate(`/node/${key}`)
+        props.nodeAdded(newNode)
+    }
+
+    const handleUserKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSubmit(createNode)()
+            e.preventDefault()
+        }
     }
 
     return (
@@ -71,6 +85,17 @@ const NewNode = (props: NewSubNodeProps) => {
             <Helmet>
                 <title>New Node</title>
             </Helmet>
+
+            <FormItem className={errors['message'] ? 'error' : ''}>
+                <Label>
+                    Message:
+                    <Textarea
+                        autoFocus
+                        onKeyPress={handleUserKeyPress}
+                        {...register('message', { required: true })}
+                    />
+                </Label>
+            </FormItem>
 
             <FormItem className={errors['key'] ? 'error' : ''}>
                 <Label>
@@ -85,12 +110,7 @@ const NewNode = (props: NewSubNodeProps) => {
                     <Input {...register('key', { required: true })} />
                 </Label>
             </FormItem>
-            <FormItem className={errors['message'] ? 'error' : ''}>
-                <Label>
-                    Message:
-                    <Textarea {...register('message', { required: true })} />
-                </Label>
-            </FormItem>
+
             <FormItem className={errors['user'] ? 'error' : ''}>
                 <Label>
                     User:
@@ -109,16 +129,17 @@ const NewNode = (props: NewSubNodeProps) => {
                             'Previous',
                         ])}
                         :
-                        <Input readOnly {...register('head')} />
+                        <Input {...register('head')} />
                     </Label>
                 </FormItem>
             )}
+
             <FormItem>
                 <Button
                     disabled={loading || errors.length}
                     onClick={handleSubmit(createNode)}
                 >
-                    Create
+                    {getRandomFromArray(['Send', 'Create', 'Push', 'Generate'])}
                 </Button>
             </FormItem>
         </Wrapper>

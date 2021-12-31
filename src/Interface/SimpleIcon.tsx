@@ -14,11 +14,15 @@ const getColorFromStyle = (
     return stylesColors[style]
 }
 
-const StyledSimpleIcon = styled.div<{ style: Styles; hovered: Boolean }>`
+const StyledSimpleIcon = styled.div<{
+    style: Styles
+    hovered: Boolean
+}>`
     cursor: pointer;
     color: ${({ style, hovered }) => getColorFromStyle(style, hovered)};
     border: ${ITEM_BORDER};
     padding: 1rem 1rem 0rem 1rem;
+    user-select: none;
 `
 
 const SimpleIcon = ({ content, hoverContent, ...props }: SimpleIconProps) => {

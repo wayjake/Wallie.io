@@ -11,6 +11,7 @@ export type SimpleIconProps = {
     hoverContent: string
     style: Styles
     className: string
+    onClick: () => void
 }
 
 export const stylesColors = {
