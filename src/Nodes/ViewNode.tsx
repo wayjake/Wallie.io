@@ -15,6 +15,7 @@ import {
     Username,
 } from './ViewNode.styled'
 import LoadingWheel from '../Interface/LoadingWheel'
+import { createMarkup, linkify } from '../utils'
 
 /**
  *
@@ -44,7 +45,8 @@ const ViewNode = () => {
         gun.get(namespace + 'node')
             .get(key)
             .once((node: DungeonNode | any = {}) => {
-                setNode(node)
+                const message = linkify(node.message)
+                setNode({ ...node, message })
             })
     }, [key])
 
@@ -80,21 +82,12 @@ const ViewNode = () => {
         delete newDirections[id]
         setDirections(newDirections)
 
-        const nodeRef = gun
-            .get(namespace + 'node')
+        gun.get(namespace + 'node')
             .get(key) // we're accessing the current top node and removing the direction by key
             .get(`directions`)
             .get(id)
             .put(null as any, (awk: any) => {
-                console.log(`done deleting directions`)
                 console.log(awk)
-
-                /*
-            nodeRef.put(newDirections, (awk: any) => {
-                console.log(`done setting new directions`)
-                console.log(awk)
-            })
-            */
             })
     }
 
@@ -137,7 +130,10 @@ const ViewNode = () => {
                     {!dateFormatted && <LoadingWheel />}
                 </MessageTop>
                 {node?.message && (
-                    <Message className="message">{node?.message}</Message>
+                    <Message
+                        className="message"
+                        dangerouslySetInnerHTML={createMarkup(node?.message)}
+                    />
                 )}
                 {!node?.message && <LoadingWheel />}
             </MessageWrapper>
