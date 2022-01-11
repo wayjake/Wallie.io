@@ -15,6 +15,7 @@ import {
     Username,
 } from './ViewNode.styled'
 import LoadingWheel from '../Interface/LoadingWheel'
+import useKeyboard from '../utils/useKeyboard'
 
 /**
  *
@@ -31,6 +32,7 @@ import LoadingWheel from '../Interface/LoadingWheel'
 const ViewNode = () => {
     const [node, setNode] = useState<DungeonNode | undefined>()
     const [directions, setDirections] = useState<any>({})
+    // const keypressed = useKeyboard(['r'])
     const { key = '' } = useParams()
     const navigate = useNavigate()
 
@@ -80,23 +82,19 @@ const ViewNode = () => {
         delete newDirections[id]
         setDirections(newDirections)
 
-        const nodeRef = gun
-            .get(namespace + 'node')
+        gun.get(namespace + 'node')
             .get(key) // we're accessing the current top node and removing the direction by key
             .get(`directions`)
             .get(id)
             .put(null as any, (awk: any) => {
-                console.log(`done deleting directions`)
                 console.log(awk)
-
-                /*
-            nodeRef.put(newDirections, (awk: any) => {
-                console.log(`done setting new directions`)
-                console.log(awk)
-            })
-            */
             })
     }
+
+    /**
+     *      ADDING MORE THINGS TO THIS MONOLITH!~
+     */
+    // useEffect(() => {}, keypressed)
 
     const nodeAdded = () => {
         console.log(`i'm in view node`)

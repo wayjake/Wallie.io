@@ -34,8 +34,12 @@ export const Button = styled.button`
 
 export const itemBorder = `dashed red thin`
 
-export const FormItem = styled.div`
-    display: flex;
+type IFormItem = {
+    hidden?: Boolean
+}
+
+export const FormItem = styled.div<IFormItem>`
+    display: ${(props) => (props.hidden ? 'none' : 'flex')};
     padding: 1rem 1rem 1rem 1rem;
     border: ${itemBorder};
     border-bottom: none;

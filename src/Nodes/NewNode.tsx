@@ -15,9 +15,11 @@ import {
     Input,
     Button,
 } from './NewNode.styled'
+import useKeyboard from '../utils/useKeyboard'
 
 const NewNode = (props: NewSubNodeProps) => {
     const [loading, setLoading] = useState(false)
+    const [showAdvanced, showShowAdvanced] = useState(false)
     const nodeRef = gun.get(
         namespace + 'node'
     ) /*is node (noun) plural? ;) #trickledown42*/
@@ -28,6 +30,7 @@ const NewNode = (props: NewSubNodeProps) => {
         setValue,
     } = useForm()
     const navigate = useNavigate()
+    const keypressed = useKeyboard(['v'])
 
     useEffect(() => {
         if (props.head) {
@@ -39,6 +42,16 @@ const NewNode = (props: NewSubNodeProps) => {
         setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
         setValue('user', getRandomUsername())
     }, [])
+
+    useEffect(() => {
+        if (keypressed === 'v') {
+            // setPressed(true)
+        }
+
+        if (keypressed === 'Enter') {
+            handleSubmit(createNode)()
+        }
+    }, [keypressed])
 
     const createNode = (data: DungeonNode | any) => {
         if (!data) {
@@ -52,7 +65,7 @@ const NewNode = (props: NewSubNodeProps) => {
 
         if (data.head) {
             const messagePreview =
-                data.message.length > 42
+                data.message.length > 42 // oooo::i want to make this value configurable within this component
                     ? `${data.message.substring(0, 39)}...`
                     : data.message
             nodeRef
@@ -111,7 +124,10 @@ const NewNode = (props: NewSubNodeProps) => {
                 </Label>
             </FormItem>
 
-            <FormItem className={errors['user'] ? 'error' : ''}>
+            <FormItem
+                className={errors['user'] ? 'error' : ''}
+                hidden={showAdvanced}
+            >
                 <Label>
                     User:
                     <Input {...register('user', { required: true })} />

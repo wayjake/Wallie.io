@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NewNode } from '.'
+import useKeyboard from '../utils/useKeyboard'
 import { NewSubNodeProps, Wrapper, FormItem, Button } from './NewSubNode.styled'
 
 const NewSubNode = ({ head }: NewSubNodeProps) => {
     const [pressed, setPressed] = useState(false)
+    const keypressed = useKeyboard(['r'])
+
+    useEffect(() => {
+        if (keypressed === 'r') {
+            setPressed(true)
+        }
+    }, [keypressed])
 
     const nodeAdded = (data: any) => {
         setPressed(false)
