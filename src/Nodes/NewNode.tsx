@@ -64,8 +64,8 @@ const NewNode = (props: NewSubNodeProps) => {
         /* this is business logic that I'd like to make dissappear */
         if (data.head) {
             const messagePreview =
-                data.message.length > 42 // oooo::i want to make this value configurable within this component
-                    ? `${data.message.substring(0, 39)}...`
+                data.message.length > 142 // oooo::i want to make this value configurable within this component
+                    ? `${data.message.substring(0, 142)}...`
                     : data.message
             nodeRef
                 .get(data.head)
