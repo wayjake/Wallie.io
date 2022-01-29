@@ -6,7 +6,6 @@ const useKeyboard = (targetKey: string[]): string | undefined => {
 
     const downHandler = ({ key }: KeyboardEvent): void => {
         if (userIsWithinInput()) {
-            console.log('returning')
             return
         }
         if (targetKey.includes(key)) {
