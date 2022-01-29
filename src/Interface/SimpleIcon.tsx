@@ -22,7 +22,7 @@ const StyledSimpleIcon = styled.div<{
     cursor: pointer;
     color: ${({ style, hovered }) => getColorFromStyle(style, hovered)};
     border: ${ITEM_BORDER};
-    padding: 0rem 1rem 0rem 1rem;
+    padding: 0rem 0rem 0rem 1rem;
     user-select: none;
     width: 3rem;
     align-items: center;
