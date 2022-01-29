@@ -16,7 +16,7 @@ const LoadingWheel = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setText((curVal: string) => {
-                if (curVal.lastIndexOf(delimiter) > 1) return ''
+                if (curVal.lastIndexOf(delimiter) > 1) return delimiter
                 return curVal + delimiter
             })
         }, animation_time)
