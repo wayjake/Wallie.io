@@ -37,6 +37,15 @@ export const getRandomUsername = () => {
     return getRandomFromArray(fakeUsers).username
 }
 
+const DEFAULT_INPUT_TYPES = ['input', 'select', 'button', 'textarea']
+export const userIsWithinInput = (inputs: String[] = DEFAULT_INPUT_TYPES) => {
+    var activeElement = document.activeElement
+    if (!activeElement) {
+        return false
+    }
+    return inputs.indexOf(activeElement.tagName.toLowerCase()) > -1
+}
+
 const sanitizeHtml = (data: string) => {
     return DOMPurify.sanitize(data, {
         ALLOWED_TAGS: ['a'],

@@ -34,3 +34,10 @@ export type NewSubNodeProps = {
     head?: GunId
     nodeAdded: Function
 }
+
+export const CancelButton = styled.div`
+    color: black;
+    width: 2.5rem;
+    align-self: end;
+    cursor: pointer;
+`

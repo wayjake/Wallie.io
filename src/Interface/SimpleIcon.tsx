@@ -18,15 +18,19 @@ const StyledSimpleIcon = styled.div<{
     style: Styles
     hovered: Boolean
 }>`
+    display: flex;
     cursor: pointer;
     color: ${({ style, hovered }) => getColorFromStyle(style, hovered)};
     border: ${ITEM_BORDER};
-    padding: 1rem 1rem 0rem 1rem;
+    padding: 0rem 0rem 0rem 1rem;
     user-select: none;
+    width: 3rem;
+    align-items: center;
 `
 
 const SimpleIcon = ({ content, hoverContent, ...props }: SimpleIconProps) => {
     const [hovered, setHovered] = useState(false)
+
     const entered = () => {
         setHovered(true)
     }
@@ -41,8 +45,8 @@ const SimpleIcon = ({ content, hoverContent, ...props }: SimpleIconProps) => {
             hovered={hovered}
             {...props}
         >
-            {hovered && hoverContent}
-            {!hovered && content}
+            <div>{hovered && hoverContent}</div>
+            <div>{!hovered && content}</div>
         </StyledSimpleIcon>
     )
 }

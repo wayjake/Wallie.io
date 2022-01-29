@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 import { AppWrapper } from './Vote/Landing'
 import { ViewNode, NewNode } from './Nodes'
+import { GetAll } from './GetAll'
 
 function Wrapper() {
     return (
@@ -21,6 +22,7 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path="*" element={<Wrapper />}>
+                    <Route path="all" element={<GetAll />} />
                     <Route
                         path="node/new"
                         element={<NewNode nodeAdded={() => {}} />}

@@ -15,6 +15,7 @@ import {
     Username,
 } from './ViewNode.styled'
 import LoadingWheel from '../Interface/LoadingWheel'
+import useKeyboard from '../utils/useKeyboard'
 import { createMarkup, linkify } from '../utils'
 
 /**
@@ -32,8 +33,16 @@ import { createMarkup, linkify } from '../utils'
 const ViewNode = () => {
     const [node, setNode] = useState<DungeonNode | undefined>()
     const [directions, setDirections] = useState<any>({})
+    const [showHidden, setShowHidden] = useState<Boolean>(false)
+    const keypressed = useKeyboard(['h'])
     const { key = '' } = useParams()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (keypressed === 'h') {
+            setShowHidden(!showHidden)
+        }
+    }, [keypressed])
 
     /**
      *    for when i make a new hook
@@ -42,12 +51,14 @@ const ViewNode = () => {
      */
     useEffect(() => {
         setNode(undefined)
-        gun.get(namespace + 'node')
+        const d = gun
+            .get(namespace + 'node')
             .get(key)
-            .once((node: DungeonNode | any = {}) => {
+            .on((node: DungeonNode | any = {}) => {
                 const message = linkify(node.message)
                 setNode({ ...node, message })
             })
+        return () => d.off()
     }, [key])
 
     /**
@@ -57,19 +68,21 @@ const ViewNode = () => {
      */
     useEffect(() => {
         setDirections({})
-        gun.get(namespace + 'node')
+        const d = gun
+            .get(namespace + 'node')
             .get(key)
             .get('directions')
             .map()
-            .once((message: any, key: any) => {
-                if (message === null) {
+            .on((message: any, key: any) => {
+                if (!showHidden && message === null) {
                     return
                 }
                 setDirections((prev: any) => {
-                    return { ...prev, ...{ [key]: message } }
+                    return { ...prev, [key]: message }
                 })
             })
-    }, [key])
+        return () => d.off()
+    }, [key, showHidden])
 
     /**
      *      THERE ARE A LOT OF THINGS HAPPENING IN THIS
@@ -90,6 +103,11 @@ const ViewNode = () => {
                 console.log(awk)
             })
     }
+
+    /**
+     *      ADDING MORE THINGS TO THIS MONOLITH!~
+     */
+    // useEffect(() => {}, keypressed)
 
     const nodeAdded = () => {
         console.log(`i'm in view node`)
