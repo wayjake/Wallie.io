@@ -16,6 +16,7 @@ import {
 } from './ViewNode.styled'
 import LoadingWheel from '../Interface/LoadingWheel'
 import useKeyboard from '../utils/useKeyboard'
+import { createMarkup, linkify } from '../utils'
 
 /**
  *
@@ -54,7 +55,8 @@ const ViewNode = () => {
             .get(namespace + 'node')
             .get(key)
             .on((node: DungeonNode | any = {}) => {
-                setNode(node)
+                const message = linkify(node.message)
+                setNode({ ...node, message })
             })
         return () => d.off()
     }, [key])
@@ -146,7 +148,10 @@ const ViewNode = () => {
                     {!dateFormatted && <LoadingWheel />}
                 </MessageTop>
                 {node?.message && (
-                    <Message className="message">{node?.message}</Message>
+                    <Message
+                        className="message"
+                        dangerouslySetInnerHTML={createMarkup(node?.message)}
+                    />
                 )}
                 {!node?.message && <LoadingWheel />}
             </MessageWrapper>
