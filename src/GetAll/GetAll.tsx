@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import gun, { namespace } from '../gun'
 import { DungeonNode } from '../Nodes'
+import { makeId } from '../utils'
 
 type ViewNodeProps = {
     node: DungeonNode
@@ -29,7 +30,10 @@ const GetAll = () => {
             .get(namespace + 'node')
             .map()
             .on((newNode: DungeonNode | any = {}, key) => {
-                newNode.key = key
+                //some of these bad boys made it in as strings
+                if (typeof newNode === 'object') newNode.key = key
+                //I like chaos
+                else newNode = { message: newNode, key: makeId() }
                 setNodes((nodes) => {
                     if (nodes.find((node) => node.key === newNode.key)) {
                         return nodes
@@ -65,7 +69,7 @@ const GetAll = () => {
                 </div>
             )}
             {nodes.map((node) => (
-                <ViewNode node={node} />
+                <ViewNode node={node} key={node.key} />
             ))}
         </>
     )
