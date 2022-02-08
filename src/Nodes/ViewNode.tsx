@@ -55,8 +55,7 @@ const ViewNode = () => {
             .get(namespace + 'node')
             .get(key)
             .on((node: DungeonNode | any = {}) => {
-                const message = linkify(node.message)
-                setNode({ ...node, message })
+                setNode({ ...node })
             })
         return () => d.off()
     }, [key])
@@ -147,12 +146,14 @@ const ViewNode = () => {
                     )}
                     {!dateFormatted && <LoadingWheel />}
                 </MessageTop>
+
                 {node?.message && (
                     <Message
                         className="message"
                         dangerouslySetInnerHTML={createMarkup(node?.message)}
                     />
                 )}
+
                 {!node?.message && <LoadingWheel />}
             </MessageWrapper>
 

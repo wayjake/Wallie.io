@@ -48,7 +48,7 @@ export const userIsWithinInput = (inputs: String[] = DEFAULT_INPUT_TYPES) => {
 
 const sanitizeHtml = (data: string) => {
     return DOMPurify.sanitize(data, {
-        ALLOWED_TAGS: ['a'],
+        ALLOWED_TAGS: ['a', 'img'],
         ADD_ATTR: ['target'],
     })
 }
@@ -81,5 +81,5 @@ export const linkify = (inputText: string) => {
 }
 
 export const createMarkup = (__html: string) => {
-    return { __html }
+    return { __html: sanitizeHtml(__html) }
 }
