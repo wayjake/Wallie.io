@@ -73,7 +73,7 @@ const NewNode = (props: NewSubNodeProps) => {
                 .get(data.head)
                 .get('directions')
                 .get(key)
-                .put(messagePreview, (ack) => {
+                .put(data.directionText || messagePreview, (ack) => {
                     console.log(`added message preview`)
                 })
         }
@@ -99,6 +99,18 @@ const NewNode = (props: NewSubNodeProps) => {
             <Helmet>
                 <title>New Node</title>
             </Helmet>
+
+            {showAdvanced && (
+                <FormItem className={errors['directionText'] ? 'error' : ''}>
+                    <Label>
+                        {getRandomFromArray(['Subject', 'Preview'])}
+                        :
+                        <Input
+                            {...register('directionText', { required: false })}
+                        />
+                    </Label>
+                </FormItem>
+            )}
 
             <FormItem className={errors['message'] ? 'error' : ''}>
                 <Label>
@@ -128,10 +140,7 @@ const NewNode = (props: NewSubNodeProps) => {
             )}
 
             {showAdvanced && (
-                <FormItem
-                    className={errors['user'] ? 'error' : ''}
-                    hidden={showAdvanced}
-                >
+                <FormItem className={errors['user'] ? 'error' : ''}>
                     <Label>
                         User:
                         <Input {...register('user', { required: true })} />
@@ -139,7 +148,7 @@ const NewNode = (props: NewSubNodeProps) => {
                 </FormItem>
             )}
 
-            {props?.head && showAdvanced && (
+            {showAdvanced && (
                 <FormItem>
                     <Label>
                         {getRandomFromArray([
