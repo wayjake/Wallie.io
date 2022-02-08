@@ -17,6 +17,8 @@ import {
 } from './NewNode.styled'
 import useKeyboard from '../utils/useKeyboard'
 
+const FIXED_USERNAME = ``
+
 const NewNode = (props: NewSubNodeProps) => {
     const [loading, setLoading] = useState(false)
     const [showAdvanced, showShowAdvanced] = useState(false)
@@ -41,7 +43,7 @@ const NewNode = (props: NewSubNodeProps) => {
 
     useEffect(() => {
         setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
-        setValue('user', getRandomUsername())
+        setValue('user', FIXED_USERNAME || getRandomUsername())
     }, [])
 
     /**
