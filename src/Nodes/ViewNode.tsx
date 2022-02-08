@@ -103,6 +103,11 @@ const ViewNode = () => {
             })
     }
 
+    /**
+     *      ADDING MORE THINGS TO THIS MONOLITH!~
+     */
+    // useEffect(() => {}, keypressed)
+
     const nodeAdded = () => {
         console.log(`i'm in view node`)
     }
