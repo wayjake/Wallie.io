@@ -8,6 +8,7 @@ import {
 import { AppWrapper } from './Vote/Landing'
 import { ViewNode, NewNode } from './Nodes'
 import { GetAll } from './GetAll'
+import { ViewMap } from './Map'
 
 function Wrapper() {
     return (
@@ -23,6 +24,7 @@ export default function Router() {
             <Routes>
                 <Route path="*" element={<Wrapper />}>
                     <Route path="all" element={<GetAll />} />
+                    <Route path="map" element={<ViewMap />} />
                     <Route
                         path="node/new"
                         element={<NewNode nodeAdded={() => {}} />}
