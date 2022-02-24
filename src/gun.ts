@@ -1,5 +1,5 @@
 import GUN from 'gun/gun'
-const gun = GUN(['https://relay.peer.ooo/gun'])
+const gun = GUN(['http://home.4d2.io/gun'])
 
 export default gun
 
