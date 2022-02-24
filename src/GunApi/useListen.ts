@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
 import gun, { namespace } from '../gun'
 
-const useListen = (query: string) => {
+const useListen = (
+    query: string | undefined,
+    model: string = 'node',
+    single: boolean = false
+) => {
     const [nodes, setNodes] = useState<any[]>([])
 
     useEffect(() => {
+        if (!query) return
         const allNodesQuery = gun
-            .get(namespace + query)
+            .get(`${namespace}/${model}`)
+            .get(query)
             .map()
             .on((newNode: any = {}, key) => {
                 setNodes((nodes) => {
@@ -19,6 +25,7 @@ const useListen = (query: string) => {
         return () => allNodesQuery.off()
     }, [])
 
+    if (single) return nodes[0]
     return nodes
 }
 
