@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useForm } from 'react-hook-form'
 import { Button, Input, Label, FormItem } from '../Interface'
-import './prismTheme.css'
 import useUpdate from '../GunApi/useUpdate'
 import { useNavigate } from 'react-router-dom'
 import Tiptap from '../Interface/TipTap'
@@ -13,7 +12,6 @@ const NewPost = () => {
     const {
         register,
         handleSubmit,
-        getValues,
         setValue,
         formState: { errors },
     } = useForm()
@@ -47,34 +45,9 @@ const NewPost = () => {
             </FormItem>
 
             <FormItem className={errors['content'] ? 'error' : ''}>
-                <Label>
-                    Content:
-                    {/*<Textarea
-                        {...register('content', {
-                            required: true,
-                        })}
-                    />*/}
-                    {/*<Editor
-                        editorState={getValues('content')}
-                        onChange={(value) => setValue('content', value)}
-                    />*/}
-                    {/*<ReactQuill
-                        style={{
-                            flex: 'auto',
-                            flexDirection: 'column',
-                            marginLeft: 10,
-                            minHeight: '11rem',
-                            paddingBottom: '3remo',
-                        }}
-                        value={getValues('content')}    
-                        onChange={(value) => setValue('content', value)}
-                    />*/}
-                </Label>
+                <Label>Content:</Label>
             </FormItem>
-            <Tiptap
-                // value={getValues('content')}
-                onChange={(value) => setValue('content', value)}
-            />
+            <Tiptap onChange={(value) => setValue('content', value)} />
 
             <Button
                 disabled={loading || errors.length}
