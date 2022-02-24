@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet'
-import gun, { namespace } from '../gun'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { GridNode } from '.'
 import styled from 'styled-components'
 

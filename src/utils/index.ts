@@ -48,7 +48,19 @@ export const userIsWithinInput = (inputs: String[] = DEFAULT_INPUT_TYPES) => {
 
 const sanitizeHtml = (data: string) => {
     return DOMPurify.sanitize(data, {
-        ALLOWED_TAGS: ['a', 'img', 'h1', 'h2', 'h3', 'p', 'ul', 'li'],
+        ALLOWED_TAGS: [
+            'a',
+            'img',
+            'h1',
+            'h2',
+            'h3',
+            'p',
+            'ul',
+            'li',
+            'em',
+            'strong',
+            'code',
+        ],
         ADD_ATTR: ['target'],
     })
 }

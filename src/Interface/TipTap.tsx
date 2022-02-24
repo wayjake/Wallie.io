@@ -206,7 +206,8 @@ const MenuBar = ({ editor }) => {
         </>
     )
 }
-export default ({ onChange }) => {
+
+const TipTap = ({ onChange }) => {
     const editor = useEditor({
         extensions: [StarterKit],
         onUpdate({ editor }) {
@@ -221,3 +222,4 @@ export default ({ onChange }) => {
         </TipTapStyled>
     )
 }
+export default TipTap
