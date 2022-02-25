@@ -22,6 +22,8 @@ const NewPost = () => {
         }
     }, [loading, node])
 
+    register('content', { required: true })
+
     return (
         <>
             <Helmet>
@@ -47,7 +49,10 @@ const NewPost = () => {
             <FormItem className={errors['content'] ? 'error' : ''}>
                 <Label>Content:</Label>
             </FormItem>
-            <Tiptap onChange={(value) => setValue('content', value)} />
+            <Tiptap
+                onChange={(value) => setValue('content', value)}
+                content="Start typing here..."
+            />
 
             <Button
                 disabled={loading || errors.length}
