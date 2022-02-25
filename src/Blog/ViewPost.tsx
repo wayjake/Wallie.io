@@ -6,19 +6,22 @@ import { createMarkup } from '../utils'
 
 const PostStyled = styled.div`
     max-width: 520px;
+    overflow-wrap: break-word;
 `
 
 const ViewPost = () => {
     const { key = '' } = useParams()
     const post = useListen(key, 'post', true)
 
-    console.log(post)
     return (
         <div>
             <Helmet>
                 <title>I am a post!</title>
             </Helmet>
-            <PostStyled dangerouslySetInnerHTML={createMarkup(post)} />
+            <PostStyled
+                key={post?.key}
+                dangerouslySetInnerHTML={createMarkup(post?.content)}
+            />
         </div>
     )
 }
