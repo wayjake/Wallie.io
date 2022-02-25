@@ -44,10 +44,7 @@ export default function Router() {
                         element={<NewNode nodeAdded={() => {}} />}
                     />
                     <Route path="node/:key" element={<ViewNode />} />
-                    <Route
-                        path="*"
-                        element={<Navigate replace to="/node/new" />}
-                    />
+                    <Route path="*" element={<Navigate replace to="/blog" />} />
                 </Route>
             </Routes>
         </BrowserRouter>
