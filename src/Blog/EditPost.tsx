@@ -5,9 +5,15 @@ import { Button, Input, Label, FormItem } from '../Interface'
 import useUpdate from '../GunApi/useUpdate'
 import { useNavigate } from 'react-router-dom'
 import Tiptap from '../Interface/TipTap'
+import useGet from '../GunApi/useGet'
+import { useParams } from 'react-router-dom'
+import LoadingWheel from '../Interface/LoadingWheel'
 
-const NewPost = () => {
+const EditPost = () => {
     const [createNode, loading, node] = useUpdate('post')
+    const params = useParams()
+    const key = params.key
+    const post = useGet(key, 'post', true)
     const navigate = useNavigate()
     const {
         register,
@@ -22,12 +28,31 @@ const NewPost = () => {
         }
     }, [loading, node])
 
-    register('content', { required: true })
+    useEffect(() => {
+        if (!post) {
+            return
+        }
+        console.log(post)
+        setValue('content', post.content)
+        setValue('key', post.key)
+    }, [post])
+
+    if (!post) {
+        return (
+            <>
+                <Helmet>
+                    <title>Edit Post</title>
+                </Helmet>
+                Loading
+                <LoadingWheel />
+            </>
+        )
+    }
 
     return (
         <>
             <Helmet>
-                <title>New Post</title>
+                <title>Edit Post {post?.key}</title>
             </Helmet>
 
             <FormItem className={errors['key'] ? 'error' : ''}>
@@ -51,18 +76,18 @@ const NewPost = () => {
             </FormItem>
             <Tiptap
                 onChange={(value) => setValue('content', value)}
-                content="Start typing here..."
+                content={post.content}
             />
 
             <Button
                 disabled={loading || errors.length}
                 onClick={handleSubmit(createNode)}
             >
-                {!loading && 'Create'}
+                {!loading && 'Save'}
                 {loading && 'Loading'}
             </Button>
         </>
     )
 }
 
-export default NewPost
+export default EditPost
