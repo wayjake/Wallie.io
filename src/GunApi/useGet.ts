@@ -20,16 +20,10 @@ const useListen = (
 
     useEffect(() => {
         if (query) {
-            const chain = gun
-                .get(`${namespace}/${model}/${query}`)
-                .on(setNodesCallback)
-            return () => chain.off()
+            gun.get(`${namespace}/${model}`).get(query).once(setNodesCallback)
+            return
         }
-        const chain = gun
-            .get(`${namespace}/${model}`)
-            .map()
-            .on(setNodesCallback)
-        return () => chain.off()
+        gun.get(`${namespace}/${model}`).map().once(setNodesCallback)
     }, [])
 
     if (single) return nodes[0]

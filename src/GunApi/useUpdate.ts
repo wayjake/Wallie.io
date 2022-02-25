@@ -16,14 +16,11 @@ const useUpdate = (model: string = 'node') => {
         }
         setLoading(true)
 
-        const key = data.key
-        delete data.key
-
         gun.get(`${namespace}/${model}`)
-            .get(key)
-            .put(data, (ack) => {
+            .get(data.key)
+            .put(data, () => {
                 setLoading(false)
-                setNode({ ...data, key })
+                setNode(data)
             })
     }
 
