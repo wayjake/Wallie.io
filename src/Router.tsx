@@ -9,7 +9,9 @@ import { AppWrapper } from './Vote/Landing'
 import { ViewNode, NewNode } from './Nodes'
 import { GetAll } from './GetAll'
 import { ViewMap } from './Map'
-import { NewPost, ViewPost } from './Blog'
+import { NewPost, ViewPost, ViewPostList } from './Blog'
+import ViewArchive from './Blog/ViewArchive'
+import EditPost from './Blog/EditPost'
 
 function Wrapper() {
     return (
@@ -26,12 +28,17 @@ export default function Router() {
                 <Route path="*" element={<Wrapper />}>
                     <Route path="all" element={<GetAll />} />
                     <Route path="map" element={<ViewMap />} />
-                    <Route path="post/new" element={<NewPost />} />
-                    <Route path="post/:key" element={<ViewPost />} />
-                    <Route
-                        path="post/*"
-                        element={<Navigate replace to="/post/new" />}
-                    />
+                    <Route path="blog" element={<ViewPostList />} />
+                    <Route path="archive" element={<ViewArchive />} />
+                    <Route path="post">
+                        <Route path="new" element={<NewPost />} />
+                        <Route path="edit/:key" element={<EditPost />} />
+                        <Route path=":key" element={<ViewPost />} />
+                        <Route
+                            path="*"
+                            element={<Navigate replace to="/post/new" />}
+                        />
+                    </Route>
                     <Route
                         path="node/new"
                         element={<NewNode nodeAdded={() => {}} />}
