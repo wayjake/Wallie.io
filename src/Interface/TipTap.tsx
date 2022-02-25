@@ -197,22 +197,17 @@ const MenuBar = ({ editor }) => {
             <button onClick={() => editor.chain().focus().setHardBreak().run()}>
                 hard break
             </button>
-            <button onClick={() => editor.chain().focus().undo().run()}>
-                undo
-            </button>
-            <button onClick={() => editor.chain().focus().redo().run()}>
-                redo
-            </button>
         </>
     )
 }
 
-const TipTap = ({ onChange }) => {
+const TipTap = ({ onChange, content }) => {
     const editor = useEditor({
         extensions: [StarterKit],
         onUpdate({ editor }) {
             onChange(editor.getHTML())
         },
+        content,
     })
 
     return (
