@@ -12,6 +12,7 @@ import { ViewMap } from './Map'
 import { NewPost, ViewPost, ViewPostList } from './Blog'
 import ViewArchive from './Blog/ViewArchive'
 import EditPost from './Blog/EditPost'
+import Intervals from './Intervals'
 
 function Wrapper() {
     return (
@@ -26,6 +27,7 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path="*" element={<Wrapper />}>
+                    <Route path="intervals" element={<Intervals />} />
                     <Route path="all" element={<GetAll />} />
                     <Route path="map" element={<ViewMap />} />
                     <Route path="blog" element={<ViewPostList />} />
