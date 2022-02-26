@@ -18,7 +18,7 @@ const NewPost = () => {
 
     useEffect(() => {
         if (!loading && node) {
-            navigate(`/post/${node.key}`)
+            navigate(`/blog/${node.key}`)
         }
     }, [loading, node])
 
