@@ -31,7 +31,7 @@ const ViewPostList = () => {
             navigate(`/post/edit/${key}`)
             return
         }
-        navigate(`/post/${key}`)
+        navigate(`/blog/${key}`)
     }
 
     return (
