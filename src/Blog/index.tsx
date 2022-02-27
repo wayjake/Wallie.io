@@ -54,11 +54,5 @@ export const BlogWrapper = () => {
                 <Outlet />
             </StyledBlogWrapper>
         </>
-
-export const BlogWrapper = () => {
-    return (
-        <StyledBlogWrapper className="styled-blog">
-            <Outlet />
-        </StyledBlogWrapper>
     )
 }
