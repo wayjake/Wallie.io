@@ -65,7 +65,6 @@ const VoteWrapper = styled.div`
 export const AppWrapper = styled.div`
     height: 100%;
     @media only screen and (min-width: 600px) {
-        padding: 2rem;
     }
 `
 
