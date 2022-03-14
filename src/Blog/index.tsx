@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import logo from './wallie-logo-dark.png'
 import styled from 'styled-components'
 export { default as ViewPost } from './ViewPost'
@@ -39,7 +39,10 @@ const TopBar = () => {
     return (
         <TopBarStyled>
             {' '}
-            <img src={logo} alt="Wallie Logo Dark" />{' '}
+            <Link to="/">
+                {' '}
+                <img src={logo} alt="Wallie Logo Dark" />{' '}
+            </Link>
             <div className="beta">BETA</div>
         </TopBarStyled>
     )
