@@ -105,6 +105,7 @@ const MenuBar = ({ editor }) => {
             >
                 paragraph
             </button>
+            <br />
             <button
                 onClick={() =>
                     editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -178,24 +179,9 @@ const MenuBar = ({ editor }) => {
                 ordered list
             </button>
             <button
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                className={editor.isActive('codeBlock') ? 'is-active' : ''}
-            >
-                code block
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                className={editor.isActive('blockquote') ? 'is-active' : ''}
-            >
-                blockquote
-            </button>
-            <button
                 onClick={() => editor.chain().focus().setHorizontalRule().run()}
             >
                 horizontal rule
-            </button>
-            <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-                hard break
             </button>
         </>
     )

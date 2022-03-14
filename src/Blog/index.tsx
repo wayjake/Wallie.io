@@ -12,7 +12,7 @@ export type Post = {
 }
 
 const StyledBlogWrapper = styled.div`
-    padding: 0 2rem;
+    padding: 1rem 2rem 2rem 2rem;
 `
 
 const TopBarStyled = styled.div`

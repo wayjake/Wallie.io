@@ -17,7 +17,6 @@ const usePostClicked = () => {
             }
             return
         }
-        console.log(key)
         if (altKey) {
             navigate(`/post/edit/${key}`)
             return

@@ -69,13 +69,16 @@ const NewPost = () => {
                 </Label>
             </FormItem>
 
-            <FormItem className={errors['content'] ? 'error' : ''}>
+            <FormItem
+                className={errors['content'] ? 'error' : ''}
+                flexDirection="column"
+            >
                 <Label>Content:</Label>
+                <Tiptap
+                    onChange={(value) => setValue('content', value)}
+                    content="Start typing here..."
+                />
             </FormItem>
-            <Tiptap
-                onChange={(value) => setValue('content', value)}
-                content="Start typing here..."
-            />
 
             <Button
                 disabled={loading || errors.length}
