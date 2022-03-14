@@ -22,16 +22,19 @@ const TopBarStyled = styled.div`
     padding: 8px 6px 2px 15px;
     display: flex;
     img {
-        height: 30px;
+        height: 25px;
         padding-bottom: 5px;
+        padding-top: 5px;
+        padding-left: 16px;
     }
     .beta {
+        transform: rotate(180deg);
         color: #f8633c;
         font-weight: bold;
         font-size: 10px;
         font-style: italic;
         margin-left: 3px;
-        margin-top: 1px;
+        margin-bottom: 8px;
     }
 `
 
@@ -43,7 +46,7 @@ const TopBar = () => {
                 {' '}
                 <img src={logo} alt="Wallie Logo Dark" />{' '}
             </Link>
-            <div className="beta">BETA</div>
+            <div className="beta">ATEB</div>
         </TopBarStyled>
     )
 }
