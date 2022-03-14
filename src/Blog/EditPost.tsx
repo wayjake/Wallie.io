@@ -96,13 +96,16 @@ const EditPost = () => {
                 </Label>
             </FormItem>
 
-            <FormItem className={errors['content'] ? 'error' : ''}>
+            <FormItem
+                className={errors['content'] ? 'error' : ''}
+                flexDirection="column"
+            >
                 <Label>Content:</Label>
+                <Tiptap
+                    onChange={(value) => setValue('content', value)}
+                    content={post.content}
+                />
             </FormItem>
-            <Tiptap
-                onChange={(value) => setValue('content', value)}
-                content={post.content}
-            />
 
             <Button
                 disabled={loading || errors.length}
