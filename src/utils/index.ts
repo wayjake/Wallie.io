@@ -95,3 +95,11 @@ export const linkify = (inputText: string) => {
 export const createMarkup = (__html: string) => {
     return { __html: sanitizeHtml(__html) }
 }
+
+export const getDarkColor = () => {
+    var color = '#'
+    for (var i = 0; i < 6; i++) {
+        color += Math.floor(Math.random() * 10)
+    }
+    return color
+}

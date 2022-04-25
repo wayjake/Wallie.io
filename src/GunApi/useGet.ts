@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import gun, { namespace } from '../gun'
 
-const useListen = (
-    query: string | undefined,
+const useGet = (
+    query: string | undefined | null,
     model: string = 'node',
     single: boolean = false
 ) => {
@@ -30,4 +30,4 @@ const useListen = (
     return nodes
 }
 
-export default useListen
+export default useGet

@@ -68,16 +68,24 @@ const MenuBar = ({ editor }) => {
     return (
         <>
             <button
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={editor.isActive('italic') ? 'is-active' : ''}
+            >
+                italic
+            </button>
+            <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
                 className={editor.isActive('bold') ? 'is-active' : ''}
             >
                 bold
             </button>
             <button
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={editor.isActive('italic') ? 'is-active' : ''}
+                onClick={() =>
+                    editor.chain().focus().setFontFamily('Inter').run()
+                }
+                className={editor.isActive('font') ? 'is-active' : ''}
             >
-                italic
+                font
             </button>
             <button
                 onClick={() => editor.chain().focus().toggleStrike().run()}

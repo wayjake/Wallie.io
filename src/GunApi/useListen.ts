@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import gun, { namespace } from '../gun'
 
 const useListen = (
-    query: string | undefined,
+    query: string | undefined | null,
     model: string = 'node',
     single: boolean = false
 ) => {
     const [nodes, setNodes] = useState<any[]>([])
 
     const setNodesCallback = (newNode: any = {}, key) => {
+        console.log(newNode)
         setNodes((nodes) => {
             const filteredNodes = nodes.filter((node) => node.key !== key)
             if (!newNode) {
@@ -30,7 +31,7 @@ const useListen = (
             .map()
             .on(setNodesCallback)
         return () => chain.off()
-    }, [])
+    }, [query])
 
     if (single) return nodes[0]
     return nodes

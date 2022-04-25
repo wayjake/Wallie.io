@@ -1,66 +1,28 @@
 import { Helmet } from 'react-helmet'
-import { useState } from 'react'
-import { GridNode } from '.'
+import { ReactNode, useEffect, useState } from 'react'
+import { Cell, CellProps } from './Cell'
 import styled from 'styled-components'
+import { Player } from './Player'
+import useKeyboard from '../utils/useKeyboard'
+import { getDarkColor } from '../utils'
+import { useQueryState } from '../utils/useQueryState'
+import useUpdate from '../GunApi/useUpdate'
+import useListen from '../GunApi/useGet'
+import { usePlayer } from './usePlayer'
 
 const GRID_SIZE = {
     x: 10,
     y: 10,
 }
 
-type CellProps = {
-    x: number
-    y: number
-}
-const cellSize = {
-    x: 60,
-    y: 40,
-}
-const StyledCell = styled.div`
-    width: ${cellSize.x}px;
-    height: ${cellSize.y}px;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: yellow;
-    .bracket {
-        position: absolute;
-    }
-    .top.bracket {
-        top: 0px;
-        left: ${cellSize.x / 2}px;
-        transform: rotate(90deg);
-    }
-    .bottom.bracket {
-        bottom: -0px;
-        left: ${cellSize.x / 2}px;
-        transform: rotate(90deg);
-    }
-    .left.bracket {
-        left: 12px;
-    }
-    .right.bracket {
-        right: 12px;
-    }
-`
-const Cell = ({ x, y }: CellProps) => {
-    return (
-        <StyledCell style={{ left: x * cellSize.x, top: y * cellSize.y }}>
-            <span className="top bracket">[</span>
-            <span className="left bracket">[</span>
-            <span className="content">{/* {x} {y} */}</span>
-            <span className="right bracket">]</span>
-            <span className="bottom bracket">]</span>
-        </StyledCell>
-    )
-}
-
 const Map = ({ children }) => {
     const StyledMap = styled.div`
+        position: absolute;
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: 15px;
+        margin-left: 15px;
     `
     return <StyledMap>{children}</StyledMap>
 }
@@ -73,18 +35,54 @@ for (let y = 0; y < GRID_SIZE.y; y++) {
 }
 
 const ViewMap = () => {
-    const [node, setNode] = useState<GridNode | undefined>()
+    const keypressed = useKeyboard(['a', 's', 'd', 'w'])
+    const { username } = useQueryState()
+    const { player, setPlayer } = usePlayer(username)
+
+    useEffect(() => {
+        switch (keypressed) {
+            case 'a':
+                setPlayer((player) => {
+                    return { ...player, x: player?.x - 1 }
+                })
+                break
+            case 's':
+                setPlayer((player) => {
+                    return { ...player, y: player.y + 1 }
+                })
+                break
+            case 'd':
+                setPlayer((player) => {
+                    return { ...player, x: player.x + 1 }
+                })
+                break
+            case 'w':
+                setPlayer((player) => {
+                    return { ...player, y: player.y - 1 }
+                })
+                break
+        }
+    }, [keypressed])
 
     return (
         <>
             <Helmet>
                 <title>THE WORLD SIM</title>
             </Helmet>
+            <pre>{JSON.stringify(player)}</pre>
 
             <Map>
-                {cells.map((cellProps, index) => (
-                    <Cell {...cellProps} key={index} />
-                ))}
+                {cells.map((cellProps, index) => {
+                    const children: ReactNode[] = []
+                    if (cellProps.x === player?.x && cellProps.y === player.y) {
+                        children.push(<Player {...player} />)
+                    }
+                    return (
+                        <Cell {...cellProps} key={index}>
+                            {children}
+                        </Cell>
+                    )
+                })}
             </Map>
         </>
     )
