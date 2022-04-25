@@ -12,6 +12,7 @@ import { ViewMap } from './Map'
 import { NewPost, ViewPost, ViewPostList, BlogWrapper } from './Blog'
 import ViewArchive from './Blog/ViewArchive'
 import EditPost from './Blog/EditPost'
+import { GeoLocation } from './GeoLocation'
 
 function Wrapper() {
     return (
@@ -28,6 +29,7 @@ export default function Router() {
                 <Route path="*" element={<Wrapper />}>
                     <Route path="all" element={<GetAll />} />
                     <Route path="map" element={<ViewMap />} />
+                    <Route path="geo" element={<GeoLocation />} />
                     <Route path="archive" element={<ViewArchive />} />
                     <Route path="blog" element={<BlogWrapper />}>
                         <Route path="" element={<ViewPostList />} />
