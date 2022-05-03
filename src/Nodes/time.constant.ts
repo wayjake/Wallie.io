@@ -22,8 +22,8 @@ export default {
         topRight: 1,
         topLeft: 0,
         middle: 1,
-        bottomRight: 1,
-        bottomLeft: 0,
+        bottomRight: 0,
+        bottomLeft: 1,
         bottom: 1,
     },
     3: {
