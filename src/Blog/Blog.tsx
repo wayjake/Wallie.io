@@ -1,23 +1,19 @@
-import { Helmet } from 'react-helmet'
-import styled from 'styled-components'
+import { useEffect } from 'react'
 import useListen from '../GunApi/useListen'
 import { createMarkup } from '../utils'
 import usePostClicked from './usePostClicked'
-
-const PostStyled = styled.div`
-    max-width: 520px;
-    overflow-wrap: break-word;
-`
+import { PostStyled } from './ViewPost'
 
 const ViewPostList = () => {
     const posts = useListen(undefined, 'post', false)
     const postClicked = usePostClicked()
 
+    useEffect(() => {
+        document.title = `Blog`
+    }, [])
+
     return (
         <div>
-            <Helmet>
-                <title>Blog</title>
-            </Helmet>
             {posts.map((post) => (
                 <PostStyled
                     key={post.key}

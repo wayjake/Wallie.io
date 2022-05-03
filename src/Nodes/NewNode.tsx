@@ -6,6 +6,7 @@ import { getRandomUsername, IdTypes, makeId, userIsWithinInput } from '../utils'
 import gun, { namespace } from '../gun'
 import { useNavigate } from 'react-router-dom'
 import { NewSubNodeProps } from './NewSubNode.styled'
+import Tiptap from '../Interface/TipTap'
 import { getRandomFromArray } from '../utils'
 import {
     Wrapper,
@@ -24,7 +25,7 @@ const NewNode = (props: NewSubNodeProps) => {
     const [showAdvanced, showShowAdvanced] = useState(false)
 
     const nodeRef = gun.get(
-        namespace + 'node'
+        namespace + '/node'
     ) /*is node (noun) plural? ;) #trickledown42*/
     const {
         register,
@@ -42,6 +43,7 @@ const NewNode = (props: NewSubNodeProps) => {
     }, [props.head])
 
     useEffect(() => {
+        setValue('message', ' ')
         setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
         setValue('user', FIXED_USERNAME || getRandomUsername())
     }, [])
@@ -99,29 +101,65 @@ const NewNode = (props: NewSubNodeProps) => {
             <Helmet>
                 <title>New Node</title>
             </Helmet>
+            {showAdvanced ||
+                (props.dashboardFeature && (
+                    <FormItem
+                        className={errors['directionText'] ? 'error' : ''}
+                    >
+                        <Label>
+                            {getRandomFromArray(['Title'])}
+                            :
+                            <Input
+                                onKeyPress={handleUserKeyPress}
+                                {...register('directionText', {
+                                    required: true,
+                                })}
+                            />
+                        </Label>
+                    </FormItem>
+                ))}
 
-            {showAdvanced && (
-                <FormItem className={errors['directionText'] ? 'error' : ''}>
+            {props.dashboardFeature && (
+                <FormItem>
                     <Label>
-                        {getRandomFromArray(['Subject', 'Preview'])}
-                        :
-                        <Input
-                            {...register('directionText', { required: false })}
+                        {getRandomFromArray(['Start', 'Pre-Condition'])}{' '}
+                        (dashboard feature) :
+                        <Input {...register('start')} />
+                    </Label>
+                </FormItem>
+            )}
+
+            {props.dashboardFeature && (
+                <FormItem>
+                    <Label>
+                        {getRandomFromArray(['End', 'Completion'])} (dashboard
+                        feature) :
+                        <Input {...register('end')} />
+                    </Label>
+                </FormItem>
+            )}
+            {!props.dashboardFeature && (
+                <FormItem className={errors['message'] ? 'error' : ''}>
+                    <Label>
+                        <Textarea
+                            autoFocus
+                            placeholder="Message..."
+                            onKeyPress={handleUserKeyPress}
+                            {...register('message', { required: true })}
                         />
                     </Label>
                 </FormItem>
             )}
 
-            <FormItem className={errors['message'] ? 'error' : ''}>
-                <Label>
-                    <Textarea
-                        autoFocus
-                        placeholder="Message..."
-                        onKeyPress={handleUserKeyPress}
-                        {...register('message', { required: true })}
+            {props.dashboardFeature && (
+                <FormItem className={errors['content'] ? 'error' : ''}>
+                    <Label>Body:</Label>
+                    <Tiptap
+                        onChange={(value) => setValue('message', value)}
+                        content={' '}
                     />
-                </Label>
-            </FormItem>
+                </FormItem>
+            )}
 
             {showAdvanced && (
                 <FormItem className={errors['key'] ? 'error' : ''}>
@@ -169,7 +207,7 @@ const NewNode = (props: NewSubNodeProps) => {
                     disabled={loading || errors.length}
                     onClick={handleSubmit(createNode)}
                 >
-                    {getRandomFromArray(['Send', 'Create', 'Push', 'Generate'])}
+                    {getRandomFromArray(['Add', 'Create'])}
                 </Button>
             </FormItem>
         </Wrapper>

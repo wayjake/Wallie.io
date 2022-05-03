@@ -9,6 +9,7 @@ export enum Styles {
     'default',
     'warning',
     'info',
+    'positive',
 }
 
 export type SimpleIconProps = {
@@ -16,11 +17,14 @@ export type SimpleIconProps = {
     hoverContent: string
     style: Styles
     className: string
-    onClick: () => void
+    showBorder?: boolean
+    // onClick: () => void
+    onClick: (event: any) => void
 }
 
 export const stylesColors = {
     [Styles.default]: 'inherit',
     [Styles.warning]: 'red',
     [Styles.info]: 'yellow',
+    [Styles.positive]: 'green',
 }

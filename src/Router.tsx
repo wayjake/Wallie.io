@@ -13,6 +13,7 @@ import { NewPost, ViewPost, ViewPostList, BlogWrapper } from './Blog'
 import ViewArchive from './Blog/ViewArchive'
 import EditPost from './Blog/EditPost'
 import { GeoLocation } from './GeoLocation'
+import Dashboard from './Nodes/Dashboard'
 
 function Wrapper() {
     return (
@@ -43,11 +44,16 @@ export default function Router() {
                             element={<Navigate replace to="/post/new" />}
                         />
                     </Route>
-                    <Route
-                        path="node/new"
-                        element={<NewNode nodeAdded={() => {}} />}
-                    />
-                    <Route path="node/:key" element={<ViewNode />} />
+                    <Route path="dashboard" element={<BlogWrapper />}>
+                        <Route path=":key" element={<Dashboard />} />
+                    </Route>
+                    <Route path="node">
+                        <Route
+                            path="new"
+                            element={<NewNode nodeAdded={() => {}} />}
+                        />
+                        <Route path=":key" element={<ViewNode />} />
+                    </Route>
                     <Route path="*" element={<Navigate replace to="/blog" />} />
                 </Route>
             </Routes>

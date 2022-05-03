@@ -37,6 +37,7 @@ const ViewNode = () => {
     const keypressed = useKeyboard(['h'])
     const { key = '' } = useParams()
     const navigate = useNavigate()
+    //@TODO mark as viewed
 
     useEffect(() => {
         if (keypressed === 'h') {
@@ -52,12 +53,14 @@ const ViewNode = () => {
     useEffect(() => {
         setNode(undefined)
         const d = gun
-            .get(namespace + 'node')
+            .get(namespace + '/node')
             .get(key)
             .on((node: DungeonNode | any = {}) => {
                 setNode({ ...node })
             })
-        return () => d.off()
+        return () => {
+            d.off()
+        }
     }, [key])
 
     /**
@@ -68,7 +71,7 @@ const ViewNode = () => {
     useEffect(() => {
         setDirections({})
         const d = gun
-            .get(namespace + 'node')
+            .get(namespace + '/node')
             .get(key)
             .get('directions')
             .map()
@@ -80,21 +83,17 @@ const ViewNode = () => {
                     return { ...prev, [key]: message }
                 })
             })
-        return () => d.off()
+        return () => {
+            d.off()
+        }
     }, [key, showHidden])
 
-    /**
-     *      THERE ARE A LOT OF THINGS HAPPENING IN THIS
-     *      COMPONENT. I AM SLOWLY GOING INSANE. I WISH
-     *      I KNEW MORE ABOUT REDUX AND I COULD HAVE STARTED
-     *      WITH IT. c'est la vie
-     */
     const pruneRight = (id: GunId) => {
         const newDirections = { ...directions }
         delete newDirections[id]
         setDirections(newDirections)
 
-        gun.get(namespace + 'node')
+        gun.get(namespace + '/node')
             .get(key) // we're accessing the current top node and removing the direction by key
             .get(`directions`)
             .get(id)
@@ -102,11 +101,6 @@ const ViewNode = () => {
                 console.log(awk)
             })
     }
-
-    /**
-     *      ADDING MORE THINGS TO THIS MONOLITH!~
-     */
-    // useEffect(() => {}, keypressed)
 
     const nodeAdded = () => {
         console.log(`i'm in view node`)
@@ -118,7 +112,7 @@ const ViewNode = () => {
 
     const dateFormatted = useMemo(() => {
         if (!node?.date) return ''
-        const date = new Date(node?.date)
+        const date = new Date(node.date)
 
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
     }, [node?.date])
@@ -132,7 +126,6 @@ const ViewNode = () => {
             <BackSectionWrapper className="blockSection">
                 {node?.head && <BackButton onClick={goback}>{'< '}</BackButton>}
                 {!node?.head && <div>&nbsp;</div>}
-                <NewNode to="/nodes/new">New Parent</NewNode>
             </BackSectionWrapper>
 
             <MessageWrapper className="messageWrapper">

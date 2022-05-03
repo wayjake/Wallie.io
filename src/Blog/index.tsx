@@ -13,6 +13,8 @@ export type Post = {
 
 const StyledBlogWrapper = styled.div`
     padding: 1rem 2rem 2rem 2rem;
+    display: flex;
+    justify-content: center;
 `
 
 const TopBarStyled = styled.div`
@@ -36,9 +38,15 @@ const TopBarStyled = styled.div`
         margin-left: 3px;
         margin-bottom: 8px;
     }
+    .toTheRight {
+        padding: 7px 10px;
+        a {
+            padding: 10px 5px 0px 5px;
+        }
+    }
 `
 
-const TopBar = () => {
+export const TopBar = () => {
     return (
         <TopBarStyled>
             {' '}
@@ -46,7 +54,10 @@ const TopBar = () => {
                 {' '}
                 <img src={logo} alt="Wallie Logo Dark" />{' '}
             </Link>
-            <div className="beta">ATEB</div>
+            <div className="toTheRight">
+                <Link to="/post/new">New Post</Link>
+                <Link to="/node/new">New Wall</Link>
+            </div>
         </TopBarStyled>
     )
 }

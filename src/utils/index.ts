@@ -37,7 +37,7 @@ export const getRandomUsername = () => {
     return getRandomFromArray(fakeUsers).username
 }
 
-const DEFAULT_INPUT_TYPES = ['input', 'select', 'button', 'textarea']
+const DEFAULT_INPUT_TYPES = ['input', 'select', 'button', 'textarea', 'div']
 export const userIsWithinInput = (inputs: String[] = DEFAULT_INPUT_TYPES) => {
     var activeElement = document.activeElement
     if (!activeElement) {

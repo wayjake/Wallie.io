@@ -1,18 +1,21 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Link from '@tiptap/extension-link'
+import Placeholder from '@tiptap/extension-placeholder'
 import styled from 'styled-components'
 
 const TipTapStyled = styled.div`
     .ProseMirror {
+        margin-top: 10px;
         > * + * {
             margin-top: 0.75em;
         }
-
+        border: black thin solid;
+        padding: 10px 20px 20px 20px;
         ul,
         ol {
             padding: 0 1rem;
         }
-
         h1,
         h2,
         h3,
@@ -195,18 +198,38 @@ const MenuBar = ({ editor }) => {
     )
 }
 
-const TipTap = ({ onChange, content }) => {
-    const editor = useEditor({
-        extensions: [StarterKit],
-        onUpdate({ editor }) {
-            onChange(editor.getHTML())
+const TipTap = ({ onChange, content, hideFormatting = false }) => {
+    const editor = useEditor(
+        {
+            extensions: [
+                StarterKit,
+                Link.configure({
+                    openOnClick: false,
+                }),
+                Placeholder.configure({
+                    // Use a placeholder:
+                    placeholder: 'Write something …',
+                    // Use different placeholders depending on the node type:
+                    // placeholder: ({ node }) => {
+                    //   if (node.type.name === 'heading') {
+                    //     return 'What’s the title?'
+                    //   }
+
+                    //   return 'Can you add some further context?'
+                    // },
+                }),
+            ],
+            onUpdate({ editor }) {
+                onChange(editor.getHTML())
+            },
+            content,
         },
-        content,
-    })
+        [content]
+    )
 
     return (
         <TipTapStyled>
-            <MenuBar editor={editor} />
+            {!hideFormatting && <MenuBar editor={editor} />}
             <EditorContent editor={editor} />
         </TipTapStyled>
     )
