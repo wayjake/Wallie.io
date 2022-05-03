@@ -55,8 +55,9 @@ export const TopBar = () => {
                 <img src={logo} alt="Wallie Logo Dark" />{' '}
             </Link>
             <div className="toTheRight">
-                <Link to="/post/new">New Post</Link>
-                <Link to="/node/new">New Wall</Link>
+                <Link to="/post/new">Post</Link>
+                <Link to="/node/new">Wall</Link>
+                <Link to="/dashboard/wu1s4ic">CUR</Link>
             </div>
         </TopBarStyled>
     )
