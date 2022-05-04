@@ -17,6 +17,7 @@ type NodeRowProps = {
     id: string
     node: DungeonNode
     pruneRight: (id: GunId, fullDelete?: boolean) => void
+    onUpdate: (node: DungeonNode, key: GunId) => void
 }
 
 const StartEndStyed = styled.div`
@@ -75,7 +76,7 @@ export const LinkWrapper = styled.div`
     }
 `
 
-const DashboardItem = ({ id, pruneRight, node }: NodeRowProps) => {
+const DashboardItem = ({ id, pruneRight, node, onUpdate }: NodeRowProps) => {
     const [createNode] = useUpdate('node')
     const navigate = useNavigate()
 
@@ -87,7 +88,7 @@ const DashboardItem = ({ id, pruneRight, node }: NodeRowProps) => {
 
     const upVote = (node) => {
         const upVotes = node?.upVotes ? node?.upVotes + 1 : 1
-        console.log({ ...node, key: id, upVotes })
+        onUpdate({ ...node, upVotes }, id)
         createNode({ key: id, upVotes })
     }
 
@@ -103,7 +104,7 @@ const DashboardItem = ({ id, pruneRight, node }: NodeRowProps) => {
                 <Message message={node.message} />
             </div>
             <Tools>
-                {/* {node?.upVotes} */}
+                {node?.upVotes}
                 <SimpleIcon
                     content="[ ⇧ ]"
                     hoverContent={'[ ⇧ ]'}

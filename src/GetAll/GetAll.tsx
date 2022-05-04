@@ -6,6 +6,7 @@ import gun, { namespace } from '../gun'
 import { SimpleIcon, Styles } from '../Interface'
 import { DungeonNode } from '../Nodes'
 import { makeId } from '../utils'
+import useChatBot from '../Nodes/useChatBot'
 
 type ViewNodeProps = {
     node: DungeonNode
@@ -48,6 +49,16 @@ const ViewNode = ({ node }: ViewNodeProps) => {
 
 const GetAll = () => {
     const [nodes, setNodes] = useState<DungeonNode[] | any[]>([])
+
+    //TODO
+    const { rawLines, ip } = useChatBot()
+
+    // useEffect(() => {
+    //     console.log(rawLines)
+    // }, [rawLines])
+    useEffect(() => {
+        console.log(ip)
+    }, [ip])
 
     useEffect(() => {
         const allNodesQuery = gun

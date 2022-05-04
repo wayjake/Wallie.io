@@ -32,7 +32,11 @@ const DashboardView = ({ id }) => {
     }, [keypressed])
 
     const sortDirections = (a: any, b: any): number => {
-        return b.upVotes > a.upVotes ? 1 : -1
+        const cleanInput = (text: any) => (!!text ? text : 0)
+        const theyAreEqual = cleanInput(b.upVotes) === cleanInput(a.upVotes)
+        if (theyAreEqual) return b.directionText > a.directionText ? 1 : -1
+
+        return cleanInput(b.upVotes) > cleanInput(a.upVotes) ? 1 : -1
     }
 
     const insertDirection = (node: DungeonNode, key: string) => {
@@ -174,6 +178,7 @@ const DashboardView = ({ id }) => {
                     id={node.id}
                     node={node}
                     pruneRight={pruneRight}
+                    onUpdate={insertDirection}
                 />
             ))}
 
