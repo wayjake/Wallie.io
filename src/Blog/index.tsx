@@ -3,7 +3,7 @@ import logo from './wallie-logo-dark.png'
 import styled from 'styled-components'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { getRandomFromArray } from '../utils'
-import { createImportSpecifier } from 'typescript'
+import UsernameSession from './UsernameSession'
 export { default as ViewPost } from './ViewPost'
 export { default as NewPost } from './NewPost'
 export { default as ViewPostList } from './Blog'
@@ -29,7 +29,7 @@ type DropdownProps = {
     children: React.ReactChild
 }
 const DropDownStyled = styled.div`
-    padding: 7px 5px 7px 20px;
+    padding: 9px 5px 8px 25px;
     position: relative;
     .top a {
         cursor: pointer;
@@ -128,18 +128,13 @@ const TopBarStyled = styled.div`
     .nav {
         display: flex;
     }
+    .usernameSession {
+        input {
+            height: 30px;
+        }
+    }
 `
 export const TopBar = () => {
-    const isLocalHost = useMemo(() => {
-        return window.location.href.includes('localhost')
-    }, [])
-
-    const nodeText = useMemo(
-        () => getRandomFromArray(['Node', 'Block', 'Wall']),
-        []
-    )
-    const postText = useMemo(() => getRandomFromArray(['Post', 'Article']), [])
-
     return (
         <TopBarStyled>
             {' '}
@@ -150,25 +145,26 @@ export const TopBar = () => {
             <div className="nav">
                 <DropDown
                     links={[
-                        { path: `/post/new`, text: `New` },
                         { path: '/', text: 'Blog' },
+                        { path: `/post/new`, text: `New` },
                     ]}
                 >
-                    {postText}
+                    Posts
                 </DropDown>
                 <DropDown
                     links={[
+                        { path: `/all`, text: `List` },
                         { path: `/node/new`, text: `New` },
-                        { path: `/all`, text: `View all` },
                     ]}
                 >
-                    {nodeText}
+                    Nodes
                 </DropDown>
-                {isLocalHost && (
-                    <DropDownStyled>
-                        <Link to="/dashboard/wu1s4ic">CUR</Link>
-                    </DropDownStyled>
-                )}
+                <DropDownStyled>
+                    <Link to="/node/top">Top</Link>
+                </DropDownStyled>
+            </div>
+            <div className="usernameSession">
+                <UsernameSession />
             </div>
         </TopBarStyled>
     )
