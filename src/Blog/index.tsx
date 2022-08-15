@@ -15,9 +15,12 @@ export type Post = {
 }
 
 const StyledBlogWrapper = styled.div`
-    padding: 1rem 2rem 2rem 2rem;
     display: flex;
     justify-content: center;
+
+    @media only screen and (min-width: 600px) {
+        padding: 1rem 2rem 2rem 2rem;
+    }
 `
 
 type Link = {

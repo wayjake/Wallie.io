@@ -8,6 +8,12 @@ import Tiptap from '../Interface/TipTap'
 import useGet from '../GunApi/useGet'
 import { useParams } from 'react-router-dom'
 import LoadingWheel from '../Interface/LoadingWheel'
+import styled from 'styled-components'
+
+const EditPostStyled = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 const EditPost = () => {
     const [createNode, loading, node] = useUpdate('post')
@@ -52,7 +58,7 @@ const EditPost = () => {
     }
 
     return (
-        <>
+        <EditPostStyled>
             <Helmet>
                 <title>Edit Post {post?.key}</title>
             </Helmet>
@@ -92,7 +98,7 @@ const EditPost = () => {
             <FormItem className={errors['image'] ? 'error' : ''}>
                 <Label>
                     Image (url/blob):
-                    <Input {...register('image', { required: true })} />
+                    <Input {...register('image', { required: false })} />
                 </Label>
             </FormItem>
 
@@ -114,7 +120,7 @@ const EditPost = () => {
                 {!loading && 'Save'}
                 {loading && 'Loading'}
             </Button>
-        </>
+        </EditPostStyled>
     )
 }
 
