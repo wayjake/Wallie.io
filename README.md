@@ -1,5 +1,6 @@
-# A Forkable Hackable Distributed Idea Graphing... Social.. thing
-<img align="left" width="200" src="https://user-images.githubusercontent.com/87884985/172069592-8a4de3db-7f2f-4dfd-b523-29aae3a7e950.png" />
+
+<img width="200" src="https://user-images.githubusercontent.com/87884985/172069592-8a4de3db-7f2f-4dfd-b523-29aae3a7e950.png" />
+Distributed Idea Graphing... Social.. thing
 
 ## Contributing
 1. figure out what it is we're trying to accomplish
