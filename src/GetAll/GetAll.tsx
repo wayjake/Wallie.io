@@ -22,6 +22,10 @@ const Menu = styled.div`
     }
 `
 
+const GetAllStyled = styled.div`
+    word-break: break-all;
+`
+
 const ViewNode = ({ node, onNodeRemoved }: ViewNodeProps) => {
     //@todo mark as viewed
     const derefNode = () => {
@@ -97,7 +101,7 @@ const GetAll = () => {
     }, [])
 
     return (
-        <>
+        <GetAllStyled>
             <Helmet>
                 <title>All Nodes - Wallie</title>
             </Helmet>
@@ -125,7 +129,7 @@ const GetAll = () => {
                     onNodeRemoved={onNodeRemoved}
                 />
             ))}
-        </>
+        </GetAllStyled>
     )
 }
 
