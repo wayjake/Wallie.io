@@ -7,7 +7,7 @@ import {
     BackSectionWrapper,
     BackButton,
     NewNodeWrapper,
-    NewNode,
+    ViewNode as ViewNodeStyled,
     Message,
     MessageDate,
     MessageTop,
@@ -118,7 +118,7 @@ const ViewNode = () => {
     }, [node?.date])
 
     return (
-        <>
+        <ViewNodeStyled>
             <Helmet>
                 <title>View Node '{key.substring(0, 50)}'</title>
             </Helmet>
@@ -162,7 +162,7 @@ const ViewNode = () => {
             <NewNodeWrapper>
                 <NewSubNode head={key} nodeAdded={nodeAdded} />
             </NewNodeWrapper>
-        </>
+        </ViewNodeStyled>
     )
 }
 
