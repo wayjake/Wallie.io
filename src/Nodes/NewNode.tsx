@@ -20,6 +20,28 @@ import useKeyboard from '../utils/useKeyboard'
 
 const FIXED_USERNAME = ``
 
+/**
+ * 
+ * 
+
+        async function encodeTest(message) {
+            const key = 'i am a key'
+            // Encrypt
+            var ciphertext = CryptoJS.AES.encrypt(message, key).toString()
+            console.log(`ciphertext`, ciphertext)
+
+            // Decrypt
+            var bytes = CryptoJS.AES.decrypt(ciphertext, key)
+            var originalText = bytes.toString(CryptoJS.enc.Utf8)
+            console.log(originalText) // 'my message
+        }
+        encodeTest('come on many')
+
+
+
+        
+ */
+
 const NewNode = (props: NewSubNodeProps) => {
     const [loading, setLoading] = useState(false)
     const [showAdvanced, showShowAdvanced] = useState(false)
