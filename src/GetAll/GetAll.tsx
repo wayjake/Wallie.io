@@ -6,43 +6,60 @@ import gun, { namespace } from '../gun'
 import { SimpleIcon, Styles } from '../Interface'
 import { DungeonNode } from '../Nodes'
 import { makeId } from '../utils'
-import useChatBot from '../Nodes/useChatBot'
+import styled from 'styled-components'
 
 type ViewNodeProps = {
     node: DungeonNode
+    onNodeRemoved: (nodeKey: string) => void
 }
 
-const ViewNode = ({ node }: ViewNodeProps) => {
-    //@todo mark as viewed
+const Menu = styled.div`
+    flex: 1;
+    display: flex;
+    .simpleIcon {
+        color: red;
+        margin-left: 5px;
+    }
+`
 
+const ViewNode = ({ node, onNodeRemoved }: ViewNodeProps) => {
+    //@todo mark as viewed
     const derefNode = () => {
         gun.get(namespace + '/node')
             .get(node.key)
             .put(null, (awk) => {
                 console.log(`deleted ${node.key} awk:`, awk)
+                onNodeRemoved(node.key)
             })
     }
 
     return (
         <div style={{ marginTop: 15, padding: '5px 10px 20px 20px' }}>
-            <div style={{}}>[message]: {node.message}</div>
+            <div
+                style={{}}
+                dangerouslySetInnerHTML={{
+                    __html: node.message || 'EMPTY MESSAGE',
+                }}
+            ></div>
             <br />
-            <Link style={{}} to={`/node/${node.key}`}>
-                [self]: {node.key}
-            </Link>
-
-            {node.head && (
-                <Link style={{ marginLeft: 15 }} to={`/node/${node.head}`}>
-                    [parent]: {node.head}
+            <Menu>
+                <Link style={{}} to={`/node/${node.key}`}>
+                    [ID]: {node.key}
                 </Link>
-            )}
-            <SimpleIcon
-                content="[ ␡ ]"
-                hoverContent={'[ ␡ ]'}
-                style={Styles.warning}
-                className="simpleIcon"
-                onClick={() => derefNode()}
-            />
+
+                {node.head && (
+                    <Link style={{ marginLeft: 15 }} to={`/node/${node.head}`}>
+                        [ParentId]: {node.head}
+                    </Link>
+                )}
+                <SimpleIcon
+                    content="[ ␡ ]"
+                    hoverContent={'[ ␡ ]'}
+                    style={Styles.warning}
+                    className="simpleIcon"
+                    onClick={() => derefNode()}
+                />
+            </Menu>
         </div>
     )
 }
@@ -50,15 +67,9 @@ const ViewNode = ({ node }: ViewNodeProps) => {
 const GetAll = () => {
     const [nodes, setNodes] = useState<DungeonNode[] | any[]>([])
 
-    //TODO
-    const { rawLines, ip } = useChatBot()
-
-    // useEffect(() => {
-    //     console.log(rawLines)
-    // }, [rawLines])
-    useEffect(() => {
-        console.log(ip)
-    }, [ip])
+    const onNodeRemoved = (nodeKey: string) => {
+        setNodes((nodes) => nodes.filter((node) => node.key !== nodeKey))
+    }
 
     useEffect(() => {
         const allNodesQuery = gun
@@ -108,7 +119,11 @@ const GetAll = () => {
                 </div>
             )}
             {nodes.map((node) => (
-                <ViewNode node={node} key={node.key} />
+                <ViewNode
+                    node={node}
+                    key={node.key}
+                    onNodeRemoved={onNodeRemoved}
+                />
             ))}
         </>
     )
