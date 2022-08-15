@@ -5,6 +5,12 @@ import { Button, Input, Label, FormItem, Textarea } from '../Interface'
 import useUpdate from '../GunApi/useUpdate'
 import { useNavigate } from 'react-router-dom'
 import Tiptap from '../Interface/TipTap'
+import styled from 'styled-components'
+
+const NewPostStyled = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 const NewPost = () => {
     const [createNode, loading, node] = useUpdate('post')
@@ -22,13 +28,33 @@ const NewPost = () => {
         }
     }, [loading, node])
 
-    register('content', { required: true })
+    useEffect(() => {
+        register('content', { required: true })
+    }, [])
 
     return (
-        <>
+        <NewPostStyled>
             <Helmet>
                 <title>New Post</title>
             </Helmet>
+
+            <FormItem className={errors['title'] ? 'error' : ''}>
+                <Label>
+                    Title:
+                    <Input {...register('title', { required: true })} />
+                </Label>
+            </FormItem>
+
+            <FormItem
+                className={errors['content'] ? 'error' : ''}
+                flexDirection="column"
+            >
+                <Label>Content:</Label>I
+                <Tiptap
+                    onChange={value => setValue('content', value)}
+                    content="<h1>Title</h1>"
+                />
+            </FormItem>
 
             <FormItem className={errors['key'] ? 'error' : ''}>
                 <Label>
@@ -37,19 +63,12 @@ const NewPost = () => {
                         {...register('key', {
                             required: true,
                             validate: {
-                                nospaces: (value) =>
+                                nospaces: value =>
                                     !value.match(/\s/) ||
                                     'The url should not contain spaces.',
                             },
                         })}
                     />
-                </Label>
-            </FormItem>
-
-            <FormItem className={errors['title'] ? 'error' : ''}>
-                <Label>
-                    Title:
-                    <Input {...register('title', { required: true })} />
                 </Label>
             </FormItem>
 
@@ -69,17 +88,6 @@ const NewPost = () => {
                 </Label>
             </FormItem>
 
-            <FormItem
-                className={errors['content'] ? 'error' : ''}
-                flexDirection="column"
-            >
-                <Label>Content:</Label>
-                <Tiptap
-                    onChange={(value) => setValue('content', value)}
-                    content="Start typing here..."
-                />
-            </FormItem>
-
             <Button
                 disabled={loading || errors.length}
                 onClick={handleSubmit(createNode)}
@@ -87,7 +95,7 @@ const NewPost = () => {
                 {!loading && 'Create'}
                 {loading && 'Loading'}
             </Button>
-        </>
+        </NewPostStyled>
     )
 }
 

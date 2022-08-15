@@ -18,11 +18,17 @@ export const BackButton = styled.div`
     padding: 0.3rem 0.5rem;
     border-radius: 1rem;
 `
+export const ViewNode = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 export const NewNode = styled(Link)`
     color: white;
     background-color: blue;
     padding: 0.3rem;
     border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
 `
 
 export const MessageWrapper = styled.div`

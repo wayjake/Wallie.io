@@ -17,12 +17,13 @@ const getColorFromStyle = (
 const StyledSimpleIcon = styled.div<{
     style: Styles
     hovered: Boolean
+    showBorder?: Boolean
 }>`
     display: flex;
     cursor: pointer;
     color: ${({ style, hovered }) => getColorFromStyle(style, hovered)};
-    border: ${ITEM_BORDER};
-    padding: 0rem 0rem 0rem 1rem;
+    border: ${({ showBorder }) => (showBorder ? ITEM_BORDER : '')};
+    padding: 0rem 0rem 0rem 0rem;
     user-select: none;
     width: 3rem;
     align-items: center;

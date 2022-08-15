@@ -1,7 +1,16 @@
-import GUN from 'gun/gun'
+import GUN from 'gun'
 
-const gun = GUN(['https://gun.4d2.io/gun', 'https://relay.peer.ooo/gun'])
+const gun = GUN({
+    localStorage: false,
+    // radisk: false,
+    peers: [
+        'https://etogun.glitch.me/gun',
+        'https://relay.peer.ooo/gun',
+        'https://gun-ams1.maddiex.wtf/gun',
+        'https://gun-manhattan.herokuapp.com',
+    ],
+})
 
 export default gun
 
-export const namespace = `wallie`
+export const namespace = `wallie2.0`

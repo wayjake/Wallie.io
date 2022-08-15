@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { isConstructorDeclaration } from 'typescript'
 import gun, { namespace } from '../gun'
 
 const useListen = (
@@ -9,7 +10,11 @@ const useListen = (
     const [nodes, setNodes] = useState<any[]>([])
 
     const setNodesCallback = (newNode: any = {}, key) => {
-        console.log(newNode)
+        if (single && query !== key) {
+            console.log(`query not in sync with result`, query, key)
+            return
+        }
+
         setNodes((nodes) => {
             const filteredNodes = nodes.filter((node) => node.key !== key)
             if (!newNode) {
@@ -20,9 +25,11 @@ const useListen = (
     }
 
     useEffect(() => {
+        setNodes([])
         if (query) {
             const chain = gun
-                .get(`${namespace}/${model}/${query}`)
+                .get(`${namespace}/${model}`)
+                .get(query)
                 .on(setNodesCallback)
             return () => chain.off()
         }
@@ -30,7 +37,10 @@ const useListen = (
             .get(`${namespace}/${model}`)
             .map()
             .on(setNodesCallback)
-        return () => chain.off()
+        return () => {
+            chain.off()
+            return
+        }
     }, [query])
 
     if (single) return nodes[0]

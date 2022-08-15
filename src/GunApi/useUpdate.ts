@@ -18,9 +18,10 @@ const useUpdate = (model: string = 'node') => {
 
         gun.get(`${namespace}/${model}`)
             .get(data.key)
-            .put(data, () => {
+            .put(data, (awk) => {
                 setLoading(false)
                 setNode(data)
+                console.log(awk)
             })
     }
 

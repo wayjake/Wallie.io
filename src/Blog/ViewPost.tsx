@@ -1,28 +1,46 @@
-import { Helmet } from 'react-helmet'
+import { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import useListen from '../GunApi/useListen'
 import { createMarkup } from '../utils'
 import usePostClicked from './usePostClicked'
+import { getRandomFromArray } from '../utils'
 
-const PostStyled = styled.div`
-    max-width: 520px;
+export const PostStyled = styled.div<{ borderColor?: string }>`
+    max-width: 700px;
     overflow-wrap: break-word;
+    border: dashed thin ${({ borderColor }) => borderColor || ''};
+    margin: 10px 0px 10px 0px;
+    padding: 10px;
 `
 
-const ViewPost = () => {
+/*
+#3ed3c9
+#f8633c
+#5970cd
+#f4d400
+*/
+
+const colors = ['#3ed3c9', '#f8633c', '#5970cd', '#f4d400']
+
+const ViewPost: React.FC = () => {
     const { key = '' } = useParams()
     const post = useListen(key, 'post', true)
     const postClicked = usePostClicked()
+    const borderColor: string = useMemo(
+        () => getRandomFromArray(colors),
+        [post?.title]
+    )
+    useEffect(() => {
+        document.title = post?.title || 'Title is missing'
+    }, [post?.title])
 
     return (
         <div>
-            <Helmet>
-                <title>{post?.title || 'title is missing'}</title>
-            </Helmet>
             <PostStyled
                 key={post?.key}
                 dangerouslySetInnerHTML={createMarkup(post?.content)}
+                borderColor={borderColor}
                 onClick={(event) => {
                     postClicked(key, {
                         metaKey: event.metaKey,

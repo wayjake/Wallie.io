@@ -32,6 +32,7 @@ export const FormItem = styled.div`
 
 export type NewSubNodeProps = {
     head?: GunId
+    dashboardFeature?: boolean
     nodeAdded: Function
 }
 

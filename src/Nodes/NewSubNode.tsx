@@ -9,12 +9,12 @@ import {
     CancelButton,
 } from './NewSubNode.styled'
 
-const NewSubNode = ({ head }: NewSubNodeProps) => {
+const NewSubNode = ({ head, dashboardFeature }: NewSubNodeProps) => {
     const [pressed, setPressed] = useState(false)
-    const keypressed = useKeyboard(['r', 'c'])
+    const keypressed = useKeyboard(['n', 'c'])
 
     useEffect(() => {
-        if (keypressed === 'r') {
+        if (keypressed === 'n') {
             setPressed(true)
         }
         if (keypressed === 'c') {
@@ -30,7 +30,7 @@ const NewSubNode = ({ head }: NewSubNodeProps) => {
         <Wrapper>
             {!pressed && (
                 <FormItem>
-                    <Button onClick={() => setPressed(true)}>New</Button>
+                    <Button onClick={() => setPressed(true)}>(N)ew</Button>
                 </FormItem>
             )}
 
@@ -40,7 +40,11 @@ const NewSubNode = ({ head }: NewSubNodeProps) => {
                         X
                     </CancelButton>
                     <FormItem>
-                        <NewNode head={head} nodeAdded={nodeAdded} />
+                        <NewNode
+                            head={head}
+                            nodeAdded={nodeAdded}
+                            dashboardFeature={dashboardFeature}
+                        />
                     </FormItem>
                 </>
             )}
