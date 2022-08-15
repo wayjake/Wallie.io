@@ -47,7 +47,7 @@ export default function Router() {
                     <Route path="dashboard" element={<BlogWrapper />}>
                         <Route path=":key" element={<Dashboard />} />
                     </Route>
-                    <Route path="node">
+                    <Route path="node" element={<BlogWrapper />}>
                         <Route
                             path="new"
                             element={<NewNode nodeAdded={() => {}} />}
