@@ -1,9 +1,7 @@
 import GUN from 'gun'
 
-// const gun = GUN(['https://relay.peer.ooo/gun'])
-
 const gun = GUN({
-    // localStorage: false,
+    localStorage: false,
     // radisk: false,
     peers: [
         'https://etogun.glitch.me/gun',
@@ -15,4 +13,4 @@ const gun = GUN({
 
 export default gun
 
-export const namespace = `wallie`
+export const namespace = `wallie2.0`
