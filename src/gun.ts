@@ -1,7 +1,7 @@
 import GUN from 'gun'
 
 const gun = GUN({
-    localStorage: false,
+    localStorage: true,
     // radisk: false,
     peers: [
         'https://etogun.glitch.me/gun',
