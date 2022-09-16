@@ -2,12 +2,7 @@ const GUN = require('gun')
 
 const gun = GUN({
     radisk: false,
-    peers: [
-        'https://etogun.glitch.me/gun',
-        'https://relay.peer.ooo/gun',
-        'https://gun-ams1.maddiex.wtf/gun',
-        'https://gun-manhattan.herokuapp.com',
-    ],
+    peers: ['https://relay.peer.ooo/gun', 'http://192.155.85.68:8765/gun'],
 })
 
 module.exports = {
