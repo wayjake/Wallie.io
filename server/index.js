@@ -17,7 +17,7 @@ app.get('/blog/:id', (req, res) => {
     const chain = gun
         .get(`${namespace}/post`)
         .get(req.params.id)
-        .on((post) => {
+        .once((post) => {
             if (!post) {
                 chain.off()
                 return res.sendStatus(404)
