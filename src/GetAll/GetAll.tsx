@@ -80,19 +80,16 @@ const GetAll = () => {
             .get(namespace + '/node')
             .map()
             .on((newNode: DungeonNode | any = {}, key) => {
-                //some of these bad boys made it in as strings
-                if (newNode === null) return
-                if (typeof newNode === 'object') newNode.key = key
-                //I like chaos
-                else newNode = { message: newNode, key: makeId() }
+                const immutableNode =
+                    typeof newNode === 'object'
+                        ? { ...newNode, key }
+                        : { message: newNode, key }
                 setNodes((nodes) => {
-                    if (nodes.find((node) => node.key === newNode.key)) {
-                        return nodes
-                    }
-                    return [
-                        ...nodes.filter((node) => node.key !== newNode.key),
-                        newNode,
-                    ]
+                    const filtered = nodes.filter(
+                        (node) => node.key !== key && !!node && !!node.message
+                    )
+                    if (immutableNode === null) return filtered
+                    return [...filtered, immutableNode]
                 })
             })
         return () => {
