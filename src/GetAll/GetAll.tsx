@@ -80,6 +80,7 @@ const GetAll = () => {
             .get(namespace + '/node')
             .map()
             .on((newNode: DungeonNode | any = {}, key) => {
+                console.log(newNode)
                 const immutableNode =
                     typeof newNode === 'object'
                         ? { ...newNode, key }
@@ -89,11 +90,14 @@ const GetAll = () => {
                         (node) => node.key !== key && !!node && !!node.message
                     )
                     if (immutableNode === null) return filtered
-                    return [...filtered, immutableNode]
+                    return [...filtered, immutableNode].sort(
+                        (node, nodeB) => nodeB.date - node.date
+                    )
                 })
             })
         return () => {
             allNodesQuery.off()
+            setNodes([])
         }
     }, [])
 
