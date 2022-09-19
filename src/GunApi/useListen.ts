@@ -12,7 +12,6 @@ const useListen = (
     const setNodesCallback = (newNode: any = {}, key) => {
         if (single && query !== key) {
             console.log(`query not in sync with result`, query, key)
-            return
         }
 
         setNodes((nodes) => {
@@ -33,10 +32,7 @@ const useListen = (
                 .on(setNodesCallback)
             return () => chain.off()
         }
-        const chain = gun
-            .get(`${namespace}/${model}`)
-            .map()
-            .on(setNodesCallback)
+        const chain = gun.get(`${namespace}/${model}`).on(setNodesCallback)
         return () => {
             chain.off()
             return
