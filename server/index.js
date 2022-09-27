@@ -13,19 +13,23 @@ app.use(
     express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' })
 )
 
+const cleanReturnString = (value) => {
+    return value.replace(`"`, `'`)
+}
+
 app.get('/blog/:id', (req, res) => {
-   let numberOfTries = 0
+    let numberOfTries = 0
     const chain = gun
         .get(`${namespace}/post`)
         .get(req.params.id)
         .on((post) => {
-	   numberOfTries++
+            numberOfTries++
             if (!post) {
-               if (numberOfTries > 1){
-                  chain.off()
-                  return res.sendStatus(404)
-	       }
-	       return
+                if (numberOfTries > 1) {
+                    chain.off()
+                    return res.sendStatus(404)
+                }
+                return
             }
             if (res.writableEnded) {
                 chain.off()
@@ -36,10 +40,16 @@ app.get('/blog/:id', (req, res) => {
                     '<title>Wallie.io</title>',
                     `<title>${post.title}</title>`
                 )
-                .replace('__META_OG_TITLE__', post.title)
-                .replace('__META_OG_DESCRIPTION__', post.description)
-                .replace('__META_DESCRIPTION__', post.description)
-                .replace('__META_OG_IMAGE__', post.image)
+                .replace('__META_OG_TITLE__', cleanReturnString(post.title))
+                .replace(
+                    '__META_OG_DESCRIPTION__',
+                    cleanReturnString(post.description)
+                )
+                .replace(
+                    '__META_CONTENT__',
+                    encodeURI(cleanReturnString(post.content))
+                )
+                .replace('__META_OG_IMAGE__', cleanReturnString(post.image))
 
             return res.send(hydratedHtml)
         })
