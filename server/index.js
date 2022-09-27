@@ -14,13 +14,18 @@ app.use(
 )
 
 app.get('/blog/:id', (req, res) => {
+   let numberOfTries = 0
     const chain = gun
         .get(`${namespace}/post`)
         .get(req.params.id)
-        .once((post) => {
+        .on((post) => {
+	   numberOfTries++
             if (!post) {
-                chain.off()
-                return res.sendStatus(404)
+               if (numberOfTries > 1){
+                  chain.off()
+                  return res.sendStatus(404)
+	       }
+	       return
             }
             if (res.writableEnded) {
                 chain.off()
