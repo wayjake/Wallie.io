@@ -54,7 +54,7 @@ export default function Router() {
                         />
                         <Route path=":key" element={<ViewNode />} />
                     </Route>
-                    <Route path="*" element={<Navigate replace to="/blog" />} />
+                    <Route path="*" element={<Navigate replace to="/all" />} />
                 </Route>
             </Routes>
         </BrowserRouter>
