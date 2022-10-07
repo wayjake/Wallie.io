@@ -50,9 +50,6 @@ const DashboardView = ({ id }) => {
         })
     }
 
-    /**
-     *    DIRTY DIRTY CODE
-     */
     useEffect(() => {
         setDirections([])
         setMessage(' ')
