@@ -4,7 +4,6 @@ import gun, { namespace } from '../gun'
 import { SimpleIcon, Styles } from '../Interface'
 import { ITEM_BORDER } from './ViewNode.styled'
 import { GunId } from '.'
-import { useState } from 'react'
 
 export const LinkWrapper = styled.div`
     padding: 0.5rem 2rem;
@@ -18,6 +17,8 @@ export const NodeLink = styled(Link)`
     margin: 0 1rem 0 0;
     border: ${ITEM_BORDER};
     flex-grow: 2;
+    color: black;
+    text-decoration: none;
 `
 
 type NodeRowProps = {
