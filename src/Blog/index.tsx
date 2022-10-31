@@ -159,25 +159,25 @@ export const TopBar = () => {
             <img src={logo} alt="Wallie Logo Dark" />{' '}
          </Link>
          <div className="nav">
-            <DropDown
+            {/* <DropDown
                links={[
                   { path: `/all`, text: `List` },
                   { path: `/node/new`, text: `New` },
                ]}
             >
                All
-            </DropDown>
+            </DropDown> */}
             <DropDownStyled>
-               <Link to="/node/top">Top</Link>
+               <Link to="/dashboard/clock">Clock</Link>
             </DropDownStyled>
-            <DropDown
+            {/* <DropDown
                links={[
                   { path: '/', text: 'Blog' },
                   { path: `/post/new`, text: `New` },
                ]}
             >
                Blog
-            </DropDown>
+            </DropDown> */}
          </div>
          <div className="usernameSession">
             <UsernameSession />
