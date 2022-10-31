@@ -54,7 +54,7 @@ const Menu = styled.div`
       margin-left: 5px;
    }
    .timeAgo {
-      padding-left: 7px;
+      padding-left: 7vvpx;
       padding-top: 5px;
    }
 `
@@ -63,7 +63,7 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    const navigate = useNavigate()
    const head = useListen(node.head, 'node', true)
    const [isShowAdvanced, showAdvanced] = useState<boolean>(false)
-   const keypressed = useKeyboard(['h'])
+   const keypressed = useKeyboard(['v'])
 
    const derefNode = () => {
       gun.get(namespace + '/node')
