@@ -39,16 +39,15 @@ export const MessageTop = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: space-between;
+   align-items: center;
 `
 
 export const Username = styled.div`
-   padding: 1rem 1rem;
+   padding: 1rem 0rem;
    font-weight: 600;
-   border: ${ITEM_BORDER};
 `
 export const MessageDate = styled.div`
    padding: 1rem 1rem;
-   border: ${ITEM_BORDER};
 `
 
 export const Message = styled.div`

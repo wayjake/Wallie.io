@@ -25,6 +25,7 @@ const ViewNodeStyled = styled.div`
       inset 0px 0px 0px 0px #0001, inset 0px 0px 0px 0px #fff9,
       inset 0px 0px 0px 0px #0001;
    transition: box-shadow 0.6s cubic-bezier(0.79, 0.21, 0.06, 0.81);
+   background-color: white;
 
    img {
       width: 100%;
@@ -33,7 +34,7 @@ const ViewNodeStyled = styled.div`
 const HeadLink = styled(Link)`
    font-style: italic;
    color: #333;
-   margin-left: -5px;
+   margin-left: 0px;
    padding-bottom: 8px;
 `
 const User = styled.div`
@@ -54,8 +55,9 @@ const Menu = styled.div`
       margin-left: 5px;
    }
    .timeAgo {
-      padding-left: 7vvpx;
+      padding-left: 7px;
       padding-top: 5px;
+      font-style: italic;
    }
 `
 
