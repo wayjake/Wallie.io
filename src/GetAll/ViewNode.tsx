@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { SimpleIcon, Styles } from '../Interface'
@@ -6,6 +6,8 @@ import { DungeonNode } from '../Nodes'
 import gun, { namespace } from '../gun'
 import { useNavigate } from 'react-router-dom'
 import useListen from '../GunApi/useListen'
+import useKeyboard from '../utils/useKeyboard'
+import { TimeAgo } from './TimeAgo'
 
 type ViewNodeProps = {
    node: DungeonNode
@@ -23,6 +25,10 @@ const ViewNodeStyled = styled.div`
       inset 0px 0px 0px 0px #0001, inset 0px 0px 0px 0px #fff9,
       inset 0px 0px 0px 0px #0001;
    transition: box-shadow 0.6s cubic-bezier(0.79, 0.21, 0.06, 0.81);
+
+   img {
+      width: 100%;
+   }
 `
 const HeadLink = styled(Link)`
    font-style: italic;
@@ -47,11 +53,18 @@ const Menu = styled.div`
       color: red;
       margin-left: 5px;
    }
+   .timeAgo {
+      padding-left: 7px;
+      padding-top: 5px;
+   }
 `
 
 export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    const navigate = useNavigate()
    const head = useListen(node.head, 'node', true)
+   const [isShowAdvanced, showAdvanced] = useState<boolean>(false)
+   const keypressed = useKeyboard(['h'])
+
    const derefNode = () => {
       gun.get(namespace + '/node')
          .get(node.key)
@@ -60,6 +73,12 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
             onNodeRemoved(node.key)
          })
    }
+
+   useEffect(() => {
+      if (keypressed === 'v') {
+         showAdvanced((isShowAdvanced) => !isShowAdvanced)
+      }
+   }, [keypressed])
 
    const onPostClicked = (event) => {
       if (event.detail > 1) {
@@ -82,7 +101,6 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
                re: {trimWithEllip(stripHtml(head.message), 20)}
             </HeadLink>
          )}
-         {node.user && <User>@{node.user}</User>}
          <Message
             dangerouslySetInnerHTML={{
                __html: node.message || 'EMPTY MESSAGE',
@@ -90,13 +108,17 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
          ></Message>
          <br />
          <Menu>
-            <SimpleIcon
-               content="[ ␡ ]"
-               hoverContent={'[ ␡ ]'}
-               style={Styles.warning}
-               className="simpleIcon"
-               onClick={() => derefNode()}
-            />
+            {node.user && <User>@{node.user}</User>}
+            {node.date && <TimeAgo date={node.date}></TimeAgo>}
+            {isShowAdvanced && (
+               <SimpleIcon
+                  content="[ ␡ ]"
+                  hoverContent={'[ ␡ ]'}
+                  style={Styles.warning}
+                  className="simpleIcon"
+                  onClick={() => derefNode()}
+               />
+            )}
          </Menu>
       </ViewNodeStyled>
    )
