@@ -5,6 +5,7 @@ import gun, { namespace } from '../gun'
 import { DungeonNode } from '../Nodes'
 import styled from 'styled-components'
 import { ViewNode } from './ViewNode'
+import moment from 'moment'
 
 const GetAllStyled = styled.div``
 const ListNodesWrapper = styled.div`
@@ -21,12 +22,54 @@ const ListNodes = styled.div`
    }
 `
 
+
 const GetAll = () => {
    const [nodes, setNodes] = useState<DungeonNode[] | any[]>([])
 
    const onNodeRemoved = (nodeKey: string) => {
       setNodes((nodes) => nodes.filter((node) => node.key !== nodeKey))
    }
+
+   const getNodes = ():Promise<DungeonNode[]> => {
+      return new Promise(resolve => {
+         setNodes(nodes => {
+            resolve(nodes)
+            return nodes
+         })
+      })
+   }
+
+   const deleteNode = (key):Promise<void> => {
+      return new Promise(resolve => {
+         gun.get(namespace + '/node')
+         .get(key)
+         .put(null, (awk) => {
+            console.log(`deleted ${key} awk:`, awk)
+            onNodeRemoved(key)
+            resolve()
+         })
+      })
+   }
+
+   useEffect(() => {
+      async function downHandler({ key }): Promise<void>{
+         if (key !== 'N') {
+            return 
+         }
+         const nodes = await getNodes()
+         for(const node of nodes){
+            const isOld =  moment(node.date).isBefore(moment(new Date).subtract(3, 'days'))
+            const isReservedKey = ['wrfrn32'].includes(key)
+            if (isOld && !isReservedKey){
+               await deleteNode(node.key)
+            }
+         }
+       }
+      window.addEventListener("keydown", downHandler);
+      return () => {
+        window.removeEventListener("keydown", downHandler);
+      };
+   }, [])
 
    useEffect(() => {
       const allNodesQuery = gun

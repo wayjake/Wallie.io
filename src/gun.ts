@@ -1,12 +1,16 @@
 import GUN from 'gun'
 
+const peers = [
+    'https://peer.wallie.io/gun'
+]
+
+if (window.location.hostname === 'localhost'){
+    peers.push('http://192.168.1.7:8765/gun')
+}
+
 const gun = GUN({
     localStorage: false,
-    // radisk: false,
-    peers: [
-        'https://relay.peer.ooo/gun',
-        // 'https://gun.4d2.io/gun'
-    ],
+    peers,
 })
 
 export default gun
