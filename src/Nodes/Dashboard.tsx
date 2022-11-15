@@ -184,6 +184,7 @@ const DashboardView = ({ id }) => {
 
 const DashboardStyled = styled.div`
    max-width: 1000px;
+   box-sizing: ;
 `
 
 const Dashboard = () => {

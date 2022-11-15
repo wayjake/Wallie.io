@@ -168,7 +168,7 @@ export const TopBar = () => {
                All
             </DropDown> */}
             <DropDownStyled>
-               <Link to="/dashboard/clock">Clock</Link>
+               <Link to="/dashboard/clock">Click here</Link>
             </DropDownStyled>
             {/* <DropDown
                links={[
