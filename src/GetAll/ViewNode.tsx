@@ -20,7 +20,7 @@ const ViewNodeStyled = styled.div`
    display: flex;
    flex-direction: column;
    border-radius: 10px;
-   box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+   box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #e7e7e799,
       7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001, inset 0px 0px 0px 0px #fff9,
       inset 0px 0px 0px 0px #0001, inset 0px 0px 0px 0px #fff9,
       inset 0px 0px 0px 0px #0001;
@@ -45,6 +45,10 @@ const User = styled.div`
 
 const Message = styled.div`
    margin-top: 1em;
+`
+
+const Title = styled.div`
+   font-weight: 800;
 `
 
 const Menu = styled.div`
@@ -84,7 +88,14 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
 
    const onPostClicked = (event) => {
       if (event.detail > 1) {
+         if (node.directionText) {
+            return navigate(`/dashboard/${node.key}`)
+         }
          navigate(`/node/${node.key}`)
+         return
+      }
+      if (node.url) {
+         return window.open(node.url, '_blank')
       }
    }
 
@@ -103,9 +114,10 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
                re: {trimWithEllip(stripHtml(head.message), 20)}
             </HeadLink>
          )}
+         <Title>{node.directionText}</Title>
          <Message
             dangerouslySetInnerHTML={{
-               __html: node.message || 'EMPTY MESSAGE',
+               __html: node.message || '',
             }}
          ></Message>
          <br />
