@@ -10,20 +10,21 @@ export type Username = string
 export type Unixtimestamp = string
 
 export type Directions = {
-    GunId: string
+   GunId: string
 }
 
 export type DungeonNode = {
-    key: GunId
-    id: GunId
-    head: GunId
-    message: string
-    date: Unixtimestamp
-    user: GunId | Username
-    directions: Directions
-    directionText: string
-    start: string
-    end: string
-    upVotes: number
-    downVotes: number
+   key: GunId
+   id: GunId
+   head: GunId
+   message: string
+   url?: string // comes from reddit posts
+   date: Unixtimestamp
+   user: GunId | Username
+   directions: Directions
+   directionText: string
+   start: string
+   end: string
+   upVotes: number
+   downVotes: number
 }
