@@ -1,8 +1,7 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import logo from './wallie-logo-dark.png'
 import styled from 'styled-components'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { getRandomFromArray } from '../utils'
+import { useEffect, useRef, useState } from 'react'
 import UsernameSession from './UsernameSession'
 export { default as ViewPost } from './ViewPost'
 export { default as NewPost } from './NewPost'
@@ -71,6 +70,7 @@ export const DropDown = ({ links, children }: DropdownProps) => {
    const navigate = useNavigate()
    const ref = useRef<any>(null)
 
+   // Setup on click listeners to close dropdowns
    useEffect(() => {
       const handleClickOutside = (event) => {
          if (ref.current && !ref.current.contains(event.target)) {
