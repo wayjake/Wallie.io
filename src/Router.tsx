@@ -30,7 +30,7 @@ export default function Router() {
             <Route path="*" element={<Wrapper />}>
                //the famous, get-all!
                <Route path="all" element={<GetAll />} />
-               //archive
+               //blog & archive routes
                <Route path="archive" element={<ViewArchive />} />
                <Route path="blog" element={<BlogWrapper />}>
                   <Route path="" element={<ViewPostList />} />
