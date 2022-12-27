@@ -1,0 +1,34 @@
+{
+   "short_name": "Wallie",
+   "name": "The ultimate free space",
+   "icons": [
+      {
+         "src": "favicon.ico",
+         "sizes": "64x64 32x32 24x24 16x16",
+         "type": "image/x-icon"
+      },
+      {
+         "src": "logo192.jpg",
+         "type": "image/jpg",
+         "sizes": "192x192"
+      },
+      {
+         "src": "logo512.jpg",
+         "type": "image/jpg",
+         "sizes": "512x512"
+      }
+   ],
+   "start_url": "/",
+   "display": "fullscreen",
+   "theme_color": "#000000",
+   "background_color": "#ffffff",
+   "share_target": {
+      "action": "/shared-content-receiver/",
+      "method": "GET",
+      "params": {
+         "title": "name",
+         "text": "description",
+         "url": "link"
+      }
+   }
+}

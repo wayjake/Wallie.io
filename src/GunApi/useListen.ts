@@ -1,13 +1,13 @@
+import { DungeonNode } from 'Nodes'
 import { useEffect, useState } from 'react'
-import { isConstructorDeclaration } from 'typescript'
-import gun, { namespace } from '../gun'
+import gun, { namespace } from './gun'
 
 const useListen = (
    query: string | undefined | null,
    model: string = 'node',
    single: boolean = false
-) => {
-   const [nodes, setNodes] = useState<any[]>([])
+): DungeonNode | DungeonNode[] => {
+   const [nodes, setNodes] = useState<DungeonNode[]>([])
 
    const setNodesCallback = (newNode: any = {}, key) => {
       if (single && query !== key) {

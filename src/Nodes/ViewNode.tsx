@@ -1,5 +1,4 @@
-import { Helmet } from 'react-helmet'
-import gun, { namespace } from '../gun'
+import gun, { namespace } from '../GunApi/gun'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
 import { DungeonNode, GunId, NewSubNode, NodeRow } from '.'
@@ -38,6 +37,11 @@ const ViewNode = () => {
    const { key = '' } = useParams()
    const navigate = useNavigate()
    //@TODO mark as viewed
+
+   // init the page title
+   useEffect(() => {
+      document.title = `View Brick '${key.substring(0, 50)}`
+   })
 
    useEffect(() => {
       if (keypressed === 'h') {
@@ -119,10 +123,6 @@ const ViewNode = () => {
 
    return (
       <ViewNodeStyled>
-         <Helmet>
-            <title>View Node '{key.substring(0, 50)}'</title>
-         </Helmet>
-
          <BackSectionWrapper className="blockSection">
             {node?.head && <BackButton onClick={goback}>{'< '}</BackButton>}
             {!node?.head && <div>&nbsp;</div>}
