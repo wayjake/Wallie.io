@@ -28,9 +28,9 @@ export default function Router() {
       <BrowserRouter>
          <Routes>
             <Route path="*" element={<Wrapper />}>
+               //the famous, get-all!
                <Route path="all" element={<GetAll />} />
-               <Route path="map" element={<ViewMap />} />
-               <Route path="geo" element={<GeoLocation />} />
+               //blog & archive routes
                <Route path="archive" element={<ViewArchive />} />
                <Route path="blog" element={<BlogWrapper />}>
                   <Route path="" element={<ViewPostList />} />
@@ -55,6 +55,9 @@ export default function Router() {
                   <Route path=":key" element={<ViewNode />} />
                </Route>
                <Route path="*" element={<Navigate replace to="/all" />} />
+               //deprecated
+               <Route path="map" element={<ViewMap />} />
+               <Route path="geo" element={<GeoLocation />} />
             </Route>
          </Routes>
       </BrowserRouter>

@@ -27,4 +27,6 @@ export type DungeonNode = {
    end: string
    upVotes: number
    downVotes: number
+   content: string // comes from the original node.blog.post type
+   title?: string // comes from the node.dashboard type
 }

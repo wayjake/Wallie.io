@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { TopBar } from '../Blog'
-import gun, { namespace } from '../gun'
-import { DungeonNode } from '../Nodes'
+import gun, { namespace } from 'GunApi/gun'
+import { DungeonNode } from 'Nodes'
 import styled from 'styled-components'
 import { ViewNode } from './ViewNode'
-import LoadingWheel from '../Interface/LoadingWheel'
+import LoadingWheel from 'Interface/LoadingWheel'
 import moment from 'moment'
 import { isNull, isString, random } from 'lodash'
+import { useParams } from 'react-router-dom'
 
 const GetAllStyled = styled.div`
    .loadingwheel {
@@ -57,7 +58,7 @@ const GetAll = () => {
    // init the page title
    useEffect(() => {
       document.title = `
-         Wallie, the front page
+         Wallie, a front [page,]
       `
    })
 
@@ -71,7 +72,7 @@ const GetAll = () => {
             }
             return nodes
          })
-      }, 3000)
+      }, random(5000, 600000))
    }, [])
 
    // Get reddit posts to start filling in some content
@@ -91,8 +92,13 @@ const GetAll = () => {
             children: [{ data: RedditPost }]
          }
       }
-      const getPolitics = async () => {
-         const channel = ['politics', 'popular', 'conservative'][random(0, 2)]
+      const fillWithFun = async () => {
+         const channel = [
+            'CrazyIdeas',
+            'MorbidReality',
+            'TalesFromRetail',
+            'AskReddit',
+         ][random(0, 2)]
          const res = await fetch(`https://www.reddit.com/r/${channel}/new.json`)
          const {
             data: { children: redditPosts },
@@ -117,7 +123,14 @@ const GetAll = () => {
             .get(user)
             .put(post, (awk) => console.log(awk))
       }
-      getPolitics()
+      setTimeout(async () => {
+         const nodes = await getNodes()
+         if (!nodes?.length) {
+            console.log(`we're filled with fun!`)
+            return fillWithFun()
+         }
+         console.log(`we did not fill with fun`)
+      }, 3000) // time until we'd like to fill it
    }, [])
 
    const deleteNode = (key): Promise<void> => {

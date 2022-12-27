@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { SimpleIcon, Styles } from '../Interface'
 import { DungeonNode } from '../Nodes'
-import gun, { namespace } from '../gun'
+import gun, { namespace } from '../GunApi/gun'
 import { useNavigate } from 'react-router-dom'
 import useListen from '../GunApi/useListen'
 import useKeyboard from '../utils/useKeyboard'
@@ -47,7 +47,8 @@ const Message = styled.div`
    margin-top: 1em;
 `
 
-const Title = styled.div`
+const Title = styled.h4`
+   margin: 4px 0px;
    font-weight: 800;
 `
 
@@ -67,7 +68,7 @@ const Menu = styled.div`
 
 export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    const navigate = useNavigate()
-   const head = useListen(node.head, 'node', true)
+   const head = useListen(node.head, 'node', true) as DungeonNode
    const [isShowAdvanced, showAdvanced] = useState<boolean>(false)
    const keypressed = useKeyboard(['v'])
 
@@ -88,14 +89,15 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
 
    const onPostClicked = (event) => {
       if (event.detail > 1) {
+         // if there's a url, let's open it!
+         if (node.url) {
+            return window.open(node.url, '_blank')
+         }
          if (node.directionText) {
             return navigate(`/dashboard/${node.key}`)
          }
          navigate(`/node/${node.key}`)
          return
-      }
-      if (node.url) {
-         return window.open(node.url, '_blank')
       }
    }
 
@@ -114,12 +116,14 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
                re: {trimWithEllip(stripHtml(head.message), 20)}
             </HeadLink>
          )}
-         <Title>{node.directionText}</Title>
-         <Message
-            dangerouslySetInnerHTML={{
-               __html: node.message || '',
-            }}
-         ></Message>
+         {node.directionText && <Title>{node.directionText}</Title>}
+         {node.message && (
+            <Message
+               dangerouslySetInnerHTML={{
+                  __html: node.message || '',
+               }}
+            ></Message>
+         )}
          <br />
          <Menu>
             {node.user && <User>@{node.user}</User>}
