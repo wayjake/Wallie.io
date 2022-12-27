@@ -131,7 +131,9 @@ const DashboardView = ({ id }) => {
             <Time style={{ padding: '10px 30px 0 30px', maxWidth: '500px' }} />
          </div>
          <MessageWrapper className="messageWrapper">
-            {node?.head && <Link to={`/dashboard/${node.head}`}>Parent</Link>}
+            {node?.head && (
+               <Link to={`/dashboard/${node.head}`}>d/{node.head}</Link>
+            )}
             <MessageTop className="messageTop">
                <h2>
                   <Username>{node?.directionText}</Username>
@@ -184,7 +186,6 @@ const DashboardView = ({ id }) => {
 
 const DashboardStyled = styled.div`
    max-width: 1000px;
-   box-sizing: ;
 `
 
 const Dashboard = () => {
