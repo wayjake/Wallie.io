@@ -47,6 +47,7 @@ const Tools = styled.div`
    display: flex;
    justify-content: end;
    align-items: flex-start;
+   margin-left: 10px;
    .simpleIcon {
       border: none;
    }

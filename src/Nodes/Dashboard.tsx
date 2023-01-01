@@ -186,6 +186,10 @@ const DashboardView = ({ id }) => {
 
 const DashboardStyled = styled.div`
    max-width: 1000px;
+   width: 100vw;
+   width: -webkit-fill-available;
+   width: fill-available;
+   overflow-wrap: anywhere;
 `
 
 const Dashboard = () => {
