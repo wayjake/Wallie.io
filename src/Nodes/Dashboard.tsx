@@ -40,6 +40,7 @@ const DashboardView = ({ id }) => {
    }
 
    const insertDirection = (node: DungeonNode | any, key: string) => {
+   const insertDirection = (node: DungeonNode | any, key: string) => {
       setDirections((prev: DungeonNode[]) => {
          const withoutCurrent = prev.filter((stateNode) => stateNode.id !== key)
          return [...withoutCurrent, { ...node, id: key }].sort(sortDirections)
