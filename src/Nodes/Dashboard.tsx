@@ -39,7 +39,7 @@ const DashboardView = ({ id }) => {
       return cleanInput(b.upVotes) > cleanInput(a.upVotes) ? 1 : -1
    }
 
-   const insertDirection = (node: DungeonNode, key: string) => {
+   const insertDirection = (node: DungeonNode | any, key: string) => {
       setDirections((prev: DungeonNode[]) => {
          const withoutCurrent = prev.filter((stateNode) => stateNode.id !== key)
          return [...withoutCurrent, { ...node, id: key }].sort(sortDirections)
@@ -62,7 +62,7 @@ const DashboardView = ({ id }) => {
             const chain = gun
                .get(namespace + '/node')
                .get(key)
-               .once(insertDirection)
+               .on(insertDirection)
             directionListeners.push(chain)
          })
       return () => {
