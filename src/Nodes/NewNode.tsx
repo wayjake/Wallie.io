@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet'
 import { DungeonNode } from '.'
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -8,22 +7,15 @@ import { useNavigate } from 'react-router-dom'
 import { NewSubNodeProps } from './NewSubNode.styled'
 import Tiptap from '../Interface/TipTap'
 import { getRandomFromArray } from '../utils'
-import {
-   Wrapper,
-   FormItem,
-   Label,
-   Textarea,
-   Input,
-   Button,
-} from './NewNode.styled'
+import { Wrapper, FormItem, Label, Button } from './NewNode.styled'
 import useKeyboard from '../utils/useKeyboard'
+import Input from '../Interface/Input'
 
 const FIXED_USERNAME = ``
 
 /**
  * 
  * 
-
         async function encodeTest(message) {
             const key = 'i am a key'
             // Encrypt
@@ -36,10 +28,7 @@ const FIXED_USERNAME = ``
             console.log(originalText) // 'my message
         }
         encodeTest('come on many')
-
-
-
-        
+ *
  */
 
 const NewNode = (props: NewSubNodeProps) => {
@@ -65,32 +54,32 @@ const NewNode = (props: NewSubNodeProps) => {
    }, [props.head])
 
    useEffect(() => {
-      setValue('message', ' ')
+      document.title = `This is the beginning of something new.`
+      setValue('message', '')
       setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
       setValue('user', FIXED_USERNAME || getRandomUsername())
    }, [])
 
-   /**
-    *
-    */
    useEffect(() => {
       if (keypressed === 'v') {
-         showShowAdvanced(!showAdvanced)
+         showShowAdvanced((showAdvanced) => !showAdvanced)
       }
    }, [keypressed])
 
-   const createNode = (data: DungeonNode | any) => {
+   const createNode = async (data: DungeonNode | any) => {
       if (!data) {
          return
       }
       setLoading(true)
+      // let's get to work!
+      // await createNode(data)
+
       const key = data.key
       delete data.key
-
       /* this is business logic that I'd like to make dissappear */
       if (data.head) {
          const messagePreview =
-            data.message.length > 142 // oooo::i want to make this value configurable within this component
+            data.message.length > 142
                ? `${data.message.substring(0, 142)}...`
                : data.message
          nodeRef
@@ -103,11 +92,11 @@ const NewNode = (props: NewSubNodeProps) => {
       }
       const newNode = { ...data, date: Date.now() }
       nodeRef.get(key).put(newNode, (ack) => {
-         setLoading(false) // unecessary clean up lol
-         console.log(`done adding new node`)
-         console.log(ack)
+         setLoading(false)
       })
-      if (!data.head) navigate(`/node/${key}`)
+      if (!data.head) {
+         navigate(`/node/${key}`)
+      }
       props.nodeAdded(newNode)
    }
 
@@ -120,66 +109,40 @@ const NewNode = (props: NewSubNodeProps) => {
 
    return (
       <Wrapper>
-         <Helmet>
-            <title>New Node</title>
-         </Helmet>
-         {showAdvanced ||
-            (props.dashboardFeature && (
-               <FormItem className={errors['directionText'] ? 'error' : ''}>
-                  <Label>
-                     {getRandomFromArray(['Title'])}
-                     :
-                     <Input
-                        onKeyPress={handleUserKeyPress}
-                        {...register('directionText', {
-                           required: true,
-                        })}
-                     />
-                  </Label>
-               </FormItem>
-            ))}
+         <FormItem className={errors['directionText'] ? 'error' : ''}>
+            <Input
+               register={register}
+               name={'directionText'}
+               required={true}
+               onKeyPress={handleUserKeyPress}
+               placeholder={getRandomFromArray(['Title'])}
+            />
+         </FormItem>
+         <FormItem hidden={!props.dashboardFeature && !showAdvanced}>
+            <Input
+               register={register}
+               name={'start'}
+               required={false}
+               onKeyPress={handleUserKeyPress}
+               placeholder={getRandomFromArray(['Start', 'Pre-Condition'])}
+            />
+         </FormItem>
+         {/**
 
-         {props.dashboardFeature && (
-            <FormItem>
-               <Label>
-                  {getRandomFromArray(['Start', 'Pre-Condition'])} (dashboard
-                  feature) :
-                  <Input {...register('start')} />
-               </Label>
-            </FormItem>
-         )}
+         <FormItem hidden={!props.dashboardFeature}>
+            <Label>
+               {getRandomFromArray(['End', 'Completion'])} (dashboard feature) :
+               <Input {...register('end')} />
+            </Label>
+         </FormItem>
 
-         {props.dashboardFeature && (
-            <FormItem>
-               <Label>
-                  {getRandomFromArray(['End', 'Completion'])} (dashboard
-                  feature) :
-                  <Input {...register('end')} />
-               </Label>
-            </FormItem>
-         )}
-         {!props.dashboardFeature && (
-            <FormItem className={errors['message'] ? 'error' : ''}>
-               <Label>
-                  <Textarea
-                     autoFocus
-                     placeholder="Message..."
-                     onKeyPress={handleUserKeyPress}
-                     {...register('message', { required: true })}
-                  />
-               </Label>
-            </FormItem>
-         )}
-
-         {props.dashboardFeature && (
-            <FormItem className={errors['content'] ? 'error' : ''}>
-               <Label>Body:</Label>
-               <Tiptap
-                  onChange={(value) => setValue('message', value)}
-                  content={' '}
-               />
-            </FormItem>
-         )}
+         <FormItem className={errors['content'] ? 'error' : ''}>
+            <Tiptap
+               placeholder={'Message'}
+               onChange={(value) => setValue('message', value)}
+               content={''}
+            />
+         </FormItem>
 
          {showAdvanced && (
             <FormItem className={errors['key'] ? 'error' : ''}>
@@ -221,7 +184,7 @@ const NewNode = (props: NewSubNodeProps) => {
                </Label>
             </FormItem>
          )}
-
+         **/}
          <FormItem>
             <Button
                disabled={loading || errors.length}
