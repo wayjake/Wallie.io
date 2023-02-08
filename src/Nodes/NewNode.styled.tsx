@@ -26,8 +26,10 @@ export const Label = styled.label`
     display: flex;
     flex: auto;
 `
-
-export const Button = styled.button`
+interface ButtonProps {
+    disabled: any;
+}
+export const Button = styled.button<ButtonProps>`
     height: 2rem;
     width: 100%;
 `
