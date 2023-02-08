@@ -54,8 +54,8 @@ const NewNode = (props: NewSubNodeProps) => {
    }, [props.head])
 
    useEffect(() => {
-      document.title = `This is the beginning of something new.`
-      setValue('message', '')
+      document.title = `Something new!`
+      setValue('message', undefined)
       setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
       setValue('user', FIXED_USERNAME || getRandomUsername())
    }, [])
@@ -122,21 +122,21 @@ const NewNode = (props: NewSubNodeProps) => {
             <Input
                register={register}
                name={'start'}
-               required={false}
                onKeyPress={handleUserKeyPress}
-               placeholder={getRandomFromArray(['Start', 'Pre-Condition'])}
+               placeholder={getRandomFromArray(['Start', 'Pre'])}
             />
          </FormItem>
-         {/**
 
          <FormItem hidden={!props.dashboardFeature}>
-            <Label>
-               {getRandomFromArray(['End', 'Completion'])} (dashboard feature) :
-               <Input {...register('end')} />
-            </Label>
+            <Input
+               register={register}
+               name={'end'}
+               onKeyPress={handleUserKeyPress}
+               placeholder={getRandomFromArray(['End', 'Post'])}
+            />
          </FormItem>
 
-         <FormItem className={errors['content'] ? 'error' : ''}>
+         <FormItem className={errors['message'] ? 'error' : ''}>
             <Tiptap
                placeholder={'Message'}
                onChange={(value) => setValue('message', value)}
@@ -144,47 +144,40 @@ const NewNode = (props: NewSubNodeProps) => {
             />
          </FormItem>
 
-         {showAdvanced && (
-            <FormItem className={errors['key'] ? 'error' : ''}>
-               <Label>
-                  {getRandomFromArray([
-                     'Node Id',
-                     'Node Ref',
-                     'Gun Id',
-                     'Id',
-                     'Key',
-                  ])}
-                  :
-                  <Input {...register('key', { required: true })} />
-               </Label>
-            </FormItem>
-         )}
+         <FormItem
+            hidden={showAdvanced}
+            className={errors['key'] ? 'error' : ''}
+         >
+            <Input
+               register={register}
+               name={'end'}
+               onKeyPress={handleUserKeyPress}
+               placeholder={getRandomFromArray(['Id', 'HashKey', 'Path'])}
+            />
+         </FormItem>
 
-         {showAdvanced && (
-            <FormItem className={errors['user'] ? 'error' : ''}>
-               <Label>
-                  User:
-                  <Input {...register('user', { required: true })} />
-               </Label>
-            </FormItem>
-         )}
+         <FormItem hidden={!showAdvanced}>
+            <Input
+               register={register}
+               name={'head'}
+               onKeyPress={handleUserKeyPress}
+               placeholder={getRandomFromArray(['Previous', 'Parent'])}
+            />
+         </FormItem>
 
-         {showAdvanced && (
-            <FormItem>
-               <Label>
-                  {getRandomFromArray([
-                     'Head',
-                     'Top',
-                     'Parent',
-                     'Up',
-                     'Previous',
-                  ])}
-                  :
-                  <Input {...register('head')} />
-               </Label>
-            </FormItem>
-         )}
-         **/}
+         <FormItem className={errors['user'] ? 'error' : ''}>
+            <Input
+               register={register}
+               name={'user'}
+               onKeyPress={handleUserKeyPress}
+               placeholder={getRandomFromArray([
+                  'User ID',
+                  'Username',
+                  'Handle',
+               ])}
+            />
+         </FormItem>
+
          <FormItem>
             <Button
                disabled={loading || errors.length}
