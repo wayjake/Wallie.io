@@ -63,7 +63,7 @@ export const UsernameSession = () => {
          {!username ||
             (editMode && (
                <>
-                  <Input
+                  <input
                      placeholder="username:password"
                      ref={usernameRef}
                      onKeyPress={handleUserKeyPress}
