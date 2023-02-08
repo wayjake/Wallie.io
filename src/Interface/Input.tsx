@@ -1,4 +1,4 @@
-import { FC, ForwardedRef, forwardRef, ForwardRefRenderFunction } from 'react'
+import { FC } from 'react'
 import styled, { StyledComponent } from 'styled-components/macro'
 
 const StyledInput = styled.input`
@@ -16,15 +16,12 @@ const Wrapper = styled.div`
 `
 
 type InputT = {
-   placeholder: string
+   placeholder?: string
    onKeyPress?: (e: React.KeyboardEvent) => void
-   name: string
-   register: Function
+   name?: string
+   register?: Function
    required?: boolean
 }
-// I don't know why I needed to any here
-// React.FC and other generic types were not working
-// nicely when passing in props.
 
 const Input: FC<InputT> = ({
    name,
@@ -33,9 +30,11 @@ const Input: FC<InputT> = ({
    placeholder,
    onKeyPress,
 }) => {
+   const registerHolder = register && name ? register(name, {required}) : {}
+
    return (
       <StyledInput
-         {...(register(name), { required })}
+         {...registerHolder} //{register ? ...(register(name), { required }) : undefined}
          placeholder={placeholder}
          onKeyPress={onKeyPress}
       ></StyledInput>
