@@ -1,12 +1,45 @@
-import styled from 'styled-components/macro'
+import { FC, ForwardedRef, forwardRef, ForwardRefRenderFunction } from 'react'
+import styled, { StyledComponent } from 'styled-components/macro'
 
-const Input = styled.input`
-    height: 2rem;
-    margin: 0 0 0 1rem;
-    flex: auto;
-    & [readonly] {
-        opacity: 0.4;
-    }
+const StyledInput = styled.input`
+   height: 2rem;
+   width: 100%;
+   margin: 0;
+   flex: auto;
+   & [readonly] {
+      opacity: 0.4;
+   }
 `
+
+const Wrapper = styled.div`
+   width: 100%;
+`
+
+type InputT = {
+   placeholder: string
+   onKeyPress?: (e: React.KeyboardEvent) => void
+   name: string
+   register: Function
+   required?: boolean
+}
+// I don't know why I needed to any here
+// React.FC and other generic types were not working
+// nicely when passing in props.
+
+const Input: FC<InputT> = ({
+   name,
+   register,
+   required = false,
+   placeholder,
+   onKeyPress,
+}) => {
+   return (
+      <StyledInput
+         {...(register(name), { required })}
+         placeholder={placeholder}
+         onKeyPress={onKeyPress}
+      ></StyledInput>
+   )
+}
 
 export default Input
