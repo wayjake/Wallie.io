@@ -1,5 +1,5 @@
 import { DungeonNode } from '.'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getRandomUsername, IdTypes, makeId, userIsWithinInput } from '../utils'
 import gun, { namespace } from '../GunApi/gun'
