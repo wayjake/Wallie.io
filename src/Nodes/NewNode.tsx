@@ -10,34 +10,14 @@ import { getRandomFromArray } from '../utils'
 import { Wrapper, FormItem, Label, Button } from './NewNode.styled'
 import useKeyboard from '../utils/useKeyboard'
 import Input from '../Interface/Input'
-
-const FIXED_USERNAME = ``
-
-/**
- * 
- * 
-        async function encodeTest(message) {
-            const key = 'i am a key'
-            // Encrypt
-            var ciphertext = CryptoJS.AES.encrypt(message, key).toString()
-            console.log(`ciphertext`, ciphertext)
-
-            // Decrypt
-            var bytes = CryptoJS.AES.decrypt(ciphertext, key)
-            var originalText = bytes.toString(CryptoJS.enc.Utf8)
-            console.log(originalText) // 'my message
-        }
-        encodeTest('come on many')
- *
- */
+import DOMPurify from 'dompurify'
+import { Textarea } from 'Interface'
 
 const NewNode = (props: NewSubNodeProps) => {
    const [loading, setLoading] = useState(false)
    const [showAdvanced, showShowAdvanced] = useState(false)
 
-   const nodeRef = gun.get(
-      namespace + '/node'
-   ) /*is node (noun) plural? ;) #trickledown42*/
+   const nodeRef = gun.get(namespace + '/node')
    const {
       register,
       handleSubmit,
@@ -48,13 +28,8 @@ const NewNode = (props: NewSubNodeProps) => {
    const keypressed = useKeyboard(['v'])
 
    useEffect(() => {
-      if (props.head) {
-         setValue('head', props.head)
-      }
-   }, [props.head])
-
-   useEffect(() => {
       document.title = `Something new!`
+      setValue('head', props.head)
       setValue('message', undefined)
       setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
       setValue('user', FIXED_USERNAME || getRandomUsername())
@@ -78,10 +53,9 @@ const NewNode = (props: NewSubNodeProps) => {
       delete data.key
       /* this is business logic that I'd like to make dissappear */
       if (data.head) {
-         const messagePreview =
-            data.message.length > 142
-               ? `${data.message.substring(0, 142)}...`
-               : data.message
+         const messagePreview = DOMPurify.sanitize(data.message, {
+            ALLOWED_TAGS: ['b', 'i'],
+         })
          nodeRef
             .get(data.head)
             .get('directions')
@@ -92,11 +66,11 @@ const NewNode = (props: NewSubNodeProps) => {
       }
       const newNode = { ...data, date: Date.now() }
       nodeRef.get(key).put(newNode, (ack) => {
+         if (!data.head) {
+            return navigate(`/node/${key}`)
+         }
          setLoading(false)
       })
-      if (!data.head) {
-         navigate(`/node/${key}`)
-      }
       props.nodeAdded(newNode)
    }
 
@@ -109,15 +83,17 @@ const NewNode = (props: NewSubNodeProps) => {
 
    return (
       <Wrapper>
+         {/* Subject line */}
          <FormItem className={errors['directionText'] ? 'error' : ''}>
             <Input
                register={register}
                name={'directionText'}
-               required={true}
                onKeyPress={handleUserKeyPress}
                placeholder={getRandomFromArray(['Title'])}
             />
          </FormItem>
+
+         {/* Start (if in dashboard mode) */}
          <FormItem hidden={!props.dashboardFeature && !showAdvanced}>
             <Input
                register={register}
@@ -126,7 +102,7 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['Start', 'Pre'])}
             />
          </FormItem>
-
+         {/* End (if in dashboard mode) */}
          <FormItem hidden={!props.dashboardFeature}>
             <Input
                register={register}
@@ -135,15 +111,30 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['End', 'Post'])}
             />
          </FormItem>
-
-         <FormItem className={errors['message'] ? 'error' : ''}>
+         {/* Message (if in reply mode) */}
+         <FormItem
+            hidden={!props.head}
+            className={errors['message'] ? 'error' : ''}
+         >
+            <Textarea
+               onChange={(event) => setValue('message', event.target.value)}
+               name={'message'}
+               onKeyPress={handleUserKeyPress}
+               placeholder={'what are your thoughts?'}
+            />
+         </FormItem>
+         {/* Message (if in parent mode) */}
+         <FormItem
+            hidden={!!props.head}
+            className={errors['message'] ? 'error' : ''}
+         >
             <Tiptap
                placeholder={'Message'}
                onChange={(value) => setValue('message', value)}
                content={''}
             />
          </FormItem>
-
+         {/*  ID */}
          <FormItem
             hidden={showAdvanced}
             className={errors['key'] ? 'error' : ''}
@@ -155,7 +146,7 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['Id', 'HashKey', 'Path'])}
             />
          </FormItem>
-
+         {/* Head */}
          <FormItem hidden={!showAdvanced}>
             <Input
                register={register}
@@ -164,7 +155,7 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['Previous', 'Parent'])}
             />
          </FormItem>
-
+         {/* User */}
          <FormItem className={errors['user'] ? 'error' : ''}>
             <Input
                register={register}
@@ -177,7 +168,7 @@ const NewNode = (props: NewSubNodeProps) => {
                ])}
             />
          </FormItem>
-
+         {/* Submit */}
          <FormItem>
             <Button
                disabled={loading || errors.length}
