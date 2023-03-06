@@ -1,63 +1,39 @@
-import { DungeonNode } from '.'
+import { DungeonNode, GunId } from '.'
 import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { getRandomUsername, IdTypes, makeId, userIsWithinInput } from '../utils'
-import gun, { namespace } from '../GunApi/gun'
-import { useNavigate } from 'react-router-dom'
-import { NewSubNodeProps } from './NewSubNode.styled'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { getRandomUsername, IdTypes, makeId } from '../utils'
 import Tiptap from '../Interface/TipTap'
 import { getRandomFromArray } from '../utils'
 import { Wrapper, FormItem, Label, Button } from './NewNode.styled'
 import useKeyboard from '../utils/useKeyboard'
 import Input from '../Interface/Input'
+import { Textarea } from 'Interface'
+import { useCreateNode } from './useCreateNode'
 
-const FIXED_USERNAME = ``
-
-/**
- * 
- * 
-        async function encodeTest(message) {
-            const key = 'i am a key'
-            // Encrypt
-            var ciphertext = CryptoJS.AES.encrypt(message, key).toString()
-            console.log(`ciphertext`, ciphertext)
-
-            // Decrypt
-            var bytes = CryptoJS.AES.decrypt(ciphertext, key)
-            var originalText = bytes.toString(CryptoJS.enc.Utf8)
-            console.log(originalText) // 'my message
-        }
-        encodeTest('come on many')
- *
- */
+export type NewSubNodeProps = {
+   head?: GunId
+   dashboardFeature?: boolean
+   nodeAdded: (node: DungeonNode) => void
+}
 
 const NewNode = (props: NewSubNodeProps) => {
-   const [loading, setLoading] = useState(false)
    const [showAdvanced, showShowAdvanced] = useState(false)
+   const [createNode, loading] = useCreateNode(props.nodeAdded)
 
-   const nodeRef = gun.get(
-      namespace + '/node'
-   ) /*is node (noun) plural? ;) #trickledown42*/
    const {
       register,
       handleSubmit,
       formState: { errors },
       setValue,
    } = useForm()
-   const navigate = useNavigate()
    const keypressed = useKeyboard(['v'])
 
    useEffect(() => {
-      if (props.head) {
-         setValue('head', props.head)
-      }
-   }, [props.head])
-
-   useEffect(() => {
       document.title = `Something new!`
+      setValue('head', props.head || null)
       setValue('message', undefined)
-      setValue('key', makeId(7, [IdTypes.lower, IdTypes.numbers]))
-      setValue('user', FIXED_USERNAME || getRandomUsername())
+      setValue('id', makeId(7, [IdTypes.lower, IdTypes.numbers]))
+      setValue('user', getRandomUsername())
    }, [])
 
    useEffect(() => {
@@ -66,58 +42,29 @@ const NewNode = (props: NewSubNodeProps) => {
       }
    }, [keypressed])
 
-   const createNode = async (data: DungeonNode | any) => {
-      if (!data) {
-         return
-      }
-      setLoading(true)
-      // let's get to work!
-      // await createNode(data)
-
-      const key = data.key
-      delete data.key
-      /* this is business logic that I'd like to make dissappear */
-      if (data.head) {
-         const messagePreview =
-            data.message.length > 142
-               ? `${data.message.substring(0, 142)}...`
-               : data.message
-         nodeRef
-            .get(data.head)
-            .get('directions')
-            .get(key)
-            .put(data.directionText || messagePreview, (ack) => {
-               console.log(`added message preview`)
-            })
-      }
-      const newNode = { ...data, date: Date.now() }
-      nodeRef.get(key).put(newNode, (ack) => {
-         setLoading(false)
-      })
-      if (!data.head) {
-         navigate(`/node/${key}`)
-      }
-      props.nodeAdded(newNode)
-   }
-
    const handleUserKeyPress = (e: React.KeyboardEvent) => {
       if (e.key === 'Enter') {
-         handleSubmit(createNode)()
          e.preventDefault()
+         handleSubmit(createNode as SubmitHandler<FieldValues>)()
       }
    }
 
    return (
       <Wrapper>
-         <FormItem className={errors['directionText'] ? 'error' : ''}>
+         {/* Subject line */}
+         <FormItem
+            hidden={!props.head}
+            className={errors['directionText'] ? 'error' : ''}
+         >
             <Input
                register={register}
                name={'directionText'}
-               required={true}
                onKeyPress={handleUserKeyPress}
                placeholder={getRandomFromArray(['Title'])}
             />
          </FormItem>
+
+         {/* Start (if in dashboard mode) */}
          <FormItem hidden={!props.dashboardFeature && !showAdvanced}>
             <Input
                register={register}
@@ -126,7 +73,7 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['Start', 'Pre'])}
             />
          </FormItem>
-
+         {/* End (if in dashboard mode) */}
          <FormItem hidden={!props.dashboardFeature}>
             <Input
                register={register}
@@ -135,27 +82,43 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['End', 'Post'])}
             />
          </FormItem>
-
-         <FormItem className={errors['message'] ? 'error' : ''}>
+         {/* Message (if in reply mode) */}
+         <FormItem
+            hidden={!props.head}
+            className={errors['message'] ? 'error' : ''}
+         >
+            <Textarea
+               onChange={(event) => setValue('message', event.target.value)}
+               name={'message'}
+               autoFocus={true}
+               onKeyPress={handleUserKeyPress}
+               placeholder={'what are your thoughts?'}
+            />
+         </FormItem>
+         {/* Message (if in parent mode) */}
+         <FormItem
+            hidden={!!props.head}
+            className={errors['message'] ? 'error' : ''}
+         >
             <Tiptap
                placeholder={'Message'}
                onChange={(value) => setValue('message', value)}
                content={''}
             />
          </FormItem>
-
+         {/*  ID */}
          <FormItem
             hidden={showAdvanced}
-            className={errors['key'] ? 'error' : ''}
+            className={errors['id'] ? 'error' : ''}
          >
             <Input
                register={register}
-               name={'end'}
+               name={'id'}
                onKeyPress={handleUserKeyPress}
                placeholder={getRandomFromArray(['Id', 'HashKey', 'Path'])}
             />
          </FormItem>
-
+         {/* Head */}
          <FormItem hidden={!showAdvanced}>
             <Input
                register={register}
@@ -164,7 +127,7 @@ const NewNode = (props: NewSubNodeProps) => {
                placeholder={getRandomFromArray(['Previous', 'Parent'])}
             />
          </FormItem>
-
+         {/* User */}
          <FormItem className={errors['user'] ? 'error' : ''}>
             <Input
                register={register}
@@ -177,7 +140,7 @@ const NewNode = (props: NewSubNodeProps) => {
                ])}
             />
          </FormItem>
-
+         {/* Submit */}
          <FormItem>
             <Button
                disabled={loading || errors.length}

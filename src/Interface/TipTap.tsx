@@ -13,6 +13,7 @@ const TipTap = ({
 }) => {
    const editor = useEditor(
       {
+         autofocus: true,
          extensions: [
             Placeholder.configure({
                showOnlyWhenEditable: false,
