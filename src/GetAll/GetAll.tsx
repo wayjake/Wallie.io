@@ -7,7 +7,6 @@ import { ViewNode } from './ViewNode'
 import LoadingWheel from 'Interface/LoadingWheel'
 import moment from 'moment'
 import { isNull, isString, random } from 'lodash'
-import { useParams } from 'react-router-dom'
 
 const GetAllStyled = styled.div`
    .loadingwheel {
@@ -42,7 +41,7 @@ const GetAll = () => {
    const [nodes, setNodes] = useState<DungeonNode[] | any[]>([])
    const [longLoad, setLongLoad] = useState<boolean>(false)
 
-   const onNodeRemoved = (nodeKey: string) => {
+   const onNodeRemoved = (nodeKey: string | undefined) => {
       setNodes((nodes) => nodes.filter((node) => node.key !== nodeKey))
    }
 
@@ -60,7 +59,7 @@ const GetAll = () => {
       document.title = `
          Wallie, a front [page,]
       `
-   })
+   }, [])
 
    // Wait 3 seconds and if there still aren't any nodes
    // update the component state to show the 404-ish state
@@ -118,6 +117,7 @@ const GetAll = () => {
             date: Date.now(),
             directionText,
             message,
+            redditDate: date,
          }
          gun.get(namespace + `/node`)
             .get(user)

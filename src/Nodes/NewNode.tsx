@@ -4,7 +4,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { getRandomUsername, IdTypes, makeId } from '../utils'
 import Tiptap from '../Interface/TipTap'
 import { getRandomFromArray } from '../utils'
-import { Wrapper, FormItem, Label, Button } from './NewNode.styled'
+import { Wrapper, FormItem, Button } from './NewNode.styled'
 import useKeyboard from '../utils/useKeyboard'
 import Input from '../Interface/Input'
 import { Textarea } from 'Interface'
@@ -144,7 +144,7 @@ const NewNode = (props: NewSubNodeProps) => {
          <FormItem>
             <Button
                disabled={loading || errors.length}
-               onClick={handleSubmit(createNode)}
+               onClick={handleSubmit(createNode as SubmitHandler<FieldValues>)}
             >
                {getRandomFromArray(['Add', 'Create'])}
             </Button>

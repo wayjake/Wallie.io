@@ -11,7 +11,7 @@ import { TimeAgo } from './TimeAgo'
 
 type ViewNodeProps = {
    node: DungeonNode
-   onNodeRemoved: (nodeKey: string) => void
+   onNodeRemoved: (nodeKey: string | undefined) => void
 }
 
 const ViewNodeStyled = styled.div`
@@ -73,6 +73,9 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    const keypressed = useKeyboard(['v'])
 
    const derefNode = () => {
+      if (!node.key) {
+         return
+      }
       gun.get(namespace + '/node')
          .get(node.key)
          .put(null, (awk) => {
