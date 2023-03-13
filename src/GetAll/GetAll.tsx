@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { TopBar } from '../Blog'
 import gun, { namespace } from 'GunApi/gun'
 import { DungeonNode } from 'Nodes'
@@ -7,6 +7,7 @@ import { ViewNode } from './ViewNode'
 import LoadingWheel from 'Interface/LoadingWheel'
 import moment from 'moment'
 import { isNull, isString, random } from 'lodash'
+import { TimeAgo } from './TimeAgo'
 
 const GetAllStyled = styled.div`
    .loadingwheel {
@@ -18,6 +19,18 @@ const ListNodesWrapper = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
+   .SearchHighlights {
+      height: 42/2;
+      margin: 1rem 0rem 0rem 0rem;
+      color: #333;
+      width: 100%;
+      .timeAgo {
+         display: inline-flex;
+      }
+      .showMore {
+         cursor: pointer;
+      }
+   }
 `
 const ListNodes = styled.div`
    display: flex;
@@ -37,10 +50,95 @@ const NoContent = styled.div`
    max-width: 320px;
 `
 
+type SearchState = {
+   ticks: number
+   lastUpdated: Date
+   firstFetched: Date
+}
+enum SearchActions {
+   INCREMENT_TICKS = 'INCREMENT_TICKS',
+}
+type Action = { type: SearchActions; payload?: any | SearchState['ticks'] }
+
+/**
+ * Our reducer for the search state. It will tell us the last
+ * time a search was performed, when the first search was
+ * performed (this value will not change), and how many
+ * times a search result was updated via the DHT service.
+ * @param state
+ * @param action
+ * @returns newState
+ */
+function searchStateReducer(state: SearchState, { type, payload }: Action) {
+   switch (type) {
+      case SearchActions.INCREMENT_TICKS:
+         return { ...state, ticks: state.ticks + 1, lastUpdated: new Date() }
+      default:
+         return state
+   }
+}
+
+/**
+ * Renders the current state of the search parameters.
+ * @param searchState
+ * @returns
+ */
+const SearchHighlights = ({
+   numNodes,
+   ticks,
+   lastUpdated,
+   firstFetched,
+}: { numNodes: number } & SearchState) => {
+   const [showMore, setShowMore] = useState(false)
+
+   useEffect(() => {
+      const intervalId = setInterval(() => {
+         setShowMore(false)
+      }, 9 * 1000)
+
+      return () => clearInterval(intervalId)
+   }, [])
+
+   const showMoreClicked = (event) => {
+      event.preventDefault()
+      setShowMore(true)
+   }
+
+   return (
+      <div className="SearchHighlights">
+         found {numNodes}
+         {showMore && (
+            <>
+               {' '}
+               in {ticks} ticks :: updated{' '}
+               <TimeAgo date={lastUpdated.getTime()} />
+               {lastUpdated.getTime() - firstFetched.getTime() > 60 * 1000 && (
+                  <span>
+                     :: first fetch: <TimeAgo date={firstFetched.getTime()} />
+                  </span>
+               )}
+            </>
+         )}
+         {!showMore && (
+            <>
+               {' '}
+               <a className="showMore" onClick={showMoreClicked}>
+                  ->
+               </a>
+            </>
+         )}
+      </div>
+   )
+}
+
 const GetAll = () => {
    const [nodes, setNodes] = useState<DungeonNode[] | any[]>([])
    const [longLoad, setLongLoad] = useState<boolean>(false)
-
+   const [searchState, dispatch] = useReducer(searchStateReducer, {
+      ticks: 0,
+      lastUpdated: new Date(),
+      firstFetched: new Date(),
+   })
    const onNodeRemoved = (nodeKey: string | undefined) => {
       setNodes((nodes) => nodes.filter((node) => node.key !== nodeKey))
    }
@@ -179,6 +277,7 @@ const GetAll = () => {
                   ? { ...newNode, key }
                   : { message: newNode, key }
             setNodes((nodes) => {
+               dispatch({ type: SearchActions.INCREMENT_TICKS })
                const filtered = nodes.filter(
                   // if there's NOT already an item by this key
                   // and the node actually exists
@@ -212,23 +311,11 @@ const GetAll = () => {
                It doesn't look like there's anything here... yet
             </NoContent>
          )}
-         {!!nodes.length && (
-            <div
-               style={{
-                  position: 'fixed',
-                  bottom: 0,
-                  right: '1rem',
-                  height: 42 / 2,
-                  margin: '1rem 0',
-                  background: 'grey',
-                  color: 'white',
-               }}
-            >
-               <b>Number of Nodes {nodes.length}</b>
-            </div>
-         )}
          <ListNodesWrapper>
             <ListNodes>
+               {nodes.length && (
+                  <SearchHighlights {...searchState} numNodes={nodes.length} />
+               )}
                {nodes.map((node) => (
                   <ViewNode
                      node={node}

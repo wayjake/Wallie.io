@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import useListen from '../GunApi/useListen'
 import useKeyboard from '../utils/useKeyboard'
 import { TimeAgo } from './TimeAgo'
+import useViewCount from './useViewCount'
+import ViewCount from './ViewCount'
 
 type ViewNodeProps = {
    node: DungeonNode
@@ -70,6 +72,7 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    const navigate = useNavigate()
    const head = useListen(node.head, 'node', true) as DungeonNode
    const [isShowAdvanced, showAdvanced] = useState<boolean>(false)
+   const [views] = useViewCount(node.key)
    const keypressed = useKeyboard(['v'])
 
    const derefNode = () => {
@@ -91,17 +94,18 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    }, [keypressed])
 
    const onPostClicked = (event) => {
-      if (event.detail > 1) {
-         // if there's a url, let's open it!
-         if (node.url) {
-            return window.open(node.url, '_blank')
-         }
-         if (node.directionText) {
-            return navigate(`/dashboard/${node.key}`)
-         }
-         navigate(`/node/${node.key}`)
+      //checks to see if it was double click
+      if (event.detail <= 1) {
          return
       }
+      // if there's a url, let's open it!
+      if (node.url) {
+         return window.open(node.url, '_blank')
+      }
+      if (node.directionText) {
+         return navigate(`/dashboard/${node.key}`)
+      }
+      return navigate(`/node/${node.key}`)
    }
 
    function stripHtml(input: string) {
@@ -131,6 +135,7 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
          <Menu>
             {node.user && <User>@{node.user}</User>}
             {node.date && <TimeAgo date={node.date}></TimeAgo>}
+            <ViewCount count={views} />
             {isShowAdvanced && (
                <SimpleIcon
                   content="[ ␡ ]"
