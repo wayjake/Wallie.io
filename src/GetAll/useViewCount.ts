@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import gun, { namespace } from '../GunApi/gun'
+import { random } from 'lodash'
 
 export default function useViewCount(nodeId) {
    const [views, setViews] = useState(1)
-   const [intervalLength, setIntervalLength] = useState(5 * 1000)
+   const [intervalLength, setIntervalLength] = useState(random(2500, 10000))
    const lastUpdateSent = useRef(new Date())
 
    useEffect(() => {
@@ -20,16 +21,11 @@ export default function useViewCount(nodeId) {
 
    useEffect(() => {
       const intervalId = setInterval(() => {
-         console.log(
-            `last updated viewTime: `,
-            lastUpdateSent.current.getTime()
-         )
          const newLastUpdateSent = new Date()
          const newViewTime =
             newLastUpdateSent.getTime() - lastUpdateSent.current.getTime()
          const newViewCount = views + newViewTime
          sendViewsRequest(nodeId, newViewCount)
-         console.log(`new viewcount for ${nodeId}:`, newViewCount)
          setViews(newViewCount)
          lastUpdateSent.current = newLastUpdateSent
       }, intervalLength)

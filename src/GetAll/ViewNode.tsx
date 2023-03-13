@@ -66,6 +66,14 @@ const Menu = styled.div`
       padding-top: 5px;
       font-style: italic;
    }
+   .viewCount {
+      padding-left: 7px;
+      padding-top: 5px;
+   }
+   .ogLink {
+      padding-left: 7px;
+      padding-top: 4px;
+   }
 `
 
 export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
@@ -82,7 +90,6 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
       gun.get(namespace + '/node')
          .get(node.key)
          .put(null, (awk) => {
-            console.log(`deleted ${node.key} awk:`, awk)
             onNodeRemoved(node.key)
          })
    }
@@ -136,6 +143,13 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
             {node.user && <User>@{node.user}</User>}
             {node.date && <TimeAgo date={node.date}></TimeAgo>}
             <ViewCount count={views} />
+            {node.url && (
+               <div className="ogLink">
+                  <a href={node.url} target="_blank">
+                     og-link
+                  </a>
+               </div>
+            )}
             {isShowAdvanced && (
                <SimpleIcon
                   content="[ ␡ ]"

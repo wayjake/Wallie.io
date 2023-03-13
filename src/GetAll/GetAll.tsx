@@ -102,6 +102,9 @@ const SearchHighlights = ({
    const showMoreClicked = (event) => {
       event.preventDefault()
       setShowMore(true)
+      setTimeout(() => {
+         setShowMore(false)
+      }, 9 * 1000)
    }
 
    return (
@@ -123,7 +126,7 @@ const SearchHighlights = ({
             <>
                {' '}
                <a className="showMore" onClick={showMoreClicked}>
-                  ->
+                  -{'>'}
                </a>
             </>
          )}
