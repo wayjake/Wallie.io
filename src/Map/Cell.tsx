@@ -4,6 +4,7 @@ import styled from 'styled-components'
 export type CellProps = {
     x: number
     y: number
+    children?: React.ReactNode
 }
 const cellSize = {
     x: 60,

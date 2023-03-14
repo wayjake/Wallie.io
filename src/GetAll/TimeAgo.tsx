@@ -1,11 +1,11 @@
 import { FC, useMemo } from 'react'
 import moment from 'moment'
 
-type TimeAgo = {
-   date: Date | string
+type TimeAgoProps = {
+   date: Date | string | number
 }
 
-export const TimeAgo: FC<TimeAgo> = ({ date }) => {
+export const TimeAgo: FC<TimeAgoProps> = ({ date }) => {
    const formattedDate = useMemo(() => {
       return moment(date).fromNow()
    }, [date])

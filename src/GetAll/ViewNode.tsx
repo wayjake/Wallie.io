@@ -8,10 +8,12 @@ import { useNavigate } from 'react-router-dom'
 import useListen from '../GunApi/useListen'
 import useKeyboard from '../utils/useKeyboard'
 import { TimeAgo } from './TimeAgo'
+import useViewCount from './useViewCount'
+import ViewCount from './ViewCount'
 
 type ViewNodeProps = {
    node: DungeonNode
-   onNodeRemoved: (nodeKey: string) => void
+   onNodeRemoved: (nodeKey: string | undefined) => void
 }
 
 const ViewNodeStyled = styled.div`
@@ -64,19 +66,34 @@ const Menu = styled.div`
       padding-top: 5px;
       font-style: italic;
    }
+   .viewCount {
+      padding-left: 7px;
+      padding-top: 5px;
+   }
+   .ogLink {
+      padding-left: 7px;
+      padding-top: 4px;
+   }
+   .nodeLink {
+      padding-left: 7px;
+      padding-top: 4px;
+   }
 `
 
 export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    const navigate = useNavigate()
    const head = useListen(node.head, 'node', true) as DungeonNode
    const [isShowAdvanced, showAdvanced] = useState<boolean>(false)
+   const [views] = useViewCount(node.key)
    const keypressed = useKeyboard(['v'])
 
    const derefNode = () => {
+      if (!node.key) {
+         return
+      }
       gun.get(namespace + '/node')
          .get(node.key)
          .put(null, (awk) => {
-            console.log(`deleted ${node.key} awk:`, awk)
             onNodeRemoved(node.key)
          })
    }
@@ -88,17 +105,18 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
    }, [keypressed])
 
    const onPostClicked = (event) => {
-      if (event.detail > 1) {
-         // if there's a url, let's open it!
-         if (node.url) {
-            return window.open(node.url, '_blank')
-         }
-         if (node.directionText) {
-            return navigate(`/dashboard/${node.key}`)
-         }
-         navigate(`/node/${node.key}`)
+      //checks to see if it was double click
+      if (event.detail <= 1) {
          return
       }
+      // if there's a url, let's open it!
+      if (node.url) {
+         return window.open(node.url, '_blank')
+      }
+      if (node.directionText) {
+         return navigate(`/dashboard/${node.key}`)
+      }
+      return navigate(`/node/${node.key}`)
    }
 
    function stripHtml(input: string) {
@@ -128,6 +146,18 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
          <Menu>
             {node.user && <User>@{node.user}</User>}
             {node.date && <TimeAgo date={node.date}></TimeAgo>}
+            <ViewCount count={views} />
+            {node.url && (
+               <div className="ogLink">
+                  <a href={node.url} target="_blank">
+                     og-link
+                  </a>
+               </div>
+            )}
+
+            <div className="nodeLink">
+               <Link to={'/node/' + node.key}>node-link</Link>
+            </div>
             {isShowAdvanced && (
                <SimpleIcon
                   content="[ ␡ ]"

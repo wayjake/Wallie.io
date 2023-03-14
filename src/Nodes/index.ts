@@ -7,14 +7,14 @@ export { default as NodesLanding } from './NodesLanding'
 
 export type GunId = string
 export type Username = string
-export type Unixtimestamp = string
+export type Unixtimestamp = number | string
 
 export type Directions = {
    GunId: string
 }
 
 export type DungeonNode = {
-   key: GunId
+   key?: GunId
    id: GunId
    head: GunId
    message: string

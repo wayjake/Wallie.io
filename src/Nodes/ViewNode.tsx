@@ -16,6 +16,8 @@ import {
 import LoadingWheel from '../Interface/LoadingWheel'
 import useKeyboard from '../utils/useKeyboard'
 import { createMarkup, linkify } from '../utils'
+import useViewCount from 'GetAll/useViewCount'
+import ViewCount from 'GetAll/ViewCount'
 
 /**
  *
@@ -35,8 +37,8 @@ const ViewNode = () => {
    const [showHidden, setShowHidden] = useState<Boolean>(false)
    const keypressed = useKeyboard(['h'])
    const { key = '' } = useParams()
+   const [views] = useViewCount(key)
    const navigate = useNavigate()
-   //@TODO mark as viewed
 
    // init the page title
    useEffect(() => {
@@ -138,6 +140,7 @@ const ViewNode = () => {
                   </MessageDate>
                )}
                {!dateFormatted && <LoadingWheel />}
+               <ViewCount count={views} />
             </MessageTop>
 
             {node?.message && (
