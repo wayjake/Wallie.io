@@ -74,6 +74,10 @@ const Menu = styled.div`
       padding-left: 7px;
       padding-top: 4px;
    }
+   .nodeLink {
+      padding-left: 7px;
+      padding-top: 4px;
+   }
 `
 
 export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
@@ -150,6 +154,10 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
                   </a>
                </div>
             )}
+
+            <div className="nodeLink">
+               <Link to={'/node/' + node.key}>node-link</Link>
+            </div>
             {isShowAdvanced && (
                <SimpleIcon
                   content="[ ␡ ]"
