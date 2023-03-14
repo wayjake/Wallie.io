@@ -109,7 +109,7 @@ const SearchHighlights = ({
 
    return (
       <div className="SearchHighlights">
-         found {numNodes}
+         {numNodes && <>found {numNodes}</>}
          {showMore && (
             <>
                {' '}
