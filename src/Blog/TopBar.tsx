@@ -13,9 +13,9 @@ const TopBarStyled = styled.div`
    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
       rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 
-   padding: 2px ​0px 2px 0px;
    display: flex;
-
+   padding: 0.4rem 0rem;
+}
    .beta {
       transform: rotate(180deg);
       color: #f8633c;
@@ -28,6 +28,7 @@ const TopBarStyled = styled.div`
    .nav {
       display: flex;
       margin-left: 1em;
+      padding-top: 4px;
    }
    .usernameSession {
       input {
@@ -39,12 +40,14 @@ const TopBarStyled = styled.div`
       align-items: center;
       margin-top: 5px;
       margin-left: 10px;
-      height: 25px;
+      height: 30px;
+      font-weight: 800;
+      font-size: 1rem;
       div {
          margin-left: 4px;
       }
       img {
-         height: 23px;
+         height: 27px;
          padding-bottom: 5px;
          padding-top: 4px;
          padding-left: 5px;
@@ -60,7 +63,7 @@ const TopBarStyled = styled.div`
          color: #333336;
          font-family: 'Work Sans', sans-serif;
          font-weight: 800;
-         font-size: 20px;
+         font-size: 22px;
          text-shadow: -4px 4px #ef3550, -8px 8px #f48fb1, -12px 12px #7e57c2,
             -16px 16px #2196f3, -20px 20px #26c6da, -24px 24px #43a047,
             -28px 28px #eeff41, -32px 32px #f9a825, -36px 36px #ff5722;
