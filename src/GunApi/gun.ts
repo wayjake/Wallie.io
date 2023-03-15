@@ -17,10 +17,13 @@ export default gun
 const queryString = window.location.search
 
 const urlParams = new URLSearchParams(queryString)
-const subDomain = window.location.host.split('.')[0]
+const split = window.location.host.split('.')
+const subDomain = split.length > 1 ? split[0] || 'wallie2.1'
+
 console.log(subDomain)
+
 export const defaultNamespace =
-   urlParams.get('namespace') || subDomain || `wallie2.1`
+   urlParams.get('namespace') || subDomain
 export let namespace: string = defaultNamespace
 
 export const setNamespace = (newValue: string | undefined): void => {
