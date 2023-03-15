@@ -50,7 +50,7 @@ export default function useViewCount(nodeId) {
       return gun
          .get(namespace + '/views')
          .get(nodeId)
-         .on(data) => {
+         .on((data) => {
             callback(data)
          }).off
    }
