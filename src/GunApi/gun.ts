@@ -18,7 +18,7 @@ const queryString = window.location.search
 
 const urlParams = new URLSearchParams(queryString)
 const split = window.location.host.split('.')
-const subDomain = split.length > 1 ? split[0] || 'wallie2.1'
+const subDomain = split.length > 1 ? split[0] : 'wallie2.1'
 
 console.log(subDomain)
 
