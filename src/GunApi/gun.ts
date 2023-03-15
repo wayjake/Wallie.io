@@ -20,7 +20,7 @@ const urlParams = new URLSearchParams(queryString)
 const subDomain = window.location.host.split('.')[0]
 console.log(subDomain)
 export const defaultNamespace =
-   urlParams.get('namespace') || subDomain || `wallie2.0`
+   urlParams.get('namespace') || subDomain || `wallie2.1`
 export let namespace: string = defaultNamespace
 
 export const setNamespace = (newValue: string | undefined): void => {
