@@ -14,10 +14,12 @@ import ViewArchive from './Blog/ViewArchive'
 import EditPost from './Blog/EditPost'
 import { GeoLocation } from './GeoLocation'
 import Dashboard from './Nodes/Dashboard'
+import { Analytics } from '@vercel/analytics/react'
 
 function Wrapper() {
    return (
       <AppWrapper>
+         <Analytics />
          <Outlet />
       </AppWrapper>
    )
