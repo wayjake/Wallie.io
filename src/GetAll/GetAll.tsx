@@ -198,7 +198,7 @@ const GetAll = () => {
             'MorbidReality',
             'TalesFromRetail',
             'AskReddit',
-         ][random(0, 2)]
+         ][random(0, 3)]
          const res = await fetch(`https://www.reddit.com/r/${channel}/new.json`)
          const {
             data: { children: redditPosts },
