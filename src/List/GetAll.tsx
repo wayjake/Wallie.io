@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react'
 import { TopBar } from '../Blog'
-import gun, { namespace } from 'GunApi/gun'
+import gun, { namespace } from 'api/gun'
 import { DungeonNode } from 'Nodes'
 import styled from 'styled-components'
 import { ViewNode } from './ViewNode'
@@ -22,7 +22,6 @@ const ListNodesWrapper = styled.div`
    .SearchHighlights {
       height: 42/2;
       margin: 1rem 0rem 0rem 0rem;
-      color: #333;
       width: 100%;
       .timeAgo {
          display: inline-flex;

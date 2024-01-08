@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import gun, { namespace } from '../GunApi/gun'
+import gun, { namespace } from '../api/gun'
 import { random } from 'lodash'
 
 export default function useViewCount(nodeId) {

@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { SimpleIcon, Styles } from '../Interface'
 import { DungeonNode } from '../Nodes'
-import gun, { namespace } from '../GunApi/gun'
+import gun, { namespace } from '../api/gun'
 import { useNavigate } from 'react-router-dom'
-import useListen from '../GunApi/useListen'
+import useListen from '../api/useListen'
 import useKeyboard from '../utils/useKeyboard'
 import { TimeAgo } from './TimeAgo'
 import useViewCount from './useViewCount'
@@ -22,12 +22,14 @@ const ViewNodeStyled = styled.div`
    display: flex;
    flex-direction: column;
    border-radius: 10px;
-   box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #e7e7e799,
-      7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001, inset 0px 0px 0px 0px #fff9,
-      inset 0px 0px 0px 0px #0001, inset 0px 0px 0px 0px #fff9,
-      inset 0px 0px 0px 0px #0001;
-   transition: box-shadow 0.6s cubic-bezier(0.79, 0.21, 0.06, 0.81);
-   background-color: white;
+   box-shadow: -7px -7px 20px 0px var(--shadow-light1),
+      -4px -4px 5px 0px var(--shadow-light2),
+      7px 7px 20px 0px var(--shadow-dark1), 4px 4px 5px 0px var(--shadow-dark2),
+      inset 0px 0px 0px 0px var(--shadow-light1),
+      inset 0px 0px 0px 0px var(--shadow-dark2),
+      inset 0px 0px 0px 0px var(--shadow-light1),
+      inset 0px 0px 0px 0px var(--shadow-dark2);
+   background-color: var(--card-color);
 
    img {
       width: 100%;

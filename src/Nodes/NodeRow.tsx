@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import { Link } from 'react-router-dom'
-import gun, { namespace } from '../GunApi/gun'
+import gun, { namespace } from '../api/gun'
 import { SimpleIcon, Styles } from '../Interface'
 import { ITEM_BORDER } from './ViewNode.styled'
 import { GunId } from '.'

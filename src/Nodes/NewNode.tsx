@@ -4,10 +4,10 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { getRandomUsername, IdTypes, makeId } from '../utils'
 import Tiptap from '../Interface/TipTap'
 import { getRandomFromArray } from '../utils'
-import { Wrapper, FormItem, Button } from './NewNode.styled'
+import { Wrapper, FormItem } from './NewNode.styled'
 import useKeyboard from '../utils/useKeyboard'
 import Input from '../Interface/Input'
-import { Textarea } from 'Interface'
+import { Button, Label, Textarea } from 'Interface'
 import { useCreateNode } from './useCreateNode'
 
 export type NewSubNodeProps = {
@@ -53,7 +53,7 @@ const NewNode = (props: NewSubNodeProps) => {
       <Wrapper>
          {/* Subject line */}
          <FormItem
-            hidden={!props.head}
+            hidden={!!props.head}
             className={errors['directionText'] ? 'error' : ''}
          >
             <Input
@@ -143,6 +143,7 @@ const NewNode = (props: NewSubNodeProps) => {
          {/* Submit */}
          <FormItem>
             <Button
+               /* @ts-ignore */
                disabled={loading || errors.length}
                onClick={handleSubmit(createNode as SubmitHandler<FieldValues>)}
             >

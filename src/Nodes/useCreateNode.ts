@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DungeonNode } from '.'
 import DOMPurify from 'dompurify'
-import gun, { namespace } from '../GunApi/gun'
+import gun, { namespace } from '../api/gun'
 import { useNavigate } from 'react-router-dom'
 
 const nodeRef = gun.get(namespace + '/node')

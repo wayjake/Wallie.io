@@ -5,23 +5,20 @@ import {
    Route,
    Navigate,
 } from 'react-router-dom'
-import { AppWrapper } from './Vote/Landing'
 import { ViewNode, NewNode } from './Nodes'
-import { GetAll } from './GetAll'
-import { ViewMap } from './Map'
+import { GetAll } from './List'
 import { NewPost, ViewPost, ViewPostList, BlogWrapper } from './Blog'
 import ViewArchive from './Blog/ViewArchive'
 import EditPost from './Blog/EditPost'
-import { GeoLocation } from './GeoLocation'
 import Dashboard from './Nodes/Dashboard'
 import { Analytics } from '@vercel/analytics/react'
 
 function Wrapper() {
    return (
-      <AppWrapper>
+      <>
          <Analytics />
          <Outlet />
-      </AppWrapper>
+      </>
    )
 }
 
@@ -57,9 +54,6 @@ export default function Router() {
                   <Route path=":key" element={<ViewNode />} />
                </Route>
                <Route path="*" element={<Navigate replace to="/all" />} />
-               //deprecated
-               <Route path="map" element={<ViewMap />} />
-               <Route path="geo" element={<GeoLocation />} />
             </Route>
          </Routes>
       </BrowserRouter>

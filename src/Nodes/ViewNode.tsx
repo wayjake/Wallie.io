@@ -1,4 +1,4 @@
-import gun, { namespace } from '../GunApi/gun'
+import gun, { namespace } from '../api/gun'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useMemo, useState } from 'react'
 import { DungeonNode, GunId, NewSubNode, NodeRow } from '.'
@@ -16,8 +16,8 @@ import {
 import LoadingWheel from '../Interface/LoadingWheel'
 import useKeyboard from '../utils/useKeyboard'
 import { createMarkup, linkify } from '../utils'
-import useViewCount from 'GetAll/useViewCount'
-import ViewCount from 'GetAll/ViewCount'
+import useViewCount from 'List/useViewCount'
+import ViewCount from 'List/ViewCount'
 
 /**
  *

@@ -1,6 +1,6 @@
 import { DungeonNode } from 'Nodes'
 import { useEffect } from 'react'
-import useListen from '../GunApi/useListen'
+import useListen from '../api/useListen'
 import { createMarkup } from '../utils'
 import usePostClicked from './usePostClicked'
 import { PostStyled } from './ViewPost'

@@ -9,13 +9,13 @@ export const TipTapStyled = styled.div`
          height: 0;
          pointer-events: none;
       }
-      background: white;
+      background: var(--input-bg);
+      border: var(--input-border) thin solid;
       margin-top: 10px;
       > * + * {
          margin-top: 0.75em;
       }
-      border: black thin solid;
-      padding: 10px 20px 20px 20px;
+      padding: 10px;
       ul,
       ol {
          padding: 0 1rem;

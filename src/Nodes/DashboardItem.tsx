@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SimpleIcon, Styles } from '../Interface'
 import { ITEM_BORDER } from './ViewNode.styled'
 import { DungeonNode, GunId } from '.'
-import useUpdate from '../GunApi/useUpdate'
+import useUpdate from '../api/useUpdate'
 
 export const NodeLink = styled(Link)`
    padding: 1rem 1rem;

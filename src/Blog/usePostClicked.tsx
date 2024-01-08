@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import useDelete from '../GunApi/useDelete'
+import useDelete from '../api/useDelete'
 
 const usePostClicked = () => {
    const [deleteNode] = useDelete('post', true)

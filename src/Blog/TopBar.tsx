@@ -8,14 +8,15 @@ import { useMemo } from 'react'
 import { random } from 'lodash'
 import { useClock } from './useClock'
 import { Button } from 'Interface'
+import { DarkToggle } from './DarkToggle'
 
 const TopBarStyled = styled.div`
    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
       rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 
    display: flex;
+   justify-content: flex-start;
    padding: 0.4rem 0rem;
-}
    .beta {
       transform: rotate(180deg);
       color: #f8633c;
@@ -60,14 +61,18 @@ const TopBarStyled = styled.div`
       .wallieText {
          margin-top: -40px;
          margin-left: 5px;
-         color: #333336;
+         color: var(--text-color);
          font-family: 'Work Sans', sans-serif;
          font-weight: 800;
          font-size: 22px;
          text-shadow: -4px 4px #ef3550, -8px 8px #f48fb1, -12px 12px #7e57c2,
-            -16px 16px #2196f3, -20px 20px #26c6da, -24px 24px #43a047,
-            -28px 28px #eeff41, -32px 32px #f9a825, -36px 36px #ff5722;
+            -16px 16px var(--color-primary), -20px 20px #26c6da,
+            -24px 24px #43a047, -28px 28px var(--bright-yellow),
+            -32px 32px #f9a825, -36px 36px #ff5722;
       }
+   }
+   .darkToggle {
+      margin-left: auto;
    }
 `
 
@@ -98,6 +103,9 @@ const TopBar = () => {
          </div>
          <div className="usernameSession">
             <UsernameSession />
+         </div>
+         <div className="darkToggle">
+            <DarkToggle />
          </div>
       </TopBarStyled>
    )

@@ -1,4 +1,4 @@
-import useListen from 'GunApi/useListen'
+import useListen from 'api/useListen'
 import { DungeonNode } from 'Nodes'
 
 export const useClock = (): DungeonNode => {

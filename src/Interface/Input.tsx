@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import styled, { StyledComponent } from 'styled-components/macro'
+import styled from 'styled-components/macro'
 
 const StyledInput = styled.input`
    height: 2rem;
@@ -9,10 +9,14 @@ const StyledInput = styled.input`
    & [readonly] {
       opacity: 0.4;
    }
-`
-
-const Wrapper = styled.div`
-   width: 100%;
+   background-color: var(--input-bg);
+   color: var(--input-text);
+   border: 1px solid var(--input-border);
+   padding: 10px;
+   border-radius: 5px;
+   ::placeholder {
+      color: var(--input-placeholder);
+   }
 `
 
 type InputT = {
@@ -30,7 +34,7 @@ const Input: FC<InputT> = ({
    placeholder,
    onKeyPress,
 }) => {
-   const registerHolder = register && name ? register(name, {required}) : {}
+   const registerHolder = register && name ? register(name, { required }) : {}
 
    return (
       <StyledInput

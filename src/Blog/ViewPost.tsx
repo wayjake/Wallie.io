@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import useListen from '../GunApi/useListen'
+import useListen from '../api/useListen'
 import { createMarkup } from '../utils'
 import usePostClicked from './usePostClicked'
 import { getRandomFromArray } from '../utils'
