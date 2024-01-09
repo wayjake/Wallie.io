@@ -1,4 +1,16 @@
+import { useCallback } from 'react'
+
 export const MenuBar = ({ editor }) => {
+   const addImage = useCallback(() => {
+      //@todo, convert this to a file upload window
+      //@todo, is there a way to catch on paste?
+      const url = window.prompt('URL')
+
+      if (url) {
+         editor.chain().focus().setImage({ src: url }).run()
+      }
+   }, [editor])
+
    if (!editor) {
       return null
    }
@@ -125,6 +137,7 @@ export const MenuBar = ({ editor }) => {
          >
             horizontal rule
          </button>
+         <button onClick={addImage}>add image</button>
       </>
    )
 }

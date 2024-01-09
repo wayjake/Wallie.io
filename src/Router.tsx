@@ -16,8 +16,8 @@ import { Analytics } from '@vercel/analytics/react'
 function Wrapper() {
    return (
       <>
-         <Analytics />
          <Outlet />
+         <Analytics />
       </>
    )
 }
@@ -27,9 +27,7 @@ export default function Router() {
       <BrowserRouter>
          <Routes>
             <Route path="*" element={<Wrapper />}>
-               //the famous, get-all!
                <Route path="all" element={<GetAll />} />
-               //blog & archive routes
                <Route path="archive" element={<ViewArchive />} />
                <Route path="blog" element={<BlogWrapper />}>
                   <Route path="" element={<ViewPostList />} />

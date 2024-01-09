@@ -8,6 +8,7 @@ import LoadingWheel from 'Interface/LoadingWheel'
 import moment from 'moment'
 import { isNull, isString, random } from 'lodash'
 import { TimeAgo } from './TimeAgo'
+import delay from './delay'
 
 const GetAllStyled = styled.div`
    .loadingwheel {
@@ -274,6 +275,7 @@ const GetAll = () => {
          .get(namespace + '/node')
          .map()
          .on((newNode: DungeonNode | any = {}, key) => {
+            console.log('newNode:', newNode)
             const immutableNode =
                typeof newNode === 'object'
                   ? { ...newNode, key }
