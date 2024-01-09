@@ -43,7 +43,7 @@ const ViewNode = () => {
    // init the page title
    useEffect(() => {
       document.title = `View Brick '${key.substring(0, 50)}`
-   })
+   }, [])
 
    useEffect(() => {
       if (keypressed === 'h') {
@@ -59,8 +59,7 @@ const ViewNode = () => {
    useEffect(() => {
       setNode(undefined)
       const d = gun
-         .get(namespace + '/node')
-         .get(key)
+         .get(namespace + '/node/' + key)
          .on((node: DungeonNode | any = {}) => {
             setNode({ ...node })
          })
