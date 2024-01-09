@@ -44,8 +44,8 @@ const Dte = styled.div`
    .switch {
       position: relative;
       display: inline-block;
-      width: 60px;
-      height: 34px;
+      width: var(--slider-width);
+      height: var(--slider-height);
       margin-right: 5px;
    }
 
@@ -57,30 +57,32 @@ const Dte = styled.div`
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+      background-color: var(--slider-background);
       transition: 0.4s;
-      border-radius: 34px;
+      border-radius: var(--slider-border-radius);
    }
 
    .slider:before {
       position: absolute;
       content: '';
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
+      height: var(--slider-knob-size);
+      width: var(--slider-knob-size);
+      left: var(--slider-knob-offset);
+      bottom: var(--slider-knob-offset);
       background-color: white;
       transition: 0.4s;
-      border-radius: 50%;
+      border-radius: var(--slider-knob-border-radius);
    }
+
    input {
       appearance: none;
    }
+
    input:checked + .slider {
-      background-color: var(--grey-dark);
+      background-color: var(--slider-checked-background);
    }
 
    input:checked + .slider:before {
-      transform: translateX(26px);
+      transform: translateX(var(--slider-knob-translateX));
    }
 `

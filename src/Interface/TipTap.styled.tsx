@@ -1,6 +1,13 @@
 import styled from 'styled-components'
 
 export const TipTapStyled = styled.div`
+   button {
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      border: 1px solid var(--input-border);
+      padding: 3px;
+      border-radius: 5px;
+   }
    .ProseMirror {
       p.is-editor-empty:first-child::before {
          color: #adb5bd;
@@ -9,6 +16,7 @@ export const TipTapStyled = styled.div`
          height: 0;
          pointer-events: none;
       }
+      border-radius: 5px;
       background: var(--input-bg);
       border: var(--input-border) thin solid;
       margin-top: 10px;

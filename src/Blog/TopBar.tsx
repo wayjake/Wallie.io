@@ -72,6 +72,7 @@ const TopBarStyled = styled.div`
       }
    }
    .darkToggle {
+      margin-top: 3px;
       margin-left: auto;
    }
 `

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { NewNode } from '.'
 import useKeyboard from '../utils/useKeyboard'
-import { Wrapper, FormItem, Button, CancelButton } from './NewSubNode.styled'
+import { Wrapper, FormItem, CancelButton } from './NewSubNode.styled'
 import { NewSubNodeProps } from './NewNode'
+import { Button } from 'Interface'
 
 const NewSubNode = ({ head, dashboardFeature }: NewSubNodeProps) => {
    const [pressed, setPressed] = useState(false)
@@ -25,7 +26,7 @@ const NewSubNode = ({ head, dashboardFeature }: NewSubNodeProps) => {
       <Wrapper>
          {!pressed && (
             <FormItem>
-               <Button onClick={() => setPressed(true)}>(N)ew</Button>
+               <Button onClick={() => setPressed(true)}>Comment</Button>
             </FormItem>
          )}
 

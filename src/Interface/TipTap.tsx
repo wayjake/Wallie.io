@@ -38,6 +38,7 @@ const TipTap = ({
    if (!editor) {
       return null
    }
+
    return (
       <TipTapStyled>
          {!hideFormatting && <MenuBar editor={editor} />}

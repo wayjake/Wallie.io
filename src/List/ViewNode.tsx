@@ -115,9 +115,6 @@ export const ViewNode: FC<ViewNodeProps> = ({ node, onNodeRemoved }) => {
       if (node.url) {
          return window.open(node.url, '_blank')
       }
-      if (node.directionText) {
-         return navigate(`/dashboard/${node.key}`)
-      }
       return navigate(`/node/${node.key}`)
    }
 

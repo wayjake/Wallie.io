@@ -2,13 +2,29 @@ import { useCallback } from 'react'
 
 export const MenuBar = ({ editor }) => {
    const addImage = useCallback(() => {
-      //@todo, convert this to a file upload window
-      //@todo, is there a way to catch on paste?
-      const url = window.prompt('URL')
+      let input = document.createElement('input')
+      input.type = 'file'
+      input.accept = 'image/*'
 
-      if (url) {
-         editor.chain().focus().setImage({ src: url }).run()
+      input.onchange = (_) => {
+         const files = input.files ? Array.from(input.files) : []
+         if (files.length > 0) {
+            const file = files[0]
+            const reader = new FileReader()
+            reader.onload = (e) => {
+               const base64 = e.target?.result
+               if (typeof base64 === 'string') {
+                  editor.chain().focus().setImage({ src: base64 }).run()
+               }
+            }
+            reader.onerror = (error) => {
+               console.error('Error reading file:', error)
+            }
+            reader.readAsDataURL(file) // Convert the image to Base64
+         }
       }
+
+      input.click()
    }, [editor])
 
    if (!editor) {
