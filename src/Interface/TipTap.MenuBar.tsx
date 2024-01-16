@@ -1,31 +1,7 @@
-import { useCallback } from 'react'
+import { useAddImage } from './TipTap/addImage'
 
 export const MenuBar = ({ editor }) => {
-   const addImage = useCallback(() => {
-      let input = document.createElement('input')
-      input.type = 'file'
-      input.accept = 'image/*'
-
-      input.onchange = (_) => {
-         const files = input.files ? Array.from(input.files) : []
-         if (files.length > 0) {
-            const file = files[0]
-            const reader = new FileReader()
-            reader.onload = (e) => {
-               const base64 = e.target?.result
-               if (typeof base64 === 'string') {
-                  editor.chain().focus().setImage({ src: base64 }).run()
-               }
-            }
-            reader.onerror = (error) => {
-               console.error('Error reading file:', error)
-            }
-            reader.readAsDataURL(file) // Convert the image to Base64
-         }
-      }
-
-      input.click()
-   }, [editor])
+   const { addImage } = useAddImage(editor)
 
    if (!editor) {
       return null
