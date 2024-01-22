@@ -1242,10 +1242,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@imagemagick/magick-wasm@^0.0.27":
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/@imagemagick/magick-wasm/-/magick-wasm-0.0.27.tgz#322d698d2ba48547b94b55fe10e34ed5a43e9984"
-  integrity sha512-AKsgiAqXbXAd/EQg5589Xw/wkDp2Srfn67q+drS8ccQ21bMCSp5CpBY19zhz/8JiJQ9hEDIqnVNRInDdNN3PJg==
+"@imagemagick/magick-wasm@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@imagemagick/magick-wasm/-/magick-wasm-0.0.28.tgz#4a73b04f19100a5171ea0a3b7f0a7e941ea755cc"
+  integrity sha512-qbk5GMXrAOx0HAz3vqewN/h0GNBA/oX33FjBNDzN5CDRR3jhDa9hu+75mURg2XL+JPkacQhWryXgZER/cvi7Vw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
