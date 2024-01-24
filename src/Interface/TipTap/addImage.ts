@@ -48,6 +48,7 @@ export const useAddImage = (editor: Editor) => {
                      readerForEditor.readAsDataURL(blob)
 
                      // Trigger download
+                     /**
                      const downloadLink = document.createElement('a')
                      downloadLink.href = URL.createObjectURL(blob)
                      downloadLink.download = 'converted-image.jpg'
@@ -55,7 +56,7 @@ export const useAddImage = (editor: Editor) => {
                      downloadLink.click()
                      document.body.removeChild(downloadLink)
                      URL.revokeObjectURL(downloadLink.href)
-
+                     */
                      image.dispose()
                   })
                })
