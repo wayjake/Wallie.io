@@ -5,6 +5,7 @@ import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import { TipTapStyled } from './TipTap.styled'
 import { MenuBar } from './TipTap.MenuBar'
+import { CustomPasteHandler } from './TipTap/pasteOverride'
 
 const TipTap = ({
    onChange,
@@ -21,6 +22,7 @@ const TipTap = ({
                placeholder,
             }),
             StarterKit,
+            CustomPasteHandler,
             Link.configure({
                openOnClick: false,
             }),

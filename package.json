@@ -10,6 +10,7 @@
       "@tiptap/extension-image": "^2.1.15",
       "@tiptap/extension-link": "^2.0.0-beta.209",
       "@tiptap/extension-placeholder": "^2.0.0-beta.209",
+      "@tiptap/pm": "^2.1.16",
       "@tiptap/react": "^2.0.0-beta.209",
       "@tiptap/starter-kit": "^2.0.0-beta.209",
       "@types/dompurify": "^2.4.0",
